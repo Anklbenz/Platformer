@@ -12,10 +12,12 @@ public class PushedEnemy : ActiveEnemy
     [SerializeField] private LayerMask collisionInEngage;
     [SerializeField] private MeshRenderer _mainMesh;
     [SerializeField] private MeshRenderer _secondaryMesh;
+    protected float _patrolSpeed;
     private Coroutine endOfCooldown;
 
     protected override void Awake() {
         base.Awake();
+        _patrolSpeed = base._patrol.GetSpeed();
     }
 
     protected override void Interaction(Collider other) {
@@ -75,7 +77,7 @@ public class PushedEnemy : ActiveEnemy
     IEnumerator EndOfCooldown() {
         yield return new WaitForSeconds(_cooldownTime);
         base._patrol.SetActive(true);
-        base._patrol.SetSpeed(patrolSpeed);
+        base._patrol.SetSpeed(_patrolSpeed);
         base.DoDamage = true;
         base.DoBounce = true;
         this.ChangeMesh(true);

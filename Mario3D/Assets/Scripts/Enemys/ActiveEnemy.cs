@@ -1,21 +1,18 @@
 ﻿using UnityEngine;
-using MyEnums;
-using System;
 
 public class ActiveEnemy : ActiveInteractiveObject
 {
     [SerializeField] protected float _timeToDestroyAfterDrop = 0f;
+    [SerializeField] private LayerMask patrolCollisionMask;
     protected Rigidbody _rbody;
     public bool DoDamage { get; set; } = true;
     public bool DoBounce { get; set; } = true;
 
-    public event Action<ActiveEnemy>  OnEnememyEvent;
-
-
     protected override void Awake() {
+        base._patrolLayer = patrolCollisionMask;
         base.Awake();
         _rbody = GetComponent<Rigidbody>();
-        base._patrol.OnEnemyFrontCollisionEvent += OnEnemyFrontCollision;
+        base.OnEnemyFrontCollisionEvent += OnEnemyFrontCollision;
     }
 
     protected override void Interaction(Collider other) {
@@ -41,6 +38,6 @@ public class ActiveEnemy : ActiveInteractiveObject
     }
 
     private void OnDisable() {
-        base._patrol.OnEnemyFrontCollisionEvent -= OnEnemyFrontCollision;
+       base.OnEnemyFrontCollisionEvent -= OnEnemyFrontCollision;
     }
 }

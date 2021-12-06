@@ -1,7 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using MyEnums;
+﻿using UnityEngine;
 
 public sealed class BrickBox : EmtpyBrick
 {
@@ -15,7 +12,7 @@ public sealed class BrickBox : EmtpyBrick
     private float _dropPlatformSizeWidth = 0.02f;
     private float _collisionCheckDistance;
 
-    private bool EnemyOnTheBrick {
+    private bool EnemyOnTheBrick { //Overlap
         get => Physics.BoxCast(transform.position, _enemyOnBrickCheckPlatformSize / 2, Vector3.up, out _rayHit, transform.rotation, 
             _collisionCheckDistance) && (_rayHit.transform.GetComponent<ActiveInteractiveObject>() != null);        
     }
@@ -23,11 +20,15 @@ public sealed class BrickBox : EmtpyBrick
     private void Awake() {
         _collisionCheckDistance = _brickCollider.size.y / 2;
         _enemyOnBrickCheckPlatformSize = new Vector3(_brickCollider.size.x, _dropPlatformSizeWidth, _brickCollider.size.z);
-       
+
+        ParticleInitialize();  
+    }
+
+    private void ParticleInitialize() {
         if (_crushParticales) {
-            _crushParticales = Instantiate(_crushParticales);
+            _crushParticales = Instantiate(_crushParticales, this.transform);
             _crushParticales.transform.position = transform.position;
-            _crushParticales.gameObject.SetActive(false);          
+            _crushParticales.gameObject.SetActive(false);
         }
     }
 
@@ -51,6 +52,7 @@ public sealed class BrickBox : EmtpyBrick
         } else if (character.CanCrush && _brickCanBeCrushed) {
             _animator.SetTrigger("hit");
             _crushParticales.gameObject.SetActive(true);
+           
             Destroy(gameObject, _timeToDestroyBrickAfterHit);
         } else {
             _animator.SetTrigger("hit");

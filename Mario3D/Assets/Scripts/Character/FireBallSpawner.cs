@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class FireBallSpawner : MonoBehaviour
+public sealed class FireBallSpawner : MonoBehaviour
 {
     [SerializeField] private FireBall _prefab;
     [SerializeField] private Transform _firePoint;
@@ -16,18 +16,23 @@ public class FireBallSpawner : MonoBehaviour
     public bool isActive { get; set; } = false;
 
     private void Awake() {
-        _fireBallPool = new FireBall[_bulletCount];
         timer = new TimerCustom(_fireDelay);
+        InitializePool();
+    }
+
+    private void Update() {
+        if (isActive && Input.GetKeyDown(KeyCode.Space))
+            Shoot();
+    }
+
+    private void InitializePool() {
+        _fireBallPool = new FireBall[_bulletCount];
+
         for (int i = 0; i < _bulletCount; i++) {
             _fireBallPool[i] = Instantiate(_prefab, transform);
             _fireBallPool[i].gameObject.SetActive(false);
             _fireBallPool[i].transform.parent = _fireballParent;
         }
-    }
-
-    void Update() {
-        if (isActive && Input.GetKeyDown(KeyCode.Space))
-            Shoot();
     }
 
     private void Shoot() {
@@ -43,15 +48,3 @@ public class FireBallSpawner : MonoBehaviour
     }
 }
 
-//private void Shoot() {
-//    if (Time.time >= nextFire) {
-//        foreach (var ball in _fireBallPool) {
-//            if (!ball.gameObject.activeInHierarchy) {
-//                ball.Initialize(_firePoint.position, _bulletSpeed, _maxFlyHeight, _firePoint.forward, _groundLayers);
-//                ball.gameObject.SetActive(true);
-//                nextFire = Time.time + _fireDelay;
-//                return;
-//            }
-//        }
-//    }
-//}

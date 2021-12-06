@@ -3,6 +3,7 @@
 public class JuniorState : State
 {
     public JuniorState(Character character, IStateSwitcher stateSwitcher) : base(character, stateSwitcher) { }
+    
     public override void Enter() {
         character.BallSpawnerSetActive(false);
         character.SetTrasformSize(false);

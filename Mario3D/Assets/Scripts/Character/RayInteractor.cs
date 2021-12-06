@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class RayInteractor : MonoBehaviour
 {
@@ -48,7 +46,7 @@ public class RayInteractor : MonoBehaviour
             EnemyHitTest();
     }
 
-    void EnemyHitTest() {
+    private void EnemyHitTest() {
         bool bounce = false;
 
         foreach (var el in _boxInteractionVectorDown) {
