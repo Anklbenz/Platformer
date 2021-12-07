@@ -1,15 +1,13 @@
 ﻿using UnityEngine;
 
-public class ActiveEnemy : ActiveInteractiveObject
+public class ActiveEnemy : ActiveInteractiveObject, IJumpOn
 {
     [SerializeField] protected float _timeToDestroyAfterDrop = 0f;
-    [SerializeField] private LayerMask patrolCollisionMask;
     protected Rigidbody _rbody;
     public bool DoDamage { get; set; } = true;
     public bool DoBounce { get; set; } = true;
 
     protected override void Awake() {
-        base._patrolLayer = patrolCollisionMask;
         base.Awake();
         _rbody = GetComponent<Rigidbody>();
         base.OnEnemyFrontCollisionEvent += OnEnemyFrontCollision;
@@ -31,7 +29,7 @@ public class ActiveEnemy : ActiveInteractiveObject
         base._patrol.DirectionChange();
     }
 
-    public virtual void JumpOn(CharacterMove other) {
+    public virtual void JumpOn(Vector3 senderCenter) {
         DoDamage = false;
         DoBounce = false;
         _patrol.SetActive(false);

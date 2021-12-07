@@ -1,15 +1,8 @@
-﻿
-using UnityEngine;
+﻿using UnityEngine;
 
 public sealed class Mushroom : ActiveInteractiveObject
 {
-    private void OnTriggerEnter(Collider other) {
-        if (other.CompareTag("Player"))
-            Interaction(other);
-    }
-
     protected override void Interaction(Collider other) {
-        // other.GetComponent<Character>()?.LevelUp();
         other.GetComponent<StateHandler>()?.LevelUp();
         Destroy(gameObject);
     }
@@ -19,5 +12,8 @@ public sealed class Mushroom : ActiveInteractiveObject
             _patrol.DirectionChange();
     }
 
-
+    private void OnTriggerEnter(Collider other) {
+        if (other.TryGetComponent<Character>(out Character character))
+            Interaction(other);
+    }
 }

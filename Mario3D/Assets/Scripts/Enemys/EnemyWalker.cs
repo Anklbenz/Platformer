@@ -11,8 +11,8 @@ public sealed class EnemyWalker : ActiveEnemy//MonoBehaviour, ITakeDamage, IDrop
         animator = GetComponent<Animator>();
     }
 
-    public override void JumpOn(CharacterMove other) {
-        base.JumpOn(other);
+    public override void JumpOn(Vector3 senderCenter) {
+        base.JumpOn(senderCenter);
         animator.SetTrigger("isStomps");
         Destroy(gameObject, destrAfterStomp);
     }

@@ -1,7 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using MyEnums;
+﻿using UnityEngine;
 
 public class EmtpyBrick : MonoBehaviour
 {
@@ -9,18 +6,18 @@ public class EmtpyBrick : MonoBehaviour
     [SerializeField] protected GameObject _secondaryMesh;
     [SerializeField] protected BoxCollider _brickCollider;
     protected bool _isActive = true;
-    protected Bonus _bonus;
+    protected BonusSpawner _bonusSpawner;
 
-    private void Start() {
-        _bonus = GetComponent<Bonus>();
+    protected virtual void Awake() {
+        _bonusSpawner = GetComponent<BonusSpawner>();
     }
 
     public virtual void BrickHit(Character character) {
         if (!_isActive) return; 
 
-        if (_bonus.numberOfBonuses > 0) {
-            _bonus.Show(character);
-            _bonus.Decrease();
+        if (_bonusSpawner.numberOfBonuses > 0) {
+            _bonusSpawner.Show(character);
+            _bonusSpawner.Decrease();
             _brickCollider.enabled = true;
             _isActive = false;
             _secondaryMesh.SetActive(true);

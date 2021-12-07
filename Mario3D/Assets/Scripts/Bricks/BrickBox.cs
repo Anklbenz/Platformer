@@ -17,7 +17,8 @@ public sealed class BrickBox : EmtpyBrick
             _collisionCheckDistance) && (_rayHit.transform.GetComponent<ActiveInteractiveObject>() != null);        
     }
 
-    private void Awake() {
+    protected override void Awake() {
+        base.Awake();
         _collisionCheckDistance = _brickCollider.size.y / 2;
         _enemyOnBrickCheckPlatformSize = new Vector3(_brickCollider.size.x, _dropPlatformSizeWidth, _brickCollider.size.z);
 
@@ -38,12 +39,12 @@ public sealed class BrickBox : EmtpyBrick
         else
             this.Drop();
 
-        if (_bonus.numberOfBonuses > 0) {
+        if (_bonusSpawner.numberOfBonuses > 0) {
             _animator.SetTrigger("hit");
-            _bonus.Show(character);
-            _bonus.Decrease();
+            _bonusSpawner.Show(character);
+            _bonusSpawner.Decrease();
 
-            if (_bonus.numberOfBonuses == 0) {
+            if (_bonusSpawner.numberOfBonuses == 0) {
                 _isActive = false;
                 _primaryMesh.SetActive(false);
                 _secondaryMesh.SetActive(true);

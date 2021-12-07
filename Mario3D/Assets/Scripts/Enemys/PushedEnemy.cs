@@ -28,13 +28,13 @@ public class PushedEnemy : ActiveEnemy
         base.Interaction(other);
     }
 
-    public override void JumpOn(CharacterMove other) {
+    public override void JumpOn(Vector3 senderCenter) {
         if (_currentState == PusherState.Cooldown) {
-            TransitonToEngage(other.ColliderBoundsCenter);
+            TransitonToEngage(senderCenter);
             return;
         }
 
-        base.JumpOn(other);
+        base.JumpOn(senderCenter);
         this.ChangeMesh(false);
         StartCoroutine(CooldownDelay());
         endOfCooldown = StartCoroutine(EndOfCooldown());

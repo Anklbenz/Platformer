@@ -58,13 +58,18 @@ MonoBehaviour:
   m_GameObject: {fileID: 2238425666860065271}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b17e0794e11ef97409e1041af9e5f76c, type: 3}
+  m_Script: {fileID: 11500000, guid: 82b4f71e3a24ad041a30ec80eb52f4d2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   bonusCreationPoint: {fileID: 6430840679570832131}
   numberOfBonuses: 1
-  _coinDestroyTime: 0.5
-  bonusType: 2
+  _coinPrefab: {fileID: 9029018083570166796, guid: 1f52e0b488a65db4e8f3b1fbf7078c9b,
+    type: 3}
+  _mushroomPrefab: {fileID: 4538692916186593345, guid: c145dcc06e88f9744964058a4f848e94,
+    type: 3}
+  _flowerPrefab: {fileID: 5200034606365766367, guid: d5d0b7d62e64fd24cae796b4c3196736,
+    type: 3}
+  bonusType: 1
 --- !u!1 &3652126619730974259
 GameObject:
   m_ObjectHideFlags: 0
