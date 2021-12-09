@@ -21,16 +21,4 @@ public class HitCatcher<T> where T : MonoBehaviour
             return false;
         }
     }
-
-    public Collider[] CollisionOverlapBox (Vector3 boxCenter, Vector3 direction, Vector3 plaformSizeExtent ) {
-       return  Physics.OverlapBox(boxCenter, plaformSizeExtent, Quaternion.identity, _mask);
-    }
-
 }
-
-
-    //public bool rayCollisionExist(Vector3 boxCenter, Vector3 direction, out Collider hitCollider) {
-    //    Physics.Raycast(boxCenter, direction, out RaycastHit _rayHit, _checkDistance, _mask);
-    //    hitCollider = _rayHit.collider;
-    //    return hitCollider != null;
-    //}

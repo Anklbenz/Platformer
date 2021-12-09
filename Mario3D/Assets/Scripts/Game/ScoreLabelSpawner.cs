@@ -9,17 +9,12 @@ public class ScoreLabelSpawner : MonoBehaviour
     [SerializeField] private Transform scoreParent;
 
     private PoolObjects<ScoreLabel> scoreLabelPool;
-    private PoolObjects<BrickParticales> brickParticalesPool;
- 
+     
     private void Awake() {
         scoreLabelPool = new PoolObjects<ScoreLabel>(scoreLabelPrefab, scoreLabelPoolCount, true, scoreParent);
     }
 
     public ScoreLabel GetScoreLabel() {
         return scoreLabelPool.GetFreeElement();
-    }
-
-    public BrickParticales GetBrickParticales() {
-        return brickParticalesPool.GetFreeElement();
     }
 }

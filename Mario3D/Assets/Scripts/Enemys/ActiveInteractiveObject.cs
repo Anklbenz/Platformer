@@ -6,6 +6,9 @@ public abstract class ActiveInteractiveObject : InteractiveObject
     public event Action<ActiveEnemy> OnEnemyFrontCollisionEvent;
 
     [SerializeField] protected LayerMask _patrolLayer;
+    
+    protected int _score;
+    public int Score { get; private set;}
 
     private readonly Vector3 CHECK_PLATFORM_SIZE = new Vector3(0.3f, 0.3f, 0);
     private const float CHECK_DISTANCE = 0.05f;

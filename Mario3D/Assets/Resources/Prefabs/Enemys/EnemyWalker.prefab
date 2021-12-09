@@ -97,11 +97,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e21dd875786fedf419d90cd2e273a5fe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _patrolSpeed: 2
-  collisionMask:
-    serializedVersion: 2
-    m_Bits: 3127
-  direction: 0
+  _speed: 2
+  MoveDirection: 0
 --- !u!114 &8422206331231859417
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -114,6 +111,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9707d8726cc27c447ab5d13f5d2f52ca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _patrolLayer:
+    serializedVersion: 2
+    m_Bits: 1025
   _timeToDestroyAfterDrop: 2
   destrAfterStomp: 1.5
 --- !u!1001 &132478240304135091

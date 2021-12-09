@@ -1,10 +1,12 @@
 ﻿using UnityEngine;
 
-public class EmtpyBrick : MonoBehaviour
+public class EmtpyBrick : MonoBehaviour, IBrickHit
 {
     [SerializeField] protected GameObject _primaryMesh;
     [SerializeField] protected GameObject _secondaryMesh;
     [SerializeField] protected BoxCollider _brickCollider;
+
+    public bool BrickInHitState { get; set; } = false;
     protected bool _isActive = true;
     protected BonusSpawner _bonusSpawner;
 

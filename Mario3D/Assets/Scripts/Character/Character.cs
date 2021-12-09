@@ -1,19 +1,14 @@
 ﻿using UnityEngine;
-using System;
 
 public sealed class Character : MonoBehaviour
 {
-    [SerializeField] private Vector3 smallSize = Vector3.one;
-    [SerializeField] private Vector3 bigSize = new Vector3(1.3f, 1.6f, 1.3f);
-    [SerializeField] private MeshRenderer mesh;
+    private readonly Vector3 SMALL_SIZE = Vector3.one;
+    private readonly Vector3 BIG_SIZE = new Vector3(1.3f, 1.6f, 1.3f);
+   
     public bool CanCrush { get; set; }
-
-    public delegate void ScaleSchanged();
-    public event ScaleSchanged OnScaleChangedEvent;
 
     private FireBallSpawner _ballSpawner;
     private StateHandler _stateHandler;
-
     private Flicker _flicker;
 
     private void Awake() {
@@ -27,13 +22,7 @@ public sealed class Character : MonoBehaviour
     }
 
     public void SetTrasformSize(bool isBig) {
-        if (isBig) {
-            transform.localScale = bigSize;
-            OnScaleChangedEvent?.Invoke();
-        } else {
-            transform.localScale = smallSize;
-            OnScaleChangedEvent?.Invoke();
-        }
+        transform.localScale = isBig ? BIG_SIZE : SMALL_SIZE;
     }
 
     public bool CompareCurrentStateWith<T>() where T : State {

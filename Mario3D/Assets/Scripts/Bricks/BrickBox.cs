@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 
 public sealed class BrickBox : EmtpyBrick
 {
@@ -34,13 +35,14 @@ public sealed class BrickBox : EmtpyBrick
     }
 
     public override void BrickHit(Character character) {
-        if (!_isActive) 
+        if (!_isActive)
             return;
         else
-            this.Drop();
+            this.Drop();       
+
+        _animator.SetTrigger("hit");   
 
         if (_bonusSpawner.numberOfBonuses > 0) {
-            _animator.SetTrigger("hit");
             _bonusSpawner.Show(character);
             _bonusSpawner.Decrease();
 
@@ -51,12 +53,8 @@ public sealed class BrickBox : EmtpyBrick
             }
 
         } else if (character.CanCrush && _brickCanBeCrushed) {
-            _animator.SetTrigger("hit");
             _crushParticales.gameObject.SetActive(true);
-           
             Destroy(gameObject, _timeToDestroyBrickAfterHit);
-        } else {
-            _animator.SetTrigger("hit");
         }
     }
 

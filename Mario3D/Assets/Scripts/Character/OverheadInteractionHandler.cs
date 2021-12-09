@@ -1,40 +1,35 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
-public class OverheadInteractionHandler 
+public class OverheadInteractionHandler
 {
     private Character _character;
 
-    //private void BrickHitTest() {
-    //    if (_isBrickHit) return;
-
-    //    BrickBox brick = _rayHit.transform.GetComponentInParent<BrickBox>();
-    //    if (brick != null) {
-    //        _isBrickHit = true;
-    //        brick.BrickHit(_character);
-    //    }
-    //}
-
-    public void Interaction(Collider[] overheadColliders, Vector3 patrentCenter) {
- 
-        float minValue = 0;
-Debug.Log(overheadColliders.Length);
-        foreach (var collider in overheadColliders) {
-            //if minValue = collider.ClosestPoint(patrentCenter).z;
-            
-            Debug.Log($"ближайшая точка к центру {collider.ClosestPoint(patrentCenter)} имя {collider.name} --- центр {patrentCenter}");
-            //IJumpOn instance = collider.transform.GetComponentInParent<IJumpOn>();
-
-            //if (instance != null) {
-            //    if (instance.DoBounce == true)
-            //        bounce = true;
-            //    instance.JumpOn(patrentCenter);
-            //}
-        }
-     
+    public OverheadInteractionHandler(Character character) {
+        _character = character;
     }
 
+    public void Interaction(Collider[] overheadColliders, Vector3 playerCenter) {
+        Debug.Log(overheadColliders.Length);
+        var nearestCollider = ChooseNearestCollider(overheadColliders, playerCenter);
 
+        IBrickHit hitInstance = nearestCollider.GetComponentInParent<IBrickHit>();
+        if (!hitInstance.BrickInHitState)
+            hitInstance?.BrickHit(_character);
+    }
 
+    private Collider ChooseNearestCollider(Collider[] overheadColliders, Vector3 playerCenter) {
+        float minValue = -1;
+        Collider nearestcollider = null;
+
+        foreach (var collider in overheadColliders) {
+            var dif = Mathf.Abs(playerCenter.z - collider.ClosestPoint(playerCenter).z);
+            if (minValue < 0 || minValue > dif) {
+                minValue = dif;
+                nearestcollider = collider;
+            }
+        }
+        return nearestcollider;
+    }
 }
+
+

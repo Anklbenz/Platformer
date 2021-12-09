@@ -4,7 +4,7 @@ using MyEnums;
 
 public class PushedEnemy : ActiveEnemy
 {
-    const float TRANSITON_DELAY = 0.2f;
+    private const float TRANSITON_DELAY = 0.2f;
 
     [SerializeField] private float _engageSpeed;
     [SerializeField] private float _cooldownTime;

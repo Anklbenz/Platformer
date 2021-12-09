@@ -1,33 +1,49 @@
 ﻿using UnityEngine;
+using System;
 
-public class BottomInteractionHandler 
-{   
+public class BottomInteractionHandler
+{
     const float SIDE_ENTER_DEPTH = 0.3f;
-    private CharacterMove _characterMove;
+    public event Action<Vector3, int> OnJumpOnEvent;
+    private IMoveProvider _moveProvider;
+    private int _jumpInRowCount=0;
 
-    public BottomInteractionHandler(CharacterMove characterMove) {
-        _characterMove = characterMove;
+    public BottomInteractionHandler(IMoveProvider moveProvider) {
+        _moveProvider = moveProvider;
     }
 
-    public void Interaction (Collider[] bottomColliders, Vector3 patrentCenter) {
+    public void Interaction(Collider[] bottomColliders, Vector3 patrentCenter) {
         bool bounce = false;
-        
+
         foreach (var collider in bottomColliders) {
-            if (HorisontalCollsion(collider.ClosestPoint(patrentCenter), patrentCenter)) return;
+            if (IsHorisontalCollsion(collider.ClosestPoint(patrentCenter), patrentCenter)) continue;
 
-            IJumpOn instance = collider.transform.GetComponentInParent<IJumpOn>();
+            IJumpOn jumpOnInstance = collider.transform.GetComponentInParent<IJumpOn>();
 
-            if (instance != null) {
-                if (instance.DoBounce == true)
-                    bounce = true;
-                instance.JumpOn(patrentCenter);
+            if (jumpOnInstance != null) {
+                if (jumpOnInstance.DoBounce) bounce = true;
+                jumpOnInstance.JumpOn(patrentCenter);
+                OnJumpOnEvent?.Invoke(collider.transform.position, _jumpInRowCount);
+                this.JumpInRowCountInreace();
             }
         }
-        if (bounce)
-            _characterMove.Bounce();
+        if (bounce) this.DoBounce();
     }
 
-    private bool HorisontalCollsion(Vector3 closestPoint, Vector3 origin) {
+    public void JumpInRowCountReset() {
+        _jumpInRowCount = 0;
+    }
+
+    private void JumpInRowCountInreace() {
+        _jumpInRowCount ++;
+    }
+
+
+    private void DoBounce() {
+        _moveProvider.Bounce();
+    }
+
+    private bool IsHorisontalCollsion(Vector3 closestPoint, Vector3 origin) {
         var positionDifference = origin - closestPoint;
         var overlapDirection = positionDifference.normalized;
 
