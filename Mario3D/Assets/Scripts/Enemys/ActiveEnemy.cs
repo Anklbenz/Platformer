@@ -29,7 +29,7 @@ public class ActiveEnemy : ActiveInteractiveObject, IJumpOn
         base._patrol.DirectionChange();
     }
 
-    public virtual void JumpOn() {
+    public virtual void JumpOn(Vector3 center) {
         DoDamage = false;
         DoBounce = false;
         _patrol.SetActive(false);

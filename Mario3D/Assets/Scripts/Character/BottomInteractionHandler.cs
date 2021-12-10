@@ -4,9 +4,11 @@ using System;
 public class BottomInteractionHandler
 {
     const float SIDE_ENTER_DEPTH = 0.3f;
-    public event Action<Vector3, int> OnJumpOnEvent;
-    private IMoveProvider _moveProvider;
-    private int _jumpInRowCount=0;
+
+    public event Action<Vector3, int> OnJumpOnEvent;  
+    public InRowCounter InRowCounter = new InRowCounter();
+
+    private IMoveProvider _moveProvider; 
 
     public BottomInteractionHandler(IMoveProvider moveProvider) {
         _moveProvider = moveProvider;
@@ -22,22 +24,16 @@ public class BottomInteractionHandler
 
             if (jumpOnInstance != null) {
                 if (jumpOnInstance.DoBounce) bounce = true;
+               
                 jumpOnInstance.JumpOn(patrentCenter);
-                OnJumpOnEvent?.Invoke(collider.transform.position, _jumpInRowCount);
-                this.JumpInRowCountInreace();
+                OnJumpOnEvent?.Invoke(collider.transform.position, InRowCounter.Count);
+
+                InRowCounter.Inreace();
             }
         }
+
         if (bounce) this.DoBounce();
     }
-
-    public void JumpInRowCountReset() {
-        _jumpInRowCount = 0;
-    }
-
-    private void JumpInRowCountInreace() {
-        _jumpInRowCount ++;
-    }
-
 
     private void DoBounce() {
         _moveProvider.Bounce();

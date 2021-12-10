@@ -50,7 +50,7 @@ public class InteractorHandler : MonoBehaviour
         this.UnderInercat();
 
         if (_moveProvider.IsGrounded)
-            _underInteractionHandler.JumpInRowCountReset();
+            _underInteractionHandler.InRowCounter.Reset();
     }
 
     private void OverInercat() {

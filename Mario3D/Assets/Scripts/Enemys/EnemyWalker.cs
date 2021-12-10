@@ -11,8 +11,8 @@ public sealed class EnemyWalker : ActiveEnemy
         animator = GetComponent<Animator>();
     }
 
-    public override void JumpOn() {
-        base.JumpOn();
+    public override void JumpOn(Vector3 center) {
+        base.JumpOn(center);
         animator.SetTrigger("isStomps");
         Destroy(gameObject, destrAfterStomp);
         Destroy(this);

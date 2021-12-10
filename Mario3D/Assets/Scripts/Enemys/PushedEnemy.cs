@@ -48,7 +48,7 @@ public class PushedEnemy : ActiveEnemy
     protected override void OnEnemyFrontCollision(ActiveEnemy activeEnemy) {
         if (_currentState == PusherState.Engage) {
 
-            if (activeEnemy is PushedEnemy pushedEnemy && pushedEnemy._currentState == PusherState.Engage)
+            if (activeEnemy is PushedEnemy pushedEnemy && pushedEnemy._currentState == PusherState.Engage) 
                 base._patrol.DirectionChange();
             else
                 activeEnemy.Drop();
