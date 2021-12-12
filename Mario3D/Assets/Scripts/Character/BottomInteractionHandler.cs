@@ -5,27 +5,44 @@ public class BottomInteractionHandler
 {
     const float SIDE_ENTER_DEPTH = 0.3f;
 
-    public event Action<Vector3, int> OnJumpOnEvent;  
+    public event Action<Vector3, int> OnJumpOnEvent;
     public InRowCounter InRowCounter = new InRowCounter();
 
-    private IMoveProvider _moveProvider; 
+    private bool _interactActive;
+    private BoxCollider _interactCollider;
 
-    public BottomInteractionHandler(IMoveProvider moveProvider) {
-        _moveProvider = moveProvider;
+    private IMoveData _moveData;
+    private Interactor _interactor;
+    private Vector3 _colliderCenter { get => _interactCollider.bounds.center; }
+
+
+    public BottomInteractionHandler(IMoveData moveData, Vector3 direction, float inspectLength, LayerMask inspectLayer, float boxIndent = 1f) {
+        _moveData = moveData;
+        _interactCollider = moveData.InteractCollider;
+        _interactor = new Interactor(moveData.InteractCollider, direction, inspectLength, inspectLayer, boxIndent);
     }
 
-    public void Interaction(Collider[] bottomColliders, Vector3 patrentCenter) {
+    public void CollisionCheck() {
+        if (_moveData.MovingDown && !_interactActive && _interactor.InteractionOverlap.Length > 0) {
+            _interactActive = true;
+            Interaction(_interactor.InteractionOverlap);
+        } else if (_interactor.InteractionOverlap.Length == 0) {
+            _interactActive = false;
+        }
+    }
+
+    private void Interaction(Collider[] bottomColliders) {
         bool bounce = false;
 
         foreach (var collider in bottomColliders) {
-            if (IsHorisontalCollsion(collider.ClosestPoint(patrentCenter), patrentCenter)) continue;
+            if (IsHorisontalCollsion(collider.ClosestPoint(_colliderCenter), _colliderCenter)) continue;
 
             IJumpOn jumpOnInstance = collider.transform.GetComponentInParent<IJumpOn>();
 
             if (jumpOnInstance != null) {
                 if (jumpOnInstance.DoBounce) bounce = true;
-               
-                jumpOnInstance.JumpOn(patrentCenter);
+
+                jumpOnInstance.JumpOn(_colliderCenter);
                 OnJumpOnEvent?.Invoke(collider.transform.position, InRowCounter.Count);
 
                 InRowCounter.Inreace();
@@ -36,7 +53,7 @@ public class BottomInteractionHandler
     }
 
     private void DoBounce() {
-        _moveProvider.Bounce();
+        _moveData.Bounce();
     }
 
     private bool IsHorisontalCollsion(Vector3 closestPoint, Vector3 origin) {
@@ -47,5 +64,9 @@ public class BottomInteractionHandler
             return true;
         else
             return false;
+    }
+
+    public void OnDrawGizmos(Color color) {
+        _interactor.OnDrawGizmos(color);
     }
 }

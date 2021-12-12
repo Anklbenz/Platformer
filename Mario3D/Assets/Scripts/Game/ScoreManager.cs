@@ -33,12 +33,4 @@ public class ScoreManager
     private void TotalScoreLabelUpdate() {
         _totalScoreLabel.text = _totalScore.ToString("D6");
     }
-
-    //private void LabelDraw(Vector3 position, int score) {
-    //    var label = _lablesSpawner.GetScoreLabel();
-    //    label.transform.position = position;
-    //    label.Text(score.ToString());
-    //}
-
-
 }

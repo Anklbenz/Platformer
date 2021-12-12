@@ -3,14 +3,33 @@
 public class OverheadInteractionHandler
 {
     private Character _character;
+    private Interactor _interactor;
+    private BoxCollider _interactCollider;
 
-    public OverheadInteractionHandler(Character character) {
+    private IMoveData _moveData;
+
+    private bool _interactActive;
+    private Vector3 _colliderCenter { get => _interactCollider.bounds.center; }
+
+    public OverheadInteractionHandler(Character character, IMoveData moveData, Vector3 direction, float inspectLength, LayerMask inspectLayer, float boxIndent = 1f) {
         _character = character;
+        _moveData = moveData;
+        _interactCollider = moveData.InteractCollider;
+        _interactor = new Interactor(moveData.InteractCollider, direction, inspectLength, inspectLayer, boxIndent);
     }
 
-    public void Interaction(Collider[] overheadColliders, Vector3 playerCenter) {
+    public void CollisionCheck() {
+        if (_moveData.MovingUp && !_interactActive && _interactor.InteractionOverlap.Length > 0) {
+            _interactActive = true;
+            Interaction(_interactor.InteractionOverlap);
+        } else if (_interactor.InteractionOverlap.Length == 0) {
+            _interactActive = false;
+        }
+    }
+
+    private void Interaction(Collider[] overheadColliders) {
         Debug.Log(overheadColliders.Length);
-        var nearestCollider = ChooseNearestCollider(overheadColliders, playerCenter);
+        var nearestCollider = ChooseNearestCollider(overheadColliders, _colliderCenter);
 
         IBrickHit hitInstance = nearestCollider.GetComponentInParent<IBrickHit>();
         if (!hitInstance.BrickInHitState)
@@ -29,6 +48,10 @@ public class OverheadInteractionHandler
             }
         }
         return nearestcollider;
+    }
+
+    public void OnDrawGizmos(Color color) {
+        _interactor.OnDrawGizmos(color);
     }
 }
 

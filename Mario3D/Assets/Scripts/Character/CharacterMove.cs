@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 //  Application.targetFrameRate = 240;
-public sealed class CharacterMove : MonoBehaviour,  IMoveProvider
+public sealed class CharacterMove : MonoBehaviour, IMoveData
 {
     [Header("JumpSettings")]
     [SerializeField] private float _jumpForceDuration = 0.15f; //Time of jump
@@ -22,6 +22,7 @@ public sealed class CharacterMove : MonoBehaviour,  IMoveProvider
     private Rigidbody _rBody;
     private CapsuleCollider _capsuleCollider;
     private BoxCollider _boxCollider;
+    public  BoxCollider InteractCollider {get => _boxCollider;}
     private Vector3 _moveDirection = Vector3.zero;
 
     private float _boxCastWidth = 0.1f;

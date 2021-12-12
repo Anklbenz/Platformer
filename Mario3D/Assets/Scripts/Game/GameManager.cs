@@ -14,11 +14,11 @@ public class GameManager : MonoBehaviour
      
     private void Start() {
         _scoreManager = new ScoreManager(_totalScoreLabel, _scoreLabelPrefab, _scoreLabelParent);
-        _playerInteractionHandler._underInteractionHandler.OnJumpOnEvent += _scoreManager.AddScore;
+        _playerInteractionHandler._bottomInteractionHandler.OnJumpOnEvent += _scoreManager.AddScore;
     }
 
     private void OnDestroy() {
-        _playerInteractionHandler._underInteractionHandler.OnJumpOnEvent -= _scoreManager.AddScore;
+        _playerInteractionHandler._bottomInteractionHandler.OnJumpOnEvent -= _scoreManager.AddScore;
     }
 
 }

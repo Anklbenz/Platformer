@@ -7,32 +7,40 @@ public sealed class ScoreLabel : MonoBehaviour
     [SerializeField] private float _aliveTime;
     private float timer;
     private Text _scoreTextLabel;
-    private Camera cam;
-    private RectTransform _rect;
-
 
     private void Awake() {
         _scoreTextLabel = GetComponent<Text>();
-       
-        cam = Camera.main;
     }
 
     private void OnEnable() {
-        timer = _aliveTime;
+        this.ResetTimer();
     }
 
     private void FixedUpdate() {
-        //transform.position = cam.WorldToScreenPoint(transform.position);
-     
+        this.Move();
+        this.DisableTimer();
+    }
+
+    private void Move() {
         transform.Translate(Vector3.up * _moveSpeed * Time.deltaTime);
-        timer -= Time.fixedDeltaTime;
-        if (timer <= 0)
-            gameObject.SetActive(false);
     }
 
     public void Text(string str) {
         _scoreTextLabel.text = str;
     }
-}
 
+    private void DisableTimer() {
+        timer -= Time.fixedDeltaTime;
+        if (timer <= 0)
+            this.Disable();
+    }
+
+    private void Disable() {
+        gameObject.SetActive(false);
+    }
+
+    private void ResetTimer() {
+        timer = _aliveTime;
+    }
+}
 

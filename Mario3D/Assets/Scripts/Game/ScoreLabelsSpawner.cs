@@ -2,12 +2,7 @@
 
 public class ScoreLabelsSpawner
 {
-    //[SerializeField] private int scoreLabelPoolCount;
-    //[SerializeField] private ScoreLabel scoreLabelPrefab;
-    //[SerializeField] private Transform scoreParent;
-
-    private const int POOL_COUNT = 5; 
-
+    private const int POOL_COUNT = 5;
     private PoolObjects<ScoreLabel> scoreLabelPool;
 
     public ScoreLabelsSpawner(ScoreLabel scoreLabelPrefab, Transform scoreParent) {
