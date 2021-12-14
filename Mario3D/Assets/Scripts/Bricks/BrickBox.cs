@@ -1,29 +1,22 @@
 ﻿using System.Collections;
 using UnityEngine;
+using MyEnums;
 
 public sealed class BrickBox : EmtpyBrick
 {
+    private const float DROP_CHECK_DISTANCE = 0.1f;
+
     [SerializeField] private ParticleSystem _crushParticales;
     [SerializeField] private Animator _animator;
     [SerializeField] private float _timeToDestroyBrickAfterHit;
-    [SerializeField] private bool _brickCanBeCrushed = false;    
-
-    private RaycastHit _rayHit;
-    private Vector3 _enemyOnBrickCheckPlatformSize;
-    private float _dropPlatformSizeWidth = 0.02f;
-    private float _collisionCheckDistance;
-
-    private bool EnemyOnTheBrick { //Overlap
-        get => Physics.BoxCast(transform.position, _enemyOnBrickCheckPlatformSize / 2, Vector3.up, out _rayHit, transform.rotation, 
-            _collisionCheckDistance) && (_rayHit.transform.GetComponent<ActiveInteractiveObject>() != null);        
-    }
+    [SerializeField] private bool _brickCanBeCrushed = false;
+    [SerializeField] private LayerMask _dropLayer;
+    private Interactor _interactor;
 
     protected override void Awake() {
         base.Awake();
-        _collisionCheckDistance = _brickCollider.size.y / 2;
-        _enemyOnBrickCheckPlatformSize = new Vector3(_brickCollider.size.x, _dropPlatformSizeWidth, _brickCollider.size.z);
-
-        ParticleInitialize();  
+        ParticleInitialize();      
+        _interactor = new Interactor(_brickCollider, Axis.vertical, DROP_CHECK_DISTANCE, _dropLayer);
     }
 
     private void ParticleInitialize() {
@@ -59,14 +52,19 @@ public sealed class BrickBox : EmtpyBrick
     }
 
     public void Drop() {
-        if (EnemyOnTheBrick)
-            _rayHit.transform.gameObject.GetComponent<ActiveInteractiveObject>().Drop();
+        var interactions = _interactor.InteractionOverlap(Vector3.up);
+        if (interactions.Length > 0) {
+            foreach (var obj in interactions) {
+                ActiveInteractiveObject activeObject = obj.transform.GetComponentInParent<ActiveInteractiveObject>();
+                if (activeObject)
+                    activeObject.DownHit();
+            }
+        }
     }
 
     void OnDrawGizmos() {
-        Gizmos.color = Color.red;
-        Gizmos.DrawLine(transform.position, transform.position + transform.up * _collisionCheckDistance);
-        Gizmos.DrawWireCube(transform.position + transform.up * _collisionCheckDistance, _enemyOnBrickCheckPlatformSize);
+        if (_interactor==null) return;
+        _interactor.OnDrawGizmos(Color.red);
     }
 }
 

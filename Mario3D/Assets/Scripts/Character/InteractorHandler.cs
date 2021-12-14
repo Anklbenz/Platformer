@@ -26,15 +26,12 @@ public class InteractorHandler : MonoBehaviour
     private void FixedUpdate() {
         _topInteractionHandler.CollisionCheck();
         _bottomInteractionHandler.CollisionCheck();
-
-        if (_moveData.IsGrounded)
-            _bottomInteractionHandler.InRowCounter.Reset();
+        _bottomInteractionHandler.IsGoundedReport(_moveData.IsGrounded);
     }
 
     private void OnDrawGizmos() {
          _topInteractionHandler?.OnDrawGizmos( Color.white);
-        _bottomInteractionHandler?.OnDrawGizmos( Color.black);
-      
+        _bottomInteractionHandler?.OnDrawGizmos( Color.black);      
     }
 }
 

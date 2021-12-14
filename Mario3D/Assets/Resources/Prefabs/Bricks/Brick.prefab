@@ -54,6 +54,9 @@ MonoBehaviour:
   _animator: {fileID: 4743832699782468351}
   _timeToDestroyBrickAfterHit: 0.1
   _brickCanBeCrushed: 1
+  _dropLayer:
+    serializedVersion: 2
+    m_Bits: 1280
 --- !u!114 &4743832699354692389
 MonoBehaviour:
   m_ObjectHideFlags: 0

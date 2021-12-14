@@ -7,7 +7,7 @@ public sealed class Mushroom : ActiveInteractiveObject
         Destroy(gameObject);
     }
 
-    public override void Drop() {
+    public override void DownHit() {
         if(_patrol.isActiveAndEnabled)
             _patrol.DirectionChange();
     }

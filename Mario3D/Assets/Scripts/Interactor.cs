@@ -1,50 +1,64 @@
 ﻿using UnityEngine;
+using MyEnums;
 
 public class Interactor
 {
     private BoxCollider _objectCollider;
-    private float _inspectLength;
     private Vector3 _direction;
-    private float _boxIndent;
+    private Vector3 _inspectPlatformSize;
     private LayerMask _layer;
+    private float _inspectLength;
+    private float _boxIndent;
+    private float _colliderHalfSize;
 
-    //private float _scale { get => Vector3.Dot(_direction, _localScale); }
-    //private Vector3 _inspectBoxCenter { get => _objectCollider.bounds.center + _direction * (_colliderHalfSize * _scale + _inspectLength / 2); }
-    private Vector3 _overlapBoxCenter { get => _objectCollider.bounds.center + _direction * (_colliderHalfSize + _inspectLength / 2); }
+    private Vector3 _inspectBoxCenter { get => _objectCollider.bounds.center + _direction * (_colliderHalfSize + _inspectLength / 2);  }
 
-    private Vector3 _inspectPlatformSize { get => (Vector3.ProjectOnPlane(_objectCollider.bounds.size, _direction) + _direction * _inspectLength) * _boxIndent; }
-    private float _colliderHalfSize { get => Mathf.Abs(Vector3.Dot(_direction, _objectCollider.size)) / 2; }
+    public Interactor(BoxCollider objectCollider, Axis axis, float inspectLength, LayerMask layer, float boxIndent = 1) {
+        Vector3 direction = axis == Axis.horisontal ? Vector3.forward : Vector3.up;
 
-    public Interactor(BoxCollider objectCollider, Vector3 direction, float inspectLength, LayerMask layer, float boxIndent = 1) {
         _objectCollider = objectCollider;
-        _direction = direction;
         _inspectLength = inspectLength;
         _boxIndent = boxIndent;
-        _layer = layer;
+        _layer = layer;     
+        _inspectPlatformSize = InspectPlatformSize(direction);
+        _colliderHalfSize = ColliderHalfSize(direction);
     }
 
-    private Vector3 BoxcastOrigin(Vector3 directon) {
-        return _objectCollider.bounds.center + directon * (Mathf.Abs(Vector3.Dot(directon, _objectCollider.size) / 2));
+    private float ColliderHalfSize(Vector3 direction) {
+        return Mathf.Abs(Vector3.Dot(direction, _objectCollider.size)) / 2;
     }
 
-    public Collider[] InteractionOverlap {
-        get => Physics.OverlapBox(_overlapBoxCenter, _inspectPlatformSize / 2, Quaternion.identity, _layer);
+    private Vector3 InspectPlatformSize(Vector3 direction) {
+        return (Vector3.ProjectOnPlane(_objectCollider.bounds.size, direction) * _boxIndent + direction * _inspectLength) ;
     }
 
+    public Collider[] InteractionOverlap(Vector3 direction) {
+        _direction = direction;
+        return Physics.OverlapBox(_inspectBoxCenter, _inspectPlatformSize / 2, Quaternion.identity, _layer);
+    }
+    
     public bool InteractionBoxcast(Vector3 direction) {
-         return  Physics.BoxCast(BoxcastOrigin(direction), _inspectPlatformSize / 2, Quaternion.identity, 3  , _layer)) ;
-
+        _direction = direction;
+        return Physics.BoxCast(_inspectBoxCenter, _inspectPlatformSize / 2, direction, Quaternion.identity, 0, _layer);
     }
 
-    //private Vector3 InpectBoxCenter(Vector3 localScale) {
-    //    float _scale = Vector3.Dot(_direction, localScale);
-    //    return _objectCollider.bounds.center + _direction * (_colliderHalfSize * _scale + _inspectLength / 2);
-    //}
+
+    public bool InteractionBoxcast(Vector3 direction, out RaycastHit obj) {
+        _direction = direction;
+        return Physics.BoxCast(_objectCollider.bounds.center, _inspectPlatformSize / 2, direction, out obj, Quaternion.identity, _inspectLength + _colliderHalfSize, _layer);
+    }
 
     public void OnDrawGizmos(Color color) {
         if (_objectCollider == null) return;
         Gizmos.color = color;
-        Gizmos.DrawWireCube(_overlapBoxCenter, _inspectPlatformSize);
+        Gizmos.DrawWireCube(_inspectBoxCenter, _inspectPlatformSize);
     }
 }
 
+//private float _scale { get => Vector3.Dot(_direction, _localScale); }
+//private Vector3 _inspectBoxCenter { get => _objectCollider.bounds.center + _direction * (_colliderHalfSize * _scale + _inspectLength / 2); }
+
+//public bool InteractionBoxcast(Vector3 direction, out RaycastHit obj) {
+//    _direction = direction;
+//    return Physics.BoxCast(_inspectBoxCenter - _inspectLength * direction, _inspectPlatformSize / 2, direction, out obj, Quaternion.identity, _inspectLength, _layer);
+//}

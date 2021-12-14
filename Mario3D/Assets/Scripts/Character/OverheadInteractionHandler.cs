@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using MyEnums;
 
 public class OverheadInteractionHandler
 {
@@ -9,25 +10,31 @@ public class OverheadInteractionHandler
     private IMoveData _moveData;
 
     private bool _interactActive;
+    private Vector3 _direction;
     private Vector3 _colliderCenter { get => _interactCollider.bounds.center; }
 
     public OverheadInteractionHandler(Character character, IMoveData moveData, Vector3 direction, float inspectLength, LayerMask inspectLayer, float boxIndent = 1f) {
         _character = character;
         _moveData = moveData;
         _interactCollider = moveData.InteractCollider;
-        _interactor = new Interactor(moveData.InteractCollider, direction, inspectLength, inspectLayer, boxIndent);
+        _direction = direction;
+        _interactor = new Interactor(moveData.InteractCollider, Axis.vertical, inspectLength, inspectLayer, boxIndent);
     }
 
     public void CollisionCheck() {
-        if (_moveData.MovingUp && !_interactActive && _interactor.InteractionOverlap.Length > 0) {
-            _interactActive = true;
-            Interaction(_interactor.InteractionOverlap);
-        } else if (_interactor.InteractionOverlap.Length == 0) {
+        var interactions = _interactor.InteractionOverlap(_direction);
+
+        if (_moveData.MovingUp && !_interactActive && interactions.Length > 0) {
+         
+            _interactActive = true;           
+            HitNearestCollider(interactions);
+
+        } else if (interactions.Length == 0) {
             _interactActive = false;
         }
     }
 
-    private void Interaction(Collider[] overheadColliders) {
+    private void HitNearestCollider(Collider[] overheadColliders) {
         Debug.Log(overheadColliders.Length);
         var nearestCollider = ChooseNearestCollider(overheadColliders, _colliderCenter);
 

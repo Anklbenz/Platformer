@@ -1,5 +1,4 @@
-﻿using MyEnums;
-using UnityEngine;
+﻿using UnityEngine;
 
 public sealed class EnemyWalker : ActiveEnemy
 {
@@ -11,8 +10,9 @@ public sealed class EnemyWalker : ActiveEnemy
         animator = GetComponent<Animator>();
     }
 
-    public override void JumpOn(Vector3 center) {
-        base.JumpOn(center);
+    public override void JumpOn(Vector3 center, int inRowJumpCount) {
+        base.JumpOn(center, inRowJumpCount);
+
         animator.SetTrigger("isStomps");
         Destroy(gameObject, destrAfterStomp);
         Destroy(this);

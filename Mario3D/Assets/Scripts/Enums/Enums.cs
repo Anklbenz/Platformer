@@ -3,10 +3,10 @@
 
     public enum BonusType
     {
-        none,
-        coin,
-        levelUp,
-        heathUp
+        none = 0,
+        coin = 1,
+        levelUp = 2,
+        heathUp = 3
     }
 
     public enum PusherState
@@ -22,6 +22,12 @@
         left,
         rigth,
         up,
-        down  
+        down
+    }
+
+    public enum Axis
+    {
+        horisontal = 0,
+        vertical = 1
     }
 }

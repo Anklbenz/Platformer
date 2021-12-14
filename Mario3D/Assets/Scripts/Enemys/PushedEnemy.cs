@@ -1,24 +1,38 @@
 ﻿using System.Collections;
 using UnityEngine;
 using MyEnums;
+using System;
 
 public class PushedEnemy : ActiveEnemy
 {
     private const float TRANSITON_DELAY = 0.2f;
+    //public event Action<IScoreMessage, int> ScoreEvent;
 
+    [Header("EnemyPusher")]
     [SerializeField] private float _engageSpeed;
     [SerializeField] private float _cooldownTime;
     [SerializeField] private PusherState _currentState = PusherState.Walk;
     [SerializeField] private LayerMask collisionInEngage;
     [SerializeField] private MeshRenderer _mainMesh;
     [SerializeField] private MeshRenderer _secondaryMesh;
-    protected float _patrolSpeed;
-    private Coroutine endOfCooldown;
+
+
+    private float _patrolSpeed;
+    private InRowCounter InRowCounter = new InRowCounter();
+    private Coroutine endOfCooldown; 
 
     protected override void Awake() {
         base.Awake();
         _patrolSpeed = base._patrol.GetSpeed();
     }
+
+    //private void Start() {
+    //     gameManager._scoreEventHandler.Subsribe(this);
+    //}
+
+    //private void OnDisable() {
+    //    gameManager._scoreEventHandler.UnSubsribe(this);
+    //}
 
     protected override void Interaction(Collider other) {
         if (_currentState == PusherState.Cooldown) {
@@ -28,13 +42,14 @@ public class PushedEnemy : ActiveEnemy
         base.Interaction(other);
     }
 
-    public override void JumpOn(Vector3 senderCenter) {
+    public override void JumpOn(Vector3 senderCenter, int inRowJumpCount) {
         if (_currentState == PusherState.Cooldown) {
             TransitonToEngage(senderCenter);
             return;
         }
 
-        base.JumpOn(senderCenter);
+        this.InRowCounter.Reset();
+        base.JumpOn(senderCenter, inRowJumpCount);
         this.ChangeMesh(false);
         StartCoroutine(CooldownDelay());
         endOfCooldown = StartCoroutine(EndOfCooldown());
@@ -48,10 +63,13 @@ public class PushedEnemy : ActiveEnemy
     protected override void OnEnemyFrontCollision(ActiveEnemy activeEnemy) {
         if (_currentState == PusherState.Engage) {
 
-            if (activeEnemy is PushedEnemy pushedEnemy && pushedEnemy._currentState == PusherState.Engage) 
+            if (activeEnemy is PushedEnemy pushedEnemy && pushedEnemy._currentState == PusherState.Engage) {
                 base._patrol.DirectionChange();
-            else
+            } else {
                 activeEnemy.Drop();
+                this.SendScore(InRowCounter.Count);
+                InRowCounter.Inreace();
+            }
         } else {
             base._patrol.DirectionChange();
         }
@@ -61,10 +79,10 @@ public class PushedEnemy : ActiveEnemy
         StopCoroutine(endOfCooldown);
         base._patrol.SetActive(true);
         base._patrol.SetDirection(dir);
-        base._patrol.SetSpeed(_engageSpeed);       
+        base._patrol.SetSpeed(_engageSpeed);
+        _currentState = PusherState.Engage;
 
         yield return new WaitForSeconds(TRANSITON_DELAY);
-        _currentState = PusherState.Engage;
         base.DoBounce = true;
         base.DoDamage = true;
     }
@@ -88,4 +106,8 @@ public class PushedEnemy : ActiveEnemy
         _mainMesh.gameObject.SetActive(primaryMeshIsActive);
         _secondaryMesh.gameObject.SetActive(!primaryMeshIsActive);
     }
+
+    //public void SendScore(int InRowCount) {
+    //    ScoreEvent?.Invoke(this, InRowCount);
+    //}
 }
