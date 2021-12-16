@@ -105,7 +105,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4519911060238778437}
-  - component: {fileID: 4519911060238779323}
   - component: {fileID: 4519911060238778436}
   m_Layer: 11
   m_Name: BrickWithQuestion
@@ -130,27 +129,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &4519911060238779323
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4519911060238778438}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 82b4f71e3a24ad041a30ec80eb52f4d2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  bonusCreationPoint: {fileID: 5593973369525192892}
-  numberOfBonuses: 0
-  _coinPrefab: {fileID: 9029018083570166796, guid: 1f52e0b488a65db4e8f3b1fbf7078c9b,
-    type: 3}
-  _mushroomPrefab: {fileID: 4538692916186593345, guid: c145dcc06e88f9744964058a4f848e94,
-    type: 3}
-  _flowerPrefab: {fileID: 5200034606365766367, guid: d5d0b7d62e64fd24cae796b4c3196736,
-    type: 3}
-  bonusType: 0
 --- !u!114 &4519911060238778436
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -163,13 +141,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cbba1fee40afe334ca1c2577492a19d7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _bonusesCount: 0
+  _bonusType: 0
   _primaryMesh: {fileID: 4526105130086229296}
   _secondaryMesh: {fileID: 7200077296599456020}
   _brickCollider: {fileID: 4519911059469318196}
+  _bonusCreationPoint: {fileID: 0}
+  _gameManager: {fileID: 0}
   _crushParticales: {fileID: 0}
   _animator: {fileID: 4519911059469318187}
   _timeToDestroyBrickAfterHit: 0
   _brickCanBeCrushed: 0
+  _dropLayer:
+    serializedVersion: 2
+    m_Bits: 1280
 --- !u!1001 &173792462381344038
 PrefabInstance:
   m_ObjectHideFlags: 0

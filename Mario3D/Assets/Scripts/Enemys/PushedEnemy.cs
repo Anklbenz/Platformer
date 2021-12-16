@@ -6,7 +6,7 @@ using System;
 public class PushedEnemy : ActiveEnemy
 {
     private const float TRANSITON_DELAY = 0.2f;
-    //public event Action<IScoreMessage, int> ScoreEvent;
+    private const int SCORE_LIST_ELEMENT = 3;
 
     [Header("EnemyPusher")]
     [SerializeField] private float _engageSpeed;
@@ -16,26 +16,18 @@ public class PushedEnemy : ActiveEnemy
     [SerializeField] private MeshRenderer _mainMesh;
     [SerializeField] private MeshRenderer _secondaryMesh;
 
-
     private float _patrolSpeed;
     private InRowCounter InRowCounter = new InRowCounter();
-    private Coroutine endOfCooldown; 
+    private Coroutine endOfCooldown;
 
     protected override void Awake() {
         base.Awake();
         _patrolSpeed = base._patrol.GetSpeed();
     }
 
-    //private void Start() {
-    //     gameManager._scoreEventHandler.Subsribe(this);
-    //}
-
-    //private void OnDisable() {
-    //    gameManager._scoreEventHandler.UnSubsribe(this);
-    //}
-
     protected override void Interaction(Collider other) {
         if (_currentState == PusherState.Cooldown) {
+            SendScore(SCORE_LIST_ELEMENT);
             TransitonToEngage(other.bounds.center);
             return;
         }
@@ -44,6 +36,7 @@ public class PushedEnemy : ActiveEnemy
 
     public override void JumpOn(Vector3 senderCenter, int inRowJumpCount) {
         if (_currentState == PusherState.Cooldown) {
+            base.SendScore(InRowCounter.Count);
             TransitonToEngage(senderCenter);
             return;
         }
@@ -67,7 +60,7 @@ public class PushedEnemy : ActiveEnemy
                 base._patrol.DirectionChange();
             } else {
                 activeEnemy.Drop();
-                this.SendScore(InRowCounter.Count);
+                base.SendScore(InRowCounter.Count);
                 InRowCounter.Inreace();
             }
         } else {
@@ -107,7 +100,4 @@ public class PushedEnemy : ActiveEnemy
         _secondaryMesh.gameObject.SetActive(!primaryMeshIsActive);
     }
 
-    //public void SendScore(int InRowCount) {
-    //    ScoreEvent?.Invoke(this, InRowCount);
-    //}
 }

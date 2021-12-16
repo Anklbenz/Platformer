@@ -10,11 +10,11 @@ public class EventHandler
         _scoreReciver = scoreReciver;
     }
 
-    public void Subsribe(IScoreMessage sender) {
-        sender.ScoreEvent += _scoreReciver.AddScore;
+    public void Subsribe(IScoreNotify sender) {
+        sender.ScoreNotifyEvent += _scoreReciver.AddScore;
     }
-    public void UnSubsribe(IScoreMessage sender) {
-        sender.ScoreEvent -= _scoreReciver.AddScore;
+    public void UnSubsribe(IScoreNotify sender) {
+        sender.ScoreNotifyEvent -= _scoreReciver.AddScore;
     }
 
 }

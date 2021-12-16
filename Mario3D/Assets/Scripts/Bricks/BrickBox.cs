@@ -13,9 +13,8 @@ public sealed class BrickBox : EmtpyBrick
     [SerializeField] private LayerMask _dropLayer;
     private Interactor _interactor;
 
-    protected override void Awake() {
-        base.Awake();
-        ParticleInitialize();      
+    private void Awake() {
+         ParticleInitialize();      
         _interactor = new Interactor(_brickCollider, Axis.vertical, DROP_CHECK_DISTANCE, _dropLayer);
     }
 
@@ -31,15 +30,15 @@ public sealed class BrickBox : EmtpyBrick
         if (!_isActive)
             return;
         else
-            this.Drop();       
+            this.DownHit();       
 
         _animator.SetTrigger("hit");   
 
-        if (_bonusSpawner.numberOfBonuses > 0) {
-            _bonusSpawner.Show(character);
-            _bonusSpawner.Decrease();
+        if (_bonusesCount > 0) {
+            base.BonusShow(character);
+            _bonusesCount--;
 
-            if (_bonusSpawner.numberOfBonuses == 0) {
+            if (_bonusesCount == 0) {
                 _isActive = false;
                 _primaryMesh.SetActive(false);
                 _secondaryMesh.SetActive(true);
@@ -51,7 +50,7 @@ public sealed class BrickBox : EmtpyBrick
         }
     }
 
-    public void Drop() {
+    public void DownHit() {
         var interactions = _interactor.InteractionOverlap(Vector3.up);
         if (interactions.Length > 0) {
             foreach (var obj in interactions) {

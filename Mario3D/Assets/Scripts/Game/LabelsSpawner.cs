@@ -1,11 +1,11 @@
 ﻿using UnityEngine;
 
-public class ScoreLabelsSpawner
+public class LabelsSpawner
 {
     private const int POOL_COUNT = 5;
     private PoolObjects<ScoreLabel> scoreLabelPool;
 
-    public ScoreLabelsSpawner(ScoreLabel scoreLabelPrefab, Transform scoreParent) {
+    public LabelsSpawner(ScoreLabel scoreLabelPrefab, Transform scoreParent) {
         scoreLabelPool = new PoolObjects<ScoreLabel>(scoreLabelPrefab, POOL_COUNT, true, scoreParent);
     }
 

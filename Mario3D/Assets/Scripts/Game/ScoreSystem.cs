@@ -2,26 +2,26 @@
 using UnityEngine.UI;
 using System;
 
-public class ScoreManager : IScoreReciver
+public class ScoreSystem : IScoreReciver
 {
     private readonly int[] SCORE_LIST = { 100, 200, 400, 500, 800, 1000, 2000, 4000, 5000, 10000 };
 
     private int _totalScore = 0;
     private Text _totalScoreLabel;    
-    private ScoreLabelsSpawner _lablesSpawner;
+    private LabelsSpawner _lablesSpawner;
 
     public EventHandler EventHandler; 
 
-    public ScoreManager( Text totalScoreLabel, ScoreLabel prefab, Transform labelParent) {
+    public ScoreSystem( Text totalScoreLabel, ScoreLabel prefab, Transform labelParent) {
 
         EventHandler = new EventHandler(this);
 
-        _lablesSpawner = new ScoreLabelsSpawner(prefab, labelParent);            
+        _lablesSpawner = new LabelsSpawner(prefab, labelParent);            
         _totalScoreLabel = totalScoreLabel;
          this.TotalScoreLabelUpdate();
     }
    
-    public void AddScore(IScoreMessage sender, int bounceCount) {
+    public void AddScore(IScoreNotify sender, int bounceCount) {
         if (bounceCount >= SCORE_LIST.Length - 1)
             bounceCount = SCORE_LIST.Length - 1;
 

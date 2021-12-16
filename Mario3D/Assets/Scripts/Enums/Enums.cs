@@ -1,12 +1,13 @@
 ﻿namespace MyEnums
 {
-
     public enum BonusType
     {
         none = 0,
         coin = 1,
-        levelUp = 2,
-        heathUp = 3
+        mushroom = 2,
+        flower = 3,
+        heathUp = 4,
+        unstopabe = 5
     }
 
     public enum PusherState

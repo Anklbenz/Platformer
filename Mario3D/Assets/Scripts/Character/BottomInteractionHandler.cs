@@ -45,8 +45,6 @@ public class BottomInteractionHandler
             if (jumpOnInstance != null) {
                 if (jumpOnInstance.DoBounce) bounce = true;
                 jumpOnInstance.JumpOn(_colliderCenter, InRowCounter.Count);
-
-               // OnJumpOnEvent?.Invoke(collider.transform.position, InRowCounter.Count);
                 InRowCounter.Inreace();
             }
         }

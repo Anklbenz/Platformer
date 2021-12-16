@@ -1,4 +1,4 @@
 ﻿public interface IScoreReciver 
 {
-    void AddScore(IScoreMessage sender, int inRowCount);
+    void AddScore(IScoreNotify sender, int inRowCount);
 }

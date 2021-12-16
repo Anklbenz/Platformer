@@ -144,6 +144,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _destroyTime: 1
+  _gameManager: {fileID: 0}
 --- !u!21 &-5871657001455008085
 Material:
   serializedVersion: 6

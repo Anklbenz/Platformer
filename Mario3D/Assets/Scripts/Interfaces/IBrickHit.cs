@@ -1,5 +1,8 @@
-﻿interface IBrickHit
+﻿using MyEnums;
+using System;
+using UnityEngine;
+
+public interface IBrickHit
 {
-    bool BrickInHitState { get; set; }
-    void BrickHit(Character character);
+     void BrickHit(Character character);
 }

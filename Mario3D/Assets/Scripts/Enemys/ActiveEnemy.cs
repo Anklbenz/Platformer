@@ -1,9 +1,9 @@
 ﻿using UnityEngine;
 using System;
 
-public class ActiveEnemy : ActiveInteractiveObject, IJumpOn, IScoreMessage
+public class ActiveEnemy : ActiveInteractiveObject, IJumpOn, IScoreNotify
 {
-    public event Action<IScoreMessage, int> ScoreEvent;
+    public event Action<IScoreNotify, int> ScoreNotifyEvent;
 
     [Header("ActiveEnemy")]
     [SerializeField] protected float _timeToDestroyAfterDrop = 0f;
@@ -14,18 +14,24 @@ public class ActiveEnemy : ActiveInteractiveObject, IJumpOn, IScoreMessage
     public bool DoBounce { get; set; } = true;
     public Vector3 Position { get => _collider.bounds.center; }
 
-    protected override void Awake() {
+    protected override void Awake() {        
         base.Awake();
         _rbody = GetComponent<Rigidbody>();
+        gameManager.EnemySystem.Attach(this);
+        
+    }
+    private void OnDestroy() {
+        gameManager.EnemySystem.Detach(this);
     }
 
-    private void Start() {
+    public void Subsribe() {
         base.OnEnemyFrontCollisionEvent += OnEnemyFrontCollision;
-        gameManager.ScoreManager.EventHandler.Subsribe(this);
+        gameManager.ScoreSystem.EventHandler.Subsribe(this);
     }
+
     private void OnDisable() {
         base.OnEnemyFrontCollisionEvent -= OnEnemyFrontCollision;
-        gameManager.ScoreManager.EventHandler.Subsribe(this);
+        gameManager.ScoreSystem.EventHandler.UnSubsribe(this);
     }
 
     protected override void Interaction(Collider other) {
@@ -58,6 +64,6 @@ public class ActiveEnemy : ActiveInteractiveObject, IJumpOn, IScoreMessage
     }
 
     public void SendScore(int InRowCount) {
-        ScoreEvent?.Invoke(this, InRowCount);
+        ScoreNotifyEvent?.Invoke(this, InRowCount);
     }
 }
