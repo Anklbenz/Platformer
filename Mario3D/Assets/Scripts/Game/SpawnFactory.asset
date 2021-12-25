@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2df259e2213467945a7680590df2d1a0, type: 3}
+  m_Name: SpawnFactory
+  m_EditorClassIdentifier: 
+  _coinPrefab: {fileID: 2180378965623294743, guid: 1f52e0b488a65db4e8f3b1fbf7078c9b,
+    type: 3}
+  _growupBonusPrefab: {fileID: -409408072987551338, guid: c145dcc06e88f9744964058a4f848e94,
+    type: 3}
+  _flowerPrefab: {fileID: 2467347187042207607, guid: d5d0b7d62e64fd24cae796b4c3196736,
+    type: 3}
+  _lifesUpPrefab: {fileID: -3199050723184793809, guid: acf4cdd946ab2ce468f21775fc61d680,
+    type: 3}
+  _jumpingStarPrefab: {fileID: 6621541574897914263, guid: 26c94efe71b854b4fb8b2b098b9e4b47,
+    type: 3}
+  _enemyWalkerPrefab: {fileID: 8422206331231859417, guid: f7393e73eb7ec374c91a7556acdcc2f6,
+    type: 3}

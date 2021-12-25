@@ -1,46 +1,41 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using UnityEngine;
 
-public class StateHandler : MonoBehaviour, IStateSwitcher
+public class StateHandler : IStateSwitcher
 {
     private Character _character;
     public State CurrentState { get; private set; }
     private List<State> stateMap;
 
-    void Start() {
-        _character = GetComponent<Character>();
+    public StateHandler(Character character, StateData junior, StateData middle, StateData senior) {
+        _character = character;
+
         stateMap = new List<State>
         {
-            new JuniorState(_character, this),
-            new MiddleState(_character, this),
-            new SeniorState(_character, this)
+            new JuniorState(_character, this, junior),
+            new MiddleState(_character, this, middle),
+            new SeniorState(_character, this, senior)
         };
         CurrentState = stateMap[0];
     }
 
     public void Hurt() {
-        CurrentState.Hurt();
+        CurrentState.Exit();
     }
 
     public void LevelUp() {
-        CurrentState.LevelUp();
+        CurrentState.StateUp();
     }
 
     public void StateSwitch<T>() where T : State {
         var state = stateMap.FirstOrDefault(source => source is T);
-        CurrentState.Exit();
         CurrentState = state;
         CurrentState.Enter();
     }
 
     public bool CompareCurrentStateWith<T>() where T : State {
         var state = stateMap.FirstOrDefault(source => source is T);
-        if (CurrentState == state)
-            return true;
-        else
-            return false;
-    }
 
+        return CurrentState == state ? true : false;
+    }
 }

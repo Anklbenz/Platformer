@@ -34,11 +34,11 @@ public sealed class CharacterMove : MonoBehaviour, IMoveData
     private Vector3 _groundCheckPlatformSize { get => new Vector3(_boxCollider.size.x, _boxCastWidth, _boxCollider.size.z * BOX_INDENT * transform.localScale.z); }
     private Vector3 _wallContactPlatformSize { get => new Vector3(_boxCollider.size.x, _boxCollider.size.y * BOX_INDENT * transform.localScale.y, _boxCastWidth); }
 
-    private float _groundCheckDistance { get => (_capsuleCollider.height / 2) * transform.localScale.y; }
+    private float _groundCheckDistance { get => (_boxCollider.size.y / 2) * transform.localScale.y; }
     private float _wallCheckDistance { get => (_boxCollider.size.z / 2) * transform.localScale.z; }
 
     public bool IsGrounded {
-        get => Physics.BoxCast(_capsuleCollider.bounds.center, _groundCheckPlatformSize / 2, Vector3.down, out RaycastHit groundHit,
+        get => Physics.BoxCast(_boxCollider.bounds.center, _groundCheckPlatformSize / 2, Vector3.down, out RaycastHit groundHit,
                           transform.rotation, _groundCheckDistance, _isGroundedLayer);
     }
 
@@ -123,8 +123,8 @@ public sealed class CharacterMove : MonoBehaviour, IMoveData
     private void OnDrawGizmos() {
         if (_capsuleCollider == null) return;
         Gizmos.color = Color.red;
-        Gizmos.DrawLine(_capsuleCollider.bounds.center, _capsuleCollider.bounds.center - transform.up * _groundCheckDistance);
-        Gizmos.DrawWireCube(_capsuleCollider.bounds.center - transform.up * _groundCheckDistance, _groundCheckPlatformSize);
+        Gizmos.DrawLine(_boxCollider.bounds.center, _boxCollider.bounds.center - transform.up * _groundCheckDistance);
+        Gizmos.DrawWireCube(_boxCollider.bounds.center - transform.up * _groundCheckDistance, _groundCheckPlatformSize);
 
         Gizmos.color = Color.magenta;
         Gizmos.DrawWireCube(_boxCollider.bounds.center + _moveDirection * _wallCheckDistance, _wallContactPlatformSize);

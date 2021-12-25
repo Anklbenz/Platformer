@@ -50,8 +50,7 @@ MonoBehaviour:
   _primaryMesh: {fileID: 6783730360741096392}
   _secondaryMesh: {fileID: 7531780575115396083}
   _brickCollider: {fileID: 4743832699782468344}
-  _bonusCreationPoint: {fileID: 0}
-  _gameManager: {fileID: 0}
+  _bonusCreationPoint: {fileID: 6430840679570832131}
   _crushParticales: {fileID: 5964601693738042814, guid: 3bbff29991a708a48833bd7f8177ba38,
     type: 3}
   _animator: {fileID: 4743832699782468351}

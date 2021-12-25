@@ -2,12 +2,12 @@
 
 public abstract class InteractiveObject : MonoBehaviour
 {
-    protected abstract void Interaction(Collider other);
+    protected abstract void Interaction(StateHandler state, Vector3 pos);
 
-    private void OnCollisionEnter(Collision collision)
-    {
-        Character character = collision.collider.GetComponent<Character>();
+    protected void OnTriggerEnter(Collider other) {
+        var character = other.GetComponent<Character>();
+
         if (character)
-            Interaction(collision.collider);
+            Interaction(character.StateHandler, other.bounds.center);
     }
 }

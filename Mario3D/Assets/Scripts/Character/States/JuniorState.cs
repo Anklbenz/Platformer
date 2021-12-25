@@ -2,24 +2,18 @@
 
 public class JuniorState : State
 {
-    public JuniorState(Character character, IStateSwitcher stateSwitcher) : base(character, stateSwitcher) { }
-    
+    public JuniorState(Character character, IStateSwitcher stateSwitcher, StateData data) : base(character, stateSwitcher, data) {}    
+
     public override void Enter() {
-        character.BallSpawnerSetActive(false);
-        character.SetTrasformSize(false);
-        character.CanCrush = false;
+        character.UpdateStateData(data);     
         Debug.Log("Junior");
     }
 
     public override void Exit() {
-        //throw new System.NotImplementedException();
+        //  Debug.LogError("GameOVER");
     }
 
-    public override void Hurt() {
-        Debug.LogError("GameOVER");
-    }
-
-    public override void LevelUp() {        
+    public override void StateUp() {        
         stateSwitcher.StateSwitch<MiddleState>();
         Debug.Log("LevelUp Junior -> Middle");
     }

@@ -1,13 +1,12 @@
 ﻿using UnityEngine;
 using System;
 
-public class ActiveEnemy : ActiveInteractiveObject, IJumpOn, IScoreNotify
+public class ActiveEnemy : ActiveInteractiveObject, IJumpOn, IScoreChangeNotify
 {
-    public event Action<IScoreNotify, int> ScoreNotifyEvent;
+    public event Action<IScoreChangeNotify, int> ScoreNotifyEvent;
 
     [Header("ActiveEnemy")]
     [SerializeField] protected float _timeToDestroyAfterDrop = 0f;
-    [SerializeField] protected GameManager gameManager;
 
     protected Rigidbody _rbody;
     public bool DoDamage { get; set; } = true;
@@ -16,33 +15,18 @@ public class ActiveEnemy : ActiveInteractiveObject, IJumpOn, IScoreNotify
 
     protected override void Awake() {        
         base.Awake();
-        _rbody = GetComponent<Rigidbody>();
-        gameManager.EnemySystem.Attach(this);
-        
-    }
-    private void OnDestroy() {
-        gameManager.EnemySystem.Detach(this);
+        _rbody = GetComponent<Rigidbody>();        
     }
 
-    public void Subsribe() {
-        base.OnEnemyFrontCollisionEvent += OnEnemyFrontCollision;
-        gameManager.ScoreSystem.EventHandler.Subsribe(this);
-    }
-
-    private void OnDisable() {
-        base.OnEnemyFrontCollisionEvent -= OnEnemyFrontCollision;
-        gameManager.ScoreSystem.EventHandler.UnSubsribe(this);
-    }
-
-    protected override void Interaction(Collider other) {
+    protected override void Interaction(StateHandler state, Vector3 pos) {
         if (DoDamage)
-            other.GetComponent<StateHandler>()?.Hurt();
+            state?.Hurt();
     }
 
     public virtual void JumpOn(Vector3 center, int InRowJumpCount) {
         DoDamage = false;
         DoBounce = false;
-        _patrol.SetActive(false);
+        _motor.SetActive(false);
 
         SendScore(InRowJumpCount);
     }
@@ -54,16 +38,12 @@ public class ActiveEnemy : ActiveInteractiveObject, IJumpOn, IScoreNotify
         Destroy(gameObject, _timeToDestroyAfterDrop);
     }
 
+    public void SendScore(int InRowCount) {
+        ScoreNotifyEvent?.Invoke(this, InRowCount);
+    }
+
     public override void DownHit() {
         SendScore(0);
         Drop();
-    }
-
-    protected virtual void OnEnemyFrontCollision(ActiveEnemy ae) {
-        base._patrol.DirectionChange();
-    }
-
-    public void SendScore(int InRowCount) {
-        ScoreNotifyEvent?.Invoke(this, InRowCount);
     }
 }

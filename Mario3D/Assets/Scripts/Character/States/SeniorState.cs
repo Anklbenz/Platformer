@@ -2,25 +2,21 @@
 
 public class SeniorState : State
 {
-    public SeniorState(Character character, IStateSwitcher stateSwitcher) : base(character, stateSwitcher) { }
+    public SeniorState(Character character, IStateSwitcher stateSwitcher, StateData data) : base(character, stateSwitcher, data) {}
+
     public override void Enter() {
-        character.BallSpawnerSetActive(true);
-        character.CanCrush = true;
+        character.UpdateStateData(data);
         Debug.Log("Senior");
     }
 
     public override void Exit() {
-      
-    }
-
-    public override void Hurt() {
         character.PlayFlick();
         stateSwitcher.StateSwitch<JuniorState>();
-        Debug.Log("LevelDown Senior -> Middle");
+        Debug.Log("LevelDown Senior -> junior");
     }
 
-    public override void LevelUp() {
-        throw new System.NotImplementedException();
+    public override void StateUp() {
+        Debug.Log("Senior -> Max State Reached");
     }
 }
 

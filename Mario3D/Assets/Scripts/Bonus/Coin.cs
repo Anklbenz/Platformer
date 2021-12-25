@@ -1,29 +1,19 @@
 ﻿using System;
 using UnityEngine;
 
-public sealed class Coin : MonoBehaviour, IScoreNotify
+public sealed class Coin : Bonus, ICoinCollectNotify
 {
     private const int SCORE_LIST_ELEMENT = 0;
-    public event Action<IScoreNotify, int> ScoreNotifyEvent;
+    public event Action CoinCollectNotify;
+    [SerializeField] private float _destroyTime;   
 
-    [SerializeField] private float _destroyTime;
-    [SerializeField] private GameManager _gameManager;
-
-    public Vector3 Position => transform.position;
-   
-    private void Awake() {
+    private void Start() {
+        this.BonusTake(null);
         Destroy(this.gameObject, _destroyTime);
     }
 
-    private void OnEnable() {
-        _gameManager.ScoreSystem.EventHandler.Subsribe(this);
-    }
-    private void OnDisable() {
-        this.BonusTake();
-        _gameManager.ScoreSystem.EventHandler.UnSubsribe(this);
-    }
-
-    private void BonusTake() {
-        ScoreNotifyEvent?.Invoke(this, SCORE_LIST_ELEMENT);
+    protected override void BonusTake(StateHandler state) {
+        SendScore(SCORE_LIST_ELEMENT);
+        CoinCollectNotify?.Invoke();
     }
 }

@@ -13,9 +13,9 @@ public class LabelsSpawner
         return scoreLabelPool.GetFreeElement();
     }
 
-    public void LabelSpawn(Vector3 position, int score) {
+    public void LabelSpawn(Vector3 position, string text) {
         var label = GetScoreLabel();
         label.transform.position = position;
-        label.Text(score.ToString());
+        label.Text(text);
     }
 }

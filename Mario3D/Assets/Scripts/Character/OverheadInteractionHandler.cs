@@ -24,7 +24,6 @@ public class OverheadInteractionHandler
         var interactions = _interactor.InteractionOverlap(_direction);
 
         if (_moveData.MovingUp && !_interactActive && interactions.Length > 0) {
-
             _interactActive = true;
             HitNearestCollider(interactions);
 
@@ -48,8 +47,12 @@ public class OverheadInteractionHandler
     }
 
     private void HitNearestCollider(Collider[] overheadColliders) {
-        Debug.Log(overheadColliders.Length);
-        var nearestCollider = ChooseNearestCollider(overheadColliders, _colliderCenter);
+        Collider nearestCollider;
+        if (overheadColliders.Length == 1)
+            nearestCollider = overheadColliders[0];
+        else
+            nearestCollider = ChooseNearestCollider(overheadColliders, _colliderCenter);
+
         nearestCollider.GetComponentInParent<IBrickHit>()?.BrickHit(_character);
     }
 

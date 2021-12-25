@@ -2,7 +2,7 @@
 using UnityEngine;
 using MyEnums;
 
-public sealed class BrickBox : EmtpyBrick
+public sealed class BrickBox : Brick
 {
     private const float DROP_CHECK_DISTANCE = 0.1f;
 
@@ -27,12 +27,10 @@ public sealed class BrickBox : EmtpyBrick
     }
 
     public override void BrickHit(Character character) {
-        if (!_isActive)
-            return;
-        else
-            this.DownHit();       
+        if (!_isActive) return;        
 
-        _animator.SetTrigger("hit");   
+         this.DownHit();
+        _animator.SetTrigger("hit");
 
         if (_bonusesCount > 0) {
             base.BonusShow(character);

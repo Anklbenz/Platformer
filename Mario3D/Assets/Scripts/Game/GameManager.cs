@@ -3,28 +3,36 @@ using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
-    [SerializeField] private InteractorHandler _playerinteractorHandler;
-
-    [Header("ScoreManager")]
-    [SerializeField] private Text _totalScoreLabel;
-    [SerializeField] private ScoreLabel _scoreLabelPrefab;
+    [Header("UI Draw")]
+    [SerializeField] private Text _scoreLabel;
+    [SerializeField] private Text _coinLabel;
+    [SerializeField] private Text _lifesLabel;
+    [SerializeField] private ScoreLabel _scoreLabelsPrefab;
     [SerializeField] private Transform _scoreLabelParent;
 
     [Header("BonusSpawner")]
-    [SerializeField] private Coin _coinPrefab;
-    [SerializeField] private Mushroom _mushroomPrefab;
-    [SerializeField] private Flower _flowerPrefab;
+    [SerializeField] private SpawnFactory _spawnFactory;
     [SerializeField] private Transform _bonusParent;
 
-    public EnemySystem EnemySystem = new EnemySystem();
-    public ScoreSystem ScoreSystem;
-    public BonusSpawner BonusSpawner;
-    //particalesSpawner;
-      
-    private void Awake() {
+    [Header("Lifes")]
+    [SerializeField] private int _lifes;
 
-        ScoreSystem = new ScoreSystem(_totalScoreLabel, _scoreLabelPrefab, _scoreLabelParent);
-        EnemySystem.EventNotifySubsribe();
-        BonusSpawner = new BonusSpawner(_coinPrefab, _mushroomPrefab, _flowerPrefab, _bonusParent);
+    private ObjectSystem objectSystem;
+    private CoinSystem coinSystem;
+    private ScoreSystem ScoreSystem;
+    private BonusSpawner BonusSpawner;
+    private UIDrawer uiDrawer;
+    private LifesSystem lifesSystem;
+
+    //particalesSpawner;
+
+    private void Awake() {
+        objectSystem = new ObjectSystem();
+        coinSystem = new CoinSystem(objectSystem.CoinCollectNotifies);
+        ScoreSystem = new ScoreSystem(objectSystem.ScoreNotifies);
+        lifesSystem = new LifesSystem(_lifes, ScoreSystem);
+        uiDrawer = new UIDrawer(ScoreSystem, coinSystem, lifesSystem, _lifesLabel, _scoreLabel, _coinLabel, _scoreLabelsPrefab, _scoreLabelParent);
+        
+        BonusSpawner = new BonusSpawner(ScoreSystem, coinSystem, lifesSystem, objectSystem.BonusBricksList, _spawnFactory, _bonusParent);
     }
 }

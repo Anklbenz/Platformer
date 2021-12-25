@@ -4,10 +4,11 @@
     {
         none = 0,
         coin = 1,
-        mushroom = 2,
+        growUp = 2,
         flower = 3,
-        heathUp = 4,
-        unstopabe = 5
+        lifesUp = 4,
+        jumpStar = 5,
+        walker = 6
     }
 
     public enum PusherState
@@ -22,8 +23,6 @@
         none,
         left,
         rigth,
-        up,
-        down
     }
 
     public enum Axis

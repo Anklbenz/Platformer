@@ -1,51 +1,47 @@
-﻿using UnityEngine;
-using MyEnums;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
-public sealed class BonusSpawner 
+public sealed class BonusSpawner
 {
-    private const int COIN_POOL_AMOUNT = 5;
+    private ScoreSystem _scoreSystem;
+    private CoinSystem _coinCounter;
+    private LifesSystem _lifesSystem;
+    private SpawnFactory _spawnFactory;
 
-    private Coin _coinPrefab;
-    private Mushroom _mushroomPrefab;
-    private Flower _flowerPrefab;
-
-    private PoolObjects<Coin> _coinsPool;
+    private List<IBonusSpawnNotify> _brickBonusList;
     private Transform _bonusPrefabParent;
 
-    public BonusSpawner(Coin coinPrefab, Mushroom muroomPrefab, Flower flowerPreab, Transform bonusPrefabParent) {
-        _coinPrefab = coinPrefab;
-        _mushroomPrefab = muroomPrefab;
-        _flowerPrefab = flowerPreab;
+    public BonusSpawner(ScoreSystem scoreSystem, CoinSystem coinCounter, LifesSystem lifesSystem,
+                        List<IBonusSpawnNotify> brickBonusList, SpawnFactory spawnFactory,                   
+                        Transform bonusPrefabParent) {
+
+        _scoreSystem = scoreSystem;
+        _coinCounter = coinCounter;
+        _lifesSystem = lifesSystem;
+        _brickBonusList = brickBonusList;
+        _spawnFactory = spawnFactory;
         _bonusPrefabParent = bonusPrefabParent;
-        _coinsPool = new PoolObjects<Coin>(_coinPrefab, COIN_POOL_AMOUNT, true, bonusPrefabParent);
+        InitBrickHitEvent();
     }
 
-    public void Subscribe(IBonus sender) {
+    private void InitBrickHitEvent() {
+        foreach (var brick in _brickBonusList)
+            SubscribeBonusSpawEventHolder(brick);
+    }
+
+    public void SubscribeBonusSpawEventHolder(IBonusSpawnNotify sender) {
         sender.BonusSpawnEvent += BonusSpawn;
     }
 
-    public void UnSubscribe(IBonus sender) {
-        sender.BonusSpawnEvent -= BonusSpawn;
+    public void BonusSpawn(IBonusSpawnNotify bonus) {
+      var inctance = _spawnFactory.SpawnObject(bonus.BonusType, bonus.BonusCreatePoint, _bonusPrefabParent);
+
+        if (inctance is IScoreChangeNotify score)
+            _scoreSystem.SubsсribeOnScoreEvent(score);
+        if (inctance is ICoinCollectNotify coins)
+            _coinCounter.SubscribeColinCollectEvent(coins);
+        if (inctance is ILifeIncreaceNotify life)
+            _lifesSystem.SubscribeOnIncreaceLifeEvent(life);
     }
-
-    public void BonusSpawn(IBonus bonus) { // Сделать фабрику
-        switch (bonus.BonusType) {
-            case BonusType.coin:
-                var coin = _coinsPool.GetFreeElement();
-                coin.transform.position = bonus.BonusCreatePoint;
-                break;
-
-            case BonusType.mushroom:
-                UnityEngine.Object.Instantiate(_mushroomPrefab.gameObject, bonus.BonusCreatePoint, Quaternion.identity, _bonusPrefabParent);
-                break;
-            case BonusType.flower:
-                UnityEngine.Object.Instantiate(_flowerPrefab, bonus.BonusCreatePoint, Quaternion.identity, _bonusPrefabParent);
-                break;
-            case BonusType.heathUp:
-                break;
-        }
-    }
-
-
 }
 
