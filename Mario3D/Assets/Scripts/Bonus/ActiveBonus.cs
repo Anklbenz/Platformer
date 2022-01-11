@@ -1,11 +1,12 @@
 ﻿using System;
+using Character.States;
 using UnityEngine;
 
 public abstract class ActiveBonus : ActiveInteractiveObject
 {
     private bool _isActive = true;
 
-    protected override void Interaction(StateHandler state, Vector3 pos) {
+    protected override void Interaction(StateSystem state, Vector3 pos) {
         if (!_isActive) return;
 
         _isActive = false;
@@ -18,5 +19,5 @@ public abstract class ActiveBonus : ActiveInteractiveObject
             _motor.DirectionChange();
     }
 
-    protected abstract void BounsTake(StateHandler state);
+    protected abstract void BounsTake(StateSystem state);
 }

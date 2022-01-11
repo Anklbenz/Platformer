@@ -1,4 +1,5 @@
 ﻿using System;
+using Character.States;
 using UnityEngine;
 
 public sealed class Coin : Bonus, ICoinCollectNotify
@@ -12,7 +13,7 @@ public sealed class Coin : Bonus, ICoinCollectNotify
         Destroy(this.gameObject, _destroyTime);
     }
 
-    protected override void BonusTake(StateHandler state) {
+    protected override void BonusTake(StateSystem state) {
         SendScore(SCORE_LIST_ELEMENT);
         CoinCollectNotify?.Invoke();
     }

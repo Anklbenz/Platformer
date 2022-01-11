@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System;
+using Character.States;
 
 public class ActiveEnemy : ActiveInteractiveObject, IJumpOn, IScoreChangeNotify
 {
@@ -18,7 +19,7 @@ public class ActiveEnemy : ActiveInteractiveObject, IJumpOn, IScoreChangeNotify
         _rbody = GetComponent<Rigidbody>();        
     }
 
-    protected override void Interaction(StateHandler state, Vector3 pos) {
+    protected override void Interaction(StateSystem state, Vector3 pos) {
         if (DoDamage)
             state?.Hurt();
     }

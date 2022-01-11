@@ -3,13 +3,13 @@ using MyEnums;
 
 public class Interactor
 {
-    private BoxCollider _objectCollider;
+    private readonly BoxCollider _objectCollider;
     private Vector3 _direction;
-    private Vector3 _inspectPlatformSize;
-    private LayerMask _layer;
-    private float _inspectLength;
-    private float _boxIndent;
-    private float _colliderHalfSize;
+    private readonly Vector3 _inspectPlatformSize;
+    private readonly LayerMask _layer;
+    private readonly float _inspectLength;
+    private readonly float _boxIndent;
+    private readonly float _colliderHalfSize;
 
     private Vector3 _inspectBoxCenter { get => _objectCollider.bounds.center + _direction * (_colliderHalfSize + _inspectLength / 2);  }
 
@@ -54,11 +54,3 @@ public class Interactor
         Gizmos.DrawWireCube(_inspectBoxCenter, _inspectPlatformSize);
     }
 }
-
-//private float _scale { get => Vector3.Dot(_direction, _localScale); }
-//private Vector3 _inspectBoxCenter { get => _objectCollider.bounds.center + _direction * (_colliderHalfSize * _scale + _inspectLength / 2); }
-
-//public bool InteractionBoxcast(Vector3 direction, out RaycastHit obj) {
-//    _direction = direction;
-//    return Physics.BoxCast(_inspectBoxCenter - _inspectLength * direction, _inspectPlatformSize / 2, direction, out obj, Quaternion.identity, _inspectLength, _layer);
-//}

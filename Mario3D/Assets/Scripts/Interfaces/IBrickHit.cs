@@ -1,8 +1,9 @@
 ﻿using MyEnums;
 using System;
+using Character.States;
 using UnityEngine;
 
 public interface IBrickHit
 {
-     void BrickHit(Character character);
+     void BrickHit(StateSystem state);
 }

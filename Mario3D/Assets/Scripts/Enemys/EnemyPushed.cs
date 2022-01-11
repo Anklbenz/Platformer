@@ -2,6 +2,7 @@
 using UnityEngine;
 using MyEnums;
 using System;
+using Character.States;
 
 public class EnemyPushed : ActiveEnemy
 {
@@ -25,7 +26,7 @@ public class EnemyPushed : ActiveEnemy
         _patrolSpeed = base._motor.GetSpeed();
     }
 
-    protected override void Interaction(StateHandler state, Vector3 pos) {
+    protected override void Interaction(StateSystem state, Vector3 pos) {
         if (_currentState == PusherState.Cooldown) {
             SendScore(SCORE_LIST_ELEMENT);
             TransitonToEngage(pos);

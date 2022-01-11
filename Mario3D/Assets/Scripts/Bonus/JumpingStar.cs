@@ -1,4 +1,5 @@
 ﻿using System;
+using Character.States;
 using UnityEngine;
 
 public class JumpingStar : ActiveBonus, IScoreChangeNotify
@@ -17,7 +18,7 @@ public class JumpingStar : ActiveBonus, IScoreChangeNotify
         _motor.Bounce();
     }
 
-    protected override void BounsTake(StateHandler state) {
+    protected override void BounsTake(StateSystem state) {
         Debug.Log("Unstopabel state");
         ScoreNotifyEvent?.Invoke(this, SCORE_LIST_ELEMENT);
     }

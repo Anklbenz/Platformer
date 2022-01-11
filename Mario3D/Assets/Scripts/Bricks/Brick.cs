@@ -1,5 +1,6 @@
 ﻿using MyEnums;
 using System;
+using Character.States;
 using UnityEngine;
 
 public abstract class Brick : MonoBehaviour, IBrickHit, IBonusSpawnNotify
@@ -19,13 +20,13 @@ public abstract class Brick : MonoBehaviour, IBrickHit, IBonusSpawnNotify
     public Vector3 BonusCreatePoint =>_bonusCreationPoint.position;
     public BonusType BonusType => _bonusType;
 
-    public abstract void BrickHit(Character character);
+    public abstract void BrickHit(StateSystem state);
 
-    protected void BonusShow(Character character) {
+    protected void BonusShow(StateSystem state) {
         if (_bonusType == BonusType.none) return;
 
         if (_bonusType == BonusType.growUp || _bonusType == BonusType.flower) 
-            _bonusType = character.CompareCurrentStateWith<JuniorState>() ? BonusType.growUp : BonusType.flower;      
+            _bonusType = state.CompareCurrentStateWith<JuniorState>() ? BonusType.growUp : BonusType.flower;      
 
         BonusSpawnEvent?.Invoke(this);
     }

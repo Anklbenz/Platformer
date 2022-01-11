@@ -1,18 +1,23 @@
 ﻿using UnityEngine;
 
-public class SeniorState : State
+public class SeniorState : State     
 {
-    public SeniorState(Character character, IStateSwitcher stateSwitcher, StateData data) : base(character, stateSwitcher, data) {}
+    public SeniorState(IStateSystemHandler character, IStateSwitcher stateSwitcher, StateData data) : base(character, stateSwitcher, data) {
+        skinGameObject = Object.Instantiate(Data.SkinGameObject, character.SkinsParent);
+        skinGameObject.SetActive(false);   
+    }
 
     public override void Enter() {
-        character.UpdateStateData(data);
-        Debug.Log("Senior");
+        skinGameObject.SetActive(true);
+        character.MainCollider.size = Data.ColliderSize;
     }
 
     public override void Exit() {
-        character.PlayFlick();
+        skinGameObject.SetActive(false);
+    }
+
+    public override void StateDown() {
         stateSwitcher.StateSwitch<JuniorState>();
-        Debug.Log("LevelDown Senior -> junior");
     }
 
     public override void StateUp() {

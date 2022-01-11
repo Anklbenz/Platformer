@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using Character.States;
 using UnityEngine;
 using MyEnums;
 
@@ -26,14 +27,14 @@ public sealed class BrickBox : Brick
         }
     }
 
-    public override void BrickHit(Character character) {
+    public override void BrickHit(StateSystem state) {
         if (!_isActive) return;        
 
          this.DownHit();
         _animator.SetTrigger("hit");
 
         if (_bonusesCount > 0) {
-            base.BonusShow(character);
+            base.BonusShow(state);
             _bonusesCount--;
 
             if (_bonusesCount == 0) {
@@ -42,7 +43,7 @@ public sealed class BrickBox : Brick
                 _secondaryMesh.SetActive(true);
             }
 
-        } else if (character.CanCrush && _brickCanBeCrushed) {
+        } else if (state.Data.CanCrush && _brickCanBeCrushed) {
             _crushParticales.gameObject.SetActive(true);
             Destroy(gameObject, _timeToDestroyBrickAfterHit);
         }

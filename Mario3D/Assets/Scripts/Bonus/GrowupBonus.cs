@@ -1,4 +1,5 @@
 ﻿using System;
+using Character.States;
 using UnityEngine;
 
 public class GrowupBonus : ActiveBonus, IScoreChangeNotify
@@ -8,7 +9,7 @@ public class GrowupBonus : ActiveBonus, IScoreChangeNotify
     public event Action<IScoreChangeNotify, int> ScoreNotifyEvent;
     public Vector3 Position => _collider.bounds.center;
 
-    protected override void BounsTake(StateHandler state) {
+    protected override void BounsTake(StateSystem state) {
         state.LevelUp();
         ScoreNotifyEvent?.Invoke(this, SCORE_LIST_ELEMENT);
     }

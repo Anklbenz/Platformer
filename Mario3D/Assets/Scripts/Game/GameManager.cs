@@ -20,9 +20,9 @@ public class GameManager : MonoBehaviour
     private ObjectSystem objectSystem;
     private CoinSystem coinSystem;
     private ScoreSystem ScoreSystem;
+    private LifesSystem lifesSystem;
     private BonusSpawner BonusSpawner;
     private UIDrawer uiDrawer;
-    private LifesSystem lifesSystem;
 
     //particalesSpawner;
 

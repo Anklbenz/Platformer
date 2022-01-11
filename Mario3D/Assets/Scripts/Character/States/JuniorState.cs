@@ -2,20 +2,26 @@
 
 public class JuniorState : State
 {
-    public JuniorState(Character character, IStateSwitcher stateSwitcher, StateData data) : base(character, stateSwitcher, data) {}    
+    public JuniorState(IStateSystemHandler character, IStateSwitcher stateSwitcher, StateData data) : base(character, stateSwitcher, data) {
+        skinGameObject = Object.Instantiate(Data.SkinGameObject, character.SkinsParent);
+        skinGameObject.SetActive(false);
+    }
 
     public override void Enter() {
-        character.UpdateStateData(data);     
-        Debug.Log("Junior");
+        skinGameObject.SetActive(true);
+        character.MainCollider.size = Data.ColliderSize;
     }
 
     public override void Exit() {
-        //  Debug.LogError("GameOVER");
+        skinGameObject.SetActive(false);
     }
 
-    public override void StateUp() {        
+    public override void StateDown() {
+        Debug.LogError("GameOver");
+    }
+
+    public override void StateUp() {
         stateSwitcher.StateSwitch<MiddleState>();
-        Debug.Log("LevelUp Junior -> Middle");
     }
 }
 

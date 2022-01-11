@@ -20,7 +20,6 @@ public sealed class CharacterMove : MonoBehaviour, IMoveData
     private bool _canSlide = false;
 
     private Rigidbody _rBody;
-    private CapsuleCollider _capsuleCollider;
     private BoxCollider _boxCollider;
     public  BoxCollider InteractCollider {get => _boxCollider;}
     private Vector3 _moveDirection = Vector3.zero;
@@ -28,8 +27,8 @@ public sealed class CharacterMove : MonoBehaviour, IMoveData
     private float _boxCastWidth = 0.1f;
     private const float BOX_INDENT = 0.95f; //% 
 
-    public bool MovingUp { get => _rBody.velocity.y > 0; }
-    public bool MovingDown { get => _rBody.velocity.y < 0; }
+    public bool MovingUp  => _rBody.velocity.y > 0; 
+    public bool MovingDown  => _rBody.velocity.y < 0; 
 
     private Vector3 _groundCheckPlatformSize { get => new Vector3(_boxCollider.size.x, _boxCastWidth, _boxCollider.size.z * BOX_INDENT * transform.localScale.z); }
     private Vector3 _wallContactPlatformSize { get => new Vector3(_boxCollider.size.x, _boxCollider.size.y * BOX_INDENT * transform.localScale.y, _boxCastWidth); }
@@ -41,7 +40,6 @@ public sealed class CharacterMove : MonoBehaviour, IMoveData
         get => Physics.BoxCast(_boxCollider.bounds.center, _groundCheckPlatformSize / 2, Vector3.down, out RaycastHit groundHit,
                           transform.rotation, _groundCheckDistance, _isGroundedLayer);
     }
-
     private bool isWallContact {
         get => Physics.BoxCast(_boxCollider.bounds.center, _wallContactPlatformSize / 2, _moveDirection, out RaycastHit wallHit,
                          transform.rotation, _wallCheckDistance, _wallCheckLayer);
@@ -50,7 +48,6 @@ public sealed class CharacterMove : MonoBehaviour, IMoveData
     private void Awake() {
         _rBody = GetComponent<Rigidbody>(); 
         _boxCollider = GetComponent<BoxCollider>();
-        _capsuleCollider = GetComponent<CapsuleCollider>();
     }
 
     private void Update() {
@@ -121,7 +118,7 @@ public sealed class CharacterMove : MonoBehaviour, IMoveData
     }
 
     private void OnDrawGizmos() {
-        if (_capsuleCollider == null) return;
+        if (_boxCollider == null) return;
         Gizmos.color = Color.red;
         Gizmos.DrawLine(_boxCollider.bounds.center, _boxCollider.bounds.center - transform.up * _groundCheckDistance);
         Gizmos.DrawWireCube(_boxCollider.bounds.center - transform.up * _groundCheckDistance, _groundCheckPlatformSize);

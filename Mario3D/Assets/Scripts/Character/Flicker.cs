@@ -1,90 +1,39 @@
-﻿using UnityEngine;
-//InvisibleForEnemy
-public class Flicker : MonoBehaviour {
+﻿using System.Collections;
+using System.Threading.Tasks;
+using UnityEngine;
 
-    [SerializeField] private MeshRenderer _mesh;
-    [SerializeField] private float _playTime;
-    [SerializeField] private string _defaultLayer;
-    [SerializeField] private string _invisibeForEnemyLayer;
-    private bool _isActive = false;
-    
-    private float i = 0;
-    private float _timeRemaning;
+public class Flicker
+{
+    private const int FREQUENCY = 50;
+    private int _flickCount;
 
-    public void Play() {
-        _isActive = true;
-        _timeRemaning = _playTime;
-        //SetLayer(LayerMask.NameToLayer(_invisibeForEnemyLayer));
+    public async void VisibleFlicker(int length, MeshRenderer mesh){
+        _flickCount = (int) (length / FREQUENCY);
+     
+        for (int i = 0; i < _flickCount; i++){
+            await Task.Delay(FREQUENCY);
+            mesh.enabled = mesh.enabled == false ? true : false;
+        }
+        mesh.enabled = true;
     }
 
-    private bool Flick() {
-        i++; // итератор для метода PingPong 
-        float f = Mathf.PingPong(i, 2f);
+    public async void SizeFlicker(int length, StateData current, StateData next){
+        _flickCount = (int) (length / FREQUENCY);
+        var currentGo = current.SkinGameObject;
+        var nextStateGo = next.SkinGameObject;
 
-        if (_timeRemaning <= 0)
-            _isActive = false;
+        for (int i = 0; i < _flickCount; i++){
+            await Task.Delay(FREQUENCY);
 
-        _timeRemaning -= Time.deltaTime;
-
-        if (f == 1)
-            return true;
-        else
-            return false;
+            if (currentGo.activeSelf){
+                nextStateGo.SetActive(true);
+                currentGo.SetActive(false);
+            }
+            else{
+                currentGo.SetActive(false);
+                nextStateGo.SetActive(true);
+            }
+        }
     }
 
-    private void FixedUpdate() {
-        if (_isActive)
-            Flick();
-    }
 }
-
-
-//using UnityEngine;
-////InvisibleForEnemy
-//public class Flicker : MonoBehaviour
-//{
-
-//    [SerializeField] private MeshRenderer _mesh;
-//    [SerializeField] private float _playTime;
-//    [SerializeField] private string _defaultLayer;
-//    [SerializeField] private string _invisibeForEnemyLayer;
-//    private bool _isActive = false;
-
-//    private float i = 0;
-//    private float _timeRemaning;
-
-//    public void Play() {
-//        _isActive = true;
-//        _timeRemaning = _playTime;
-//        SetLayer(LayerMask.NameToLayer(_invisibeForEnemyLayer));
-//    }
-
-//    private void Flick() {
-//        i++; // итератор для метода PingPong 
-//        float f = Mathf.PingPong(i, 2f);
-
-//        if (f == 0)
-//            _mesh.enabled = false;
-//        else if (f == 1)
-//            _mesh.enabled = true;
-
-//        if (_timeRemaning <= 0) {
-//            _isActive = false;
-//            _mesh.enabled = true;
-//            SetLayer(LayerMask.NameToLayer(_defaultLayer));
-//        }
-//        _timeRemaning -= Time.deltaTime;
-//    }
-
-//    private void FixedUpdate() {
-//        if (_isActive)
-//            Flick();
-//    }
-
-//    private void SetLayer(int layer) {
-//        gameObject.layer = layer;
-//        Transform[] gObjects = gameObject.GetComponentsInChildren<Transform>();
-//        foreach (Transform trn in gObjects)
-//            trn.gameObject.layer = layer;
-//    }
-//}

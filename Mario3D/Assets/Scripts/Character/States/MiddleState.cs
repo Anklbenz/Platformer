@@ -1,26 +1,29 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class MiddleState : State
 {
-
-    public MiddleState(Character character, IStateSwitcher stateSwitcher, StateData data) : base(character, stateSwitcher, data) {}
+    public MiddleState(IStateSystemHandler character, IStateSwitcher stateSwitcher, StateData data) : base(character, stateSwitcher, data) {
+        skinGameObject = Object.Instantiate(Data.SkinGameObject, character.SkinsParent);
+        skinGameObject.SetActive(false);
+    }
 
     public override void Enter() {
-        character.UpdateStateData(data);
-        Debug.Log("Middle");
+        skinGameObject.SetActive(true);
+        character.MainCollider.size = Data.ColliderSize;
     }
 
     public override void Exit() {
-        character.PlayFlick();
+       
+        skinGameObject.SetActive(false);
+    }
+
+    public override void StateDown() {
         stateSwitcher.StateSwitch<JuniorState>();
-        Debug.Log("LevelDown Middle -> Junior");
+        
     }
 
     public override void StateUp() {
         stateSwitcher.StateSwitch<SeniorState>();
-        Debug.Log("LevelUp Middle -> Senior");
     }
 }
 
