@@ -6,7 +6,7 @@ namespace Character.States
 {
     public class MiddleState : State
     {
-        public MiddleState(IStateSystemHandler character, IStateSwitcher stateSwitcher, StateData data) : base(
+        public MiddleState(ICharacterComponets character, IStateSwitcher stateSwitcher, StateData data) : base(
             character, stateSwitcher, data){
             skinGameObject = Object.Instantiate(Data.SkinGameObject, character.SkinsParent);
             skinGameObject.SetActive(false);

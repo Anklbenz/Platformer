@@ -1,5 +1,5 @@
 {
-    "name": "InputMaster",
+    "name": "GameInput",
     "maps": [
         {
             "name": "Player",
@@ -20,20 +20,17 @@
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": ""
+                },
+                {
+                    "name": "Extra",
+                    "type": "Button",
+                    "id": "8c290570-32ec-485d-acaa-f99e7266a49f",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
                 }
             ],
             "bindings": [
-                {
-                    "name": "",
-                    "id": "9abf19e3-9fd1-4e72-9f85-cb4e8cd65bef",
-                    "path": "<Keyboard>/space",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Jump",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
                 {
                     "name": "",
                     "id": "d831d8e1-fd09-445c-91d4-fc6c886c8fc8",
@@ -88,6 +85,17 @@
                     "action": "Move",
                     "isComposite": false,
                     "isPartOfComposite": true
+                },
+                {
+                    "name": "",
+                    "id": "0c9ba85e-3114-4587-8f98-f7c7541e6d5a",
+                    "path": "<Keyboard>/space",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Extra",
+                    "isComposite": false,
+                    "isPartOfComposite": false
                 }
             ]
         }

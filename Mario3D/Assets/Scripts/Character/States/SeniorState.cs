@@ -6,7 +6,7 @@ namespace Character.States
 {
     public class SeniorState : State     
     {
-        public SeniorState(IStateSystemHandler character, IStateSwitcher stateSwitcher, StateData data) : base(character, stateSwitcher, data) {
+        public SeniorState(ICharacterComponets character, IStateSwitcher stateSwitcher, StateData data) : base(character, stateSwitcher, data) {
             skinGameObject = Object.Instantiate(Data.SkinGameObject, character.SkinsParent);
             skinGameObject.SetActive(false);   
         }
@@ -19,8 +19,8 @@ namespace Character.States
             skinGameObject.SetActive(false);
         }
         public override void StateDown() {
-            stateSwitcher.HurtExtraState();
             stateSwitcher.StateSwitch<JuniorState>();
+            stateSwitcher.HurtExtraState();
         }
         public override void StateUp() {
             Debug.Log("Senior -> Max State Reached");

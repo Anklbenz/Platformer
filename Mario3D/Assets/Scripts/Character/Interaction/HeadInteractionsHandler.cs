@@ -9,27 +9,27 @@ namespace Character.Interaction
     {
         private readonly StateSystem _characterState;
         private readonly Interactor _interactor;
-        private readonly CapsuleCollider _interactCollider;
-        private readonly IMove _move;
+        private readonly Collider _interactCollider;
+        private readonly IMoveInfo _moveInfo;
         private readonly Vector3 _direction;
         
         private bool _collisionDetected;
         private Vector3 _colliderCenter => _interactCollider.bounds.center; 
 
-        public HeadInteractionsHandler(StateSystem state, IMove move, Vector3 direction, float inspectLength,
+        public HeadInteractionsHandler(StateSystem state, Collider collider, IMoveInfo moveInfo, Vector3 direction, float inspectLength,
             LayerMask inspectLayer, float boxIndent = 1f){
             
             _characterState = state;
-            _move = move;
-            _interactCollider = move.MainCollider;
+            _moveInfo = moveInfo;
+            _interactCollider = collider;
             _direction = direction;
-            _interactor = new Interactor(move.MainCollider, Axis.vertical, inspectLength, inspectLayer, boxIndent);
+            _interactor = new Interactor(collider, Axis.vertical, inspectLength, inspectLayer, boxIndent);
         }
 
         public void CollisionCheck() {
             var interactions = _interactor.InteractionOverlap(_direction);
     
-            if (_move.MovingUp && !_collisionDetected && interactions.Length > 0) {
+            if (_moveInfo.MovingUp && !_collisionDetected && interactions.Length > 0) {
                 _collisionDetected = true;
                 HitNearestCollider(interactions);
 
@@ -55,7 +55,7 @@ namespace Character.Interaction
             nearestCollider.GetComponentInParent<IBrickHit>()?.BrickHit(_characterState);
         }
         public void OnDrawGizmos(Color color) {
-            _interactor.OnDrawGizmos(color);
+            _interactor?.OnDrawGizmos(color);
         }
     }
 }

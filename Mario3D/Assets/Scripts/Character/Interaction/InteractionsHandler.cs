@@ -10,15 +10,14 @@ namespace Character.Interaction
         private readonly LegsInteractionsHandler _legsInteractionsHandler;
         private readonly HeadInteractionsHandler _headInteractionsHandler;
 
-        public InteractionsHandler(StateSystem stateSystem, IMove move, IBounce bounce, float topCheckLength,
+        public InteractionsHandler(StateSystem stateSystem, Collider collider, IMoveInfo moveInfo, IBounce bounce, float topCheckLength,
             LayerMask topCheckLayer, float bottomCheckLength, LayerMask bottomCheckLayer){
 
-            var moveData = move;
-            _headInteractionsHandler = new HeadInteractionsHandler(stateSystem, moveData, Vector3.up, topCheckLength,
+            var moveData = moveInfo;
+            _headInteractionsHandler = new HeadInteractionsHandler(stateSystem, collider, moveData, Vector3.up, topCheckLength,
                 topCheckLayer, OVERHEAD_BOX_INDENT);
 
-            _legsInteractionsHandler =
-                new LegsInteractionsHandler(moveData, bounce, Vector3.down, bottomCheckLength, bottomCheckLayer);
+            _legsInteractionsHandler = new LegsInteractionsHandler(collider, moveData, bounce, Vector3.down, bottomCheckLength, bottomCheckLayer);
         }
 
         public void HeadInteractionCheck(){

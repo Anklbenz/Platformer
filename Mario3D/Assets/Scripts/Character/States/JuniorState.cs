@@ -6,7 +6,7 @@ namespace Character.States
 {
     public class JuniorState : State
     {
-        public JuniorState(IStateSystemHandler character, IStateSwitcher stateSwitcher, StateData data) : base(character, stateSwitcher, data) {
+        public JuniorState(ICharacterComponets character, IStateSwitcher stateSwitcher, StateData data) : base(character, stateSwitcher, data) {
             skinGameObject = Object.Instantiate(Data.SkinGameObject, character.SkinsParent);
             skinGameObject.SetActive(false);
         }

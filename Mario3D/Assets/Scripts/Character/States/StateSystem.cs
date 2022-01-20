@@ -10,7 +10,7 @@ namespace Character.States
 {
     public class StateSystem : IStateSwitcher
     {
-        public bool InactiveState => _immortal || _touchKills;
+        public bool IsActiveState => !_immortal && !_touchKills;
         public bool CanCrush => CurrentState.Data.CanCrush;
         public bool CanShoot => CurrentState.Data.CanShoot;
         
@@ -22,8 +22,7 @@ namespace Character.States
         private readonly List<State> _stateMap;
         private readonly Flicker _flicker;
 
-        public StateSystem(IStateSystemHandler character, StateData junior, StateData middle, StateData senior,
-            int hurtImmortalTime, int unsopableImmortalTime){
+        public StateSystem(ICharacterComponets character, StateData junior, StateData middle, StateData senior, int hurtImmortalTime, int unsopableImmortalTime){
             
             _hurtImmortalTime = hurtImmortalTime;
             _unsopableImmortalTime = unsopableImmortalTime;

@@ -12,8 +12,10 @@ namespace Character
 {
     [RequireComponent(typeof(CapsuleCollider))]
     [RequireComponent(typeof(Rigidbody))]
-    public sealed class CharacterHandler : MonoBehaviour, IStateSystemHandler, IMove, GameInput.IPlayerActions
+    public sealed class CharacterHandler : MonoBehaviour, ICharacterComponets, IMoveInfo, GameInput.IPlayerActions
     {
+        private const float ISGROUND_BOX_INDENT = 0.95f; 
+        
         [Header("FireballSpawner")]
         [SerializeField] private BallSpawnerData _spawnerData;
 
@@ -46,39 +48,31 @@ namespace Character
         [SerializeField] private MoveData _moveData;
 
         private Move _move;
-
+        private GameInput _gameInput;
         public bool MovingUp => MainRigidbody.velocity.y > 0;
         public bool MovingDown => MainRigidbody.velocity.y < 0;
-
         public CapsuleCollider MainCollider{ get; private set; }
         public Rigidbody MainRigidbody{ get; private set; }
-        private GameInput _gameInput;
+
 
         private void Awake(){
-
             MainCollider = GetComponent<CapsuleCollider>();
             MainRigidbody = GetComponent<Rigidbody>();
+            StateSystem = new StateSystem(this, _juniorState, _middleState, _seniorState, _hurtTime, _unsopableTime);
 
             _gameInput = new GameInput();
             _gameInput.Enable();
             _gameInput.Player.SetCallbacks(this);
 
-            StateSystem = new StateSystem(this, _juniorState, _middleState, _seniorState, _hurtTime, _unsopableTime);
             _ballSpawner = new BallSpawner.BallSpawner(_firePoint, _groundLayers, _fireballParent, _spawnerData);
-            _isGrounded = new Interactor(MainCollider, Axis.vertical, _isGroundedLength, _isGroundedLayer);
-            _move = new Move(this, _moveData, MainRigidbody, MainCollider, _isGroundedLength,
-                _isGroundedLayer);
-            _interactionsHandler = new InteractionsHandler(StateSystem, this, _move, _topLength, _topLayer,
-                _bottomLength, _bottomLayer);
-        }
-
-        private void Update(){
-            if (StateSystem.CanShoot && Input.GetKeyDown(KeyCode.Space))
-                _ballSpawner.Spawn();
+            _isGrounded = new Interactor(MainCollider, Axis.vertical, _isGroundedLength, _isGroundedLayer, ISGROUND_BOX_INDENT);
+            _move = new Move(this, _moveData, MainRigidbody, MainCollider, _isGroundedLength, _isGroundedLayer);
+            _interactionsHandler = new InteractionsHandler(StateSystem, MainCollider, this, _move, _topLength,
+                _topLayer, _bottomLength, _bottomLayer);
         }
 
         private void FixedUpdate(){
-            if (!StateSystem.InactiveState)
+            if (StateSystem.IsActiveState)
                 _interactionsHandler.LegsInteractionsCheck();
             _interactionsHandler.HeadInteractionCheck();
             _move.RecalculateMoving();
@@ -95,6 +89,16 @@ namespace Character
         public void OnMove(InputAction.CallbackContext context){
             var movement = Vector3.forward * context.ReadValue<float>();
             _move.OnMove(movement);
+        }
+
+        public void OnExtra(InputAction.CallbackContext context){
+            if (context.phase == InputActionPhase.Performed){
+                if (StateSystem.CanShoot) _ballSpawner.Spawn();
+                _move.OnExtra(true);
+            }
+            
+            if(context.phase == InputActionPhase.Canceled)
+                _move.OnExtra(false);
         }
 
         private void OnDrawGizmos(){

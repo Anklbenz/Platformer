@@ -10,27 +10,27 @@ namespace Character.Interaction
 
         private readonly InRowCounter InRowCounter = new InRowCounter();
         private readonly Interactor _interactor;
-        private readonly CapsuleCollider _interactCollider;
+        private readonly Collider _interactCollider;
         private readonly Vector3 _direction;
-        private readonly IMove _move;
+        private readonly IMoveInfo _moveInfo;
         private readonly IBounce _bounceInstance;
         
         private bool _collisionDetected;
         private Vector3 _colliderCenter => _interactCollider.bounds.center;
         
-        public LegsInteractionsHandler(IMove move, IBounce bounceInstance, Vector3 direction, float inspectLength, LayerMask inspectLayer,
+        public LegsInteractionsHandler(Collider collider, IMoveInfo moveInfo, IBounce bounceInstance, Vector3 direction, float inspectLength, LayerMask inspectLayer,
             float boxIndent = 1f){
-            _move = move;
+            _moveInfo = moveInfo;
             _bounceInstance = bounceInstance;
-            _interactCollider = move.MainCollider;
+            _interactCollider = collider;
             _direction = direction;
-            _interactor = new Interactor(move.MainCollider, Axis.vertical, inspectLength, inspectLayer, boxIndent);
+            _interactor = new Interactor(collider, Axis.vertical, inspectLength, inspectLayer, boxIndent);
         }
 
         public void CollisionCheck(){
             var interactions = _interactor.InteractionOverlap(_direction);
 
-            if (_move.MovingDown && !_collisionDetected && interactions.Length > 0){
+            if (_moveInfo.MovingDown && !_collisionDetected && interactions.Length > 0){
                 _collisionDetected = true;
                 Interaction(interactions);
             }
@@ -38,7 +38,7 @@ namespace Character.Interaction
                 _collisionDetected = false;
             }
 
-            if (_move.IsGrounded)
+            if (_moveInfo.IsGrounded)
                 InRowCounter.Reset();
         }
 

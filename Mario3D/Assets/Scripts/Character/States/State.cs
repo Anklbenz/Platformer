@@ -11,10 +11,10 @@ namespace Character.States
 
         protected GameObject skinGameObject;
         public GameObject Skin => skinGameObject;
-        protected readonly IStateSystemHandler character;
+        protected readonly ICharacterComponets character;
         protected readonly IStateSwitcher stateSwitcher;
 
-        protected State(IStateSystemHandler character, IStateSwitcher stateSwitcher, StateData data){
+        protected State(ICharacterComponets character, IStateSwitcher stateSwitcher, StateData data){
             this.character = character;
             this.stateSwitcher = stateSwitcher;
             this.Data = data;

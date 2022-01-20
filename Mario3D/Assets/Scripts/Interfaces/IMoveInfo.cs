@@ -2,12 +2,10 @@
 
 namespace Interfaces
 {
-    public interface IMove
+    public interface IMoveInfo
     {
-        CapsuleCollider MainCollider { get; }
         bool MovingUp { get; }
         bool MovingDown { get; }
         bool IsGrounded { get; }
-       // void Bounce();
     }
 }
