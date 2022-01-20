@@ -1,6 +1,10 @@
-﻿using UnityEngine;
-using System;
-public interface ILabelDrawer
+﻿using System;
+using UnityEngine;
+
+namespace Interfaces
 {
-     event Action<Vector3, string> LabelDrawEvent;
+     public interface ILabelDrawer
+     {
+          event Action<Vector3, string> LabelDrawEvent;
+     }
 }

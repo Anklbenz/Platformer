@@ -1,5 +1,9 @@
 ﻿using System;
-public interface ICoinCollectNotify
+
+namespace Interfaces
 {
-    event Action CoinCollectNotify;
+    public interface ICoinCollectNotify
+    {
+        event Action CoinCollectNotify;
+    }
 }

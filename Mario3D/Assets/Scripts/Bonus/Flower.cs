@@ -1,13 +1,14 @@
-﻿using System;
-using Character.States;
-using UnityEngine;
+﻿using Character.States;
 
-public sealed class Flower : Bonus
+namespace Bonus
 {
-    private const int SCORE_LIST_ELEMENT = 5;
+    public sealed class Flower : Bonus
+    {
+        private const int SCORE_LIST_ELEMENT = 5;
 
-    protected override void BonusTake(StateSystem character) {
-        character.LevelUp();
-        base.SendScore(SCORE_LIST_ELEMENT);
+        protected override void BonusTake(StateSystem character) {
+            character.LevelUp();
+            base.SendScore(SCORE_LIST_ELEMENT);
+        }
     }
 }

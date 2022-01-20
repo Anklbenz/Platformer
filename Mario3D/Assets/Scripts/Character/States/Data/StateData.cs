@@ -1,23 +1,29 @@
 ﻿using UnityEngine;
+using UnityEngine.Serialization;
 
-[CreateAssetMenu (fileName ="NewState", menuName ="stateData")]
-public class StateData : ScriptableObject
+namespace Character.States.Data
 {
-    [SerializeField] private bool _canCrush;
-    public bool CanCrush => _canCrush;
+    [CreateAssetMenu(fileName = "NewState", menuName = "stateData")]
+    public class StateData : ScriptableObject
+    {
 
-    [SerializeField] private bool _canSit;
-    public bool CanSit => _canSit;
 
-    [SerializeField] private bool _canShoot;
-    public bool CanShoot => _canShoot;
+        [SerializeField] private bool _canCrush;
+        public bool CanCrush => _canCrush;
 
-    [SerializeField] private Vector3 _colliderSize;
-    public Vector3 ColliderSize => _colliderSize;
+        [SerializeField] private bool _canSit;
+        public bool CanSit => _canSit;
 
-    [SerializeField] private Vector3 _sitColliderSize;
-    public Vector3 SitColliderSize => _sitColliderSize;
+        [SerializeField] private bool _canShoot;
+        public bool CanShoot => _canShoot;
 
-    public GameObject SkinGameObject;   
+        [SerializeField] private Vector3 _colliderSize;
+        public Vector3 ColliderSize => _colliderSize;
+
+        [SerializeField] private Vector3 _sitColliderSize;
+        public Vector3 SitColliderSize => _sitColliderSize;
+
+        public GameObject SkinGameObject;
+    }
 }
 

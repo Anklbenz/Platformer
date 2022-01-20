@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8829cd7f09340074e8a93223d5e5ef1e, type: 3}
+  m_Name: New Move Data
+  m_EditorClassIdentifier: 
+  _jumpForceDuration: 0.15
+  _addForceStep: 3.67
+  _bouncePower: 5
+  _isGroundedLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  _wallCheckLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  _maxWalkSpeed: 9
+  _walkForceStep: 1.1
+  _minActionSpeed: 0.3
+  _characterTransform: {fileID: 0}
+  _maxExtraWalkSpeed: 9
+  _extraWalkForceStep: 1.1

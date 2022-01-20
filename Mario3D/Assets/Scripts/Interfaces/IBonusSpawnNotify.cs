@@ -1,10 +1,13 @@
-﻿using MyEnums;
-using System;
+﻿using System;
+using Enums;
 using UnityEngine;
 
-public interface IBonusSpawnNotify
+namespace Interfaces
 {
-    event Action<IBonusSpawnNotify> BonusSpawnEvent;
-    BonusType BonusType { get; }
-    Vector3 BonusCreatePoint { get; }
+    public interface IBonusSpawnNotify
+    {
+        event Action<IBonusSpawnNotify> BonusSpawnEvent;
+        BonusType BonusType { get; }
+        Vector3 BonusCreatePoint { get; }
+    }
 }

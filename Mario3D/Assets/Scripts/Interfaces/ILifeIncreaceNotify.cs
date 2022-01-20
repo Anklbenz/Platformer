@@ -1,6 +1,10 @@
 ﻿using System;
 using UnityEngine;
-public interface ILifeIncreaceNotify
+
+namespace Interfaces
 {
-    event Action<Vector3> IncreceLifeEvent;
+    public interface ILifeIncreaceNotify
+    {
+        event Action<Vector3> IncreceLifeEvent;
+    }
 }

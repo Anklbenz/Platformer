@@ -1,4 +1,4 @@
-﻿namespace MyEnums
+﻿namespace Enums
 {
     public enum BonusType
     {

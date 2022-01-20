@@ -1,8 +1,6 @@
-﻿namespace MagicaVoxelToolbox.Saving {
+﻿using UnityEngine;
 
-	using UnityEngine;
-
-
+namespace MagicaVoxel_Toolbox.Script.SavingSystem {
 	public class SavingBool : Saving<bool> {
 
 		public SavingBool (string key, bool defaultValue) : base(key, defaultValue) { }

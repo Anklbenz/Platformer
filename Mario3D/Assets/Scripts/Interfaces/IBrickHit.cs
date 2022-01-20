@@ -1,9 +1,9 @@
-﻿using MyEnums;
-using System;
-using Character.States;
-using UnityEngine;
+﻿using Character.States;
 
-public interface IBrickHit
+namespace Interfaces
 {
-     void BrickHit(StateSystem state);
+     public interface IBrickHit
+     {
+          void BrickHit(StateSystem state);
+     }
 }

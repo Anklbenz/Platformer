@@ -1,13 +1,17 @@
 ﻿using System;
 using Character.States;
+using Interfaces;
 using UnityEngine;
 
-public class LifesUpBonus : ActiveBonus, ILifeIncreaceNotify
+namespace Bonus
 {
-    public event Action<Vector3> IncreceLifeEvent;
-    public Vector3 Position => _collider.bounds.center;
+    public class LifesUpBonus : ActiveBonus, ILifeIncreaceNotify
+    {
+        public event Action<Vector3> IncreceLifeEvent;
+        public Vector3 Position => _collider.bounds.center;
 
-    protected override void BounsTake(StateSystem state) {
-       IncreceLifeEvent?.Invoke(Position);
+        protected override void BounsTake(StateSystem state) {
+            IncreceLifeEvent?.Invoke(Position);
+        }
     }
 }

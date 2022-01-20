@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: BallSpawnerData
   m_EditorClassIdentifier: 
   _prefab: {fileID: 3320685874552789971, guid: a45c950b084b95c4594b03d300ea00fa, type: 3}
-  _fireDelay: 0.4
+  _fireDelay: 0.3
   _bulletCount: 2
-  _bulletSpeed: 3
-  _maxFlyHeight: 3
+  _bulletSpeed: 10
+  _maxFlyHeight: 4.5

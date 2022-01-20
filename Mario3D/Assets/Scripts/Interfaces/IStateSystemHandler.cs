@@ -1,6 +1,11 @@
 ﻿using UnityEngine;
-public interface IStateSystemHandler
+
+namespace Interfaces
 {
-    Transform SkinsParent { get; }
-    BoxCollider MainCollider { get; }
+    public interface IStateSystemHandler
+    {
+        Transform SkinsParent { get; }
+        CapsuleCollider MainCollider { get; }
+
+    }
 }

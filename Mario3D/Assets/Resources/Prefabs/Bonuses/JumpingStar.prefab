@@ -150,7 +150,7 @@ GameObject:
   - component: {fileID: -4229475656337782521}
   - component: {fileID: -8871758677100200330}
   - component: {fileID: 6621541574897914263}
-  m_Layer: 14
+  m_Layer: 0
   m_Name: JumpingStar
   m_TagString: Untagged
   m_Icon: {fileID: 0}

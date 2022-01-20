@@ -12,6 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e730142ac66ab5744b3ad01ee3ecc809, type: 3}
   m_Name: MiddleData
   m_EditorClassIdentifier: 
+  _immortalTime: 3000
+  _touchKillsTime: 10000
   _canCrush: 1
   _canSit: 1
   _canShoot: 0

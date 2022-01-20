@@ -1,8 +1,12 @@
 ﻿using System;
 using UnityEngine;
-public interface IScoreChangeNotify
+
+namespace Interfaces
 {
-    event Action<IScoreChangeNotify, int> ScoreNotifyEvent;
-    Vector3 Position { get;}
+    public interface IScoreChangeNotify
+    {
+        event Action<IScoreChangeNotify, int> ScoreNotifyEvent;
+        Vector3 Position { get;}
+    }
 }
 

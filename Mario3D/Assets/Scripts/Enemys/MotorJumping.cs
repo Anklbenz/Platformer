@@ -1,10 +1,9 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-public class MotorJumping : Motor
+﻿namespace Enemys
 {
+    public class MotorJumping : Motor
+    {
   
 
 
+    }
 }
