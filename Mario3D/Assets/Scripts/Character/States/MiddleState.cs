@@ -6,29 +6,24 @@ namespace Character.States
 {
     public class MiddleState : State
     {
-        public MiddleState(ICharacterComponets character, IStateSwitcher stateSwitcher, StateData data) : base(
-            character, stateSwitcher, data){
-            skinGameObject = Object.Instantiate(Data.SkinGameObject, character.SkinsParent);
-            skinGameObject.SetActive(false);
-        }
+        public MiddleState(ICharacterComponents character, IStateSwitcher stateSwitcher, StateData data) : base(character, stateSwitcher, data){ }
 
         public override void Enter(){
-            skinGameObject.SetActive(true);
-            character.MainCollider.height = Data.ColliderSize.y;
-            character.MainCollider.radius = Data.ColliderSize.x / 2;
+            Data.Skin.SetActive(true);
+            StateSwitcher.Resize();
         }
 
         public override void Exit(){
-            skinGameObject.SetActive(false);
+            Data.Skin.SetActive(false);
         }
 
         public override void StateUp(){
-            stateSwitcher.StateSwitch<SeniorState>();
+            StateSwitcher.MainStateSwitch<SeniorState>();
         }
 
         public override void StateDown(){
-            stateSwitcher.StateSwitch<JuniorState>(); 
-            stateSwitcher.HurtExtraState();
+            StateSwitcher.MainStateSwitch<JuniorState>();
+            StateSwitcher.ExtraStateFlicker();
         }
     }
 }

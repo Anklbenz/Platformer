@@ -5,12 +5,12 @@ using UnityEngine;
 
 namespace Game
 {
-    public class ScoreSystem : ILifeIncreaceNotify, ILabelDrawer
+    public class ScoreSystem : ILifeIncreaseNotify, ILabelDrawer
     {
         private readonly int[] SCORE_LIST = { 100, 200, 400, 500, 800, 1000, 2000, 4000, 5000, 10000 };
     
         public event Action ScoreChangedEvent;
-        public event Action<Vector3> IncreceLifeEvent;
+        public event Action<Vector3> IncreaseLifeEvent;
         public event Action<Vector3, string> LabelDrawEvent; 
 
         public int TotalScore => _totalScore;
@@ -29,14 +29,14 @@ namespace Game
         }
 
         public void SubsсribeOnScoreEvent(IScoreChangeNotify sender) {
-            sender.ScoreNotifyEvent += AddScore;
+            sender.ScoreChangeEvent += AddScore;
         }
 
         public void AddScore(IScoreChangeNotify sender, int bounceCount) {
             var lastScoreElement = SCORE_LIST.Length - 1;
             if (bounceCount >= lastScoreElement) { 
                 bounceCount = lastScoreElement;
-                IncreceLifeEvent?.Invoke(sender.Position);
+                IncreaseLifeEvent?.Invoke(sender.Position);
                 return;
             }
 

@@ -14,7 +14,7 @@ namespace Character.Interaction
         private readonly Vector3 _direction;
         
         private bool _collisionDetected;
-        private Vector3 _colliderCenter => _interactCollider.bounds.center; 
+        private Vector3 ColliderCenter => _interactCollider.bounds.center; 
 
         public HeadInteractionsHandler(StateSystem state, Collider collider, IMoveInfo moveInfo, Vector3 direction, float inspectLength,
             LayerMask inspectLayer, float boxIndent = 1f){
@@ -23,7 +23,7 @@ namespace Character.Interaction
             _moveInfo = moveInfo;
             _interactCollider = collider;
             _direction = direction;
-            _interactor = new Interactor(collider, Axis.vertical, inspectLength, inspectLayer, boxIndent);
+            _interactor = new Interactor(collider, Axis.Vertical, inspectLength, inspectLayer, boxIndent);
         }
 
         public void CollisionCheck() {
@@ -39,19 +39,19 @@ namespace Character.Interaction
         }
         private Collider ChooseNearestCollider(Collider[] overheadColliders, Vector3 playerCenter) {
             float minValue = -1;
-            Collider nearestcollider = null;
+            Collider nearestCollider = null;
 
             foreach (var collider in overheadColliders) {
                 var dif = Mathf.Abs(playerCenter.z - collider.ClosestPoint(playerCenter).z);
                 if (minValue < 0 || minValue > dif) {
                     minValue = dif;
-                    nearestcollider = collider;
+                    nearestCollider = collider;
                 }
             }
-            return nearestcollider;
+            return nearestCollider;
         }
         private void HitNearestCollider(Collider[] overheadColliders) {
-            Collider nearestCollider = overheadColliders.Length == 1 ? overheadColliders[0] : ChooseNearestCollider(overheadColliders, _colliderCenter);
+            var nearestCollider = overheadColliders.Length == 1 ? overheadColliders[0] : ChooseNearestCollider(overheadColliders, ColliderCenter);
             nearestCollider.GetComponentInParent<IBrickHit>()?.BrickHit(_characterState);
         }
         public void OnDrawGizmos(Color color) {

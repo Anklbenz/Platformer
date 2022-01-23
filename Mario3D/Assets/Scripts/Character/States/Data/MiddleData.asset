@@ -12,12 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e730142ac66ab5744b3ad01ee3ecc809, type: 3}
   m_Name: MiddleData
   m_EditorClassIdentifier: 
-  _immortalTime: 3000
-  _touchKillsTime: 10000
-  _canCrush: 1
-  _canSit: 1
-  _canShoot: 0
-  _colliderSize: {x: 1.6, y: 3.2, z: 1.6}
-  _sitColliderSize: {x: 1.3, y: 1, z: 1.3}
-  SkinGameObject: {fileID: 4052671781162986244, guid: 13dc2e525b1e858428ea56499bb7a22b,
+  canCrush: 1
+  canSit: 1
+  canShoot: 0
+  colliderSize: {x: 1.6, y: 3.2, z: 1.6}
+  sitColliderSize: {x: 1.6, y: 1.6, z: 1.6}
+  skinObject: {fileID: 4052671781162986244, guid: 13dc2e525b1e858428ea56499bb7a22b,
     type: 3}

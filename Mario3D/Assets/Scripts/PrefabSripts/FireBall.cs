@@ -5,27 +5,26 @@ namespace PrefabSripts
 {
     public sealed class FireBall : MonoBehaviour
     {
-        private const  float MIN_FLY_HEIGHT  = 0.1f;
+        private const float MIN_FLY_HEIGHT = 0.1f;
         private LayerMask _groundLayers;
         private float _bulletSpeed;
         private float _maxFlyHeight;
         private Vector3 _moveDirection;
-        private Vector3 _ricocheteStartPoint;
-        private bool _ricochetHappened = false;  
+        private Vector3 _ricochetStartPoint;
+        private bool _ricochetHappened = false;
 
-        private Rigidbody _rb;
-        private Collider _col;
+        private Rigidbody _rigidbody;
+        private Collider _collider;
 
-        private bool _rayVectorDown {
-            get => Physics.Raycast(_col.bounds.center, Vector3.down, out RaycastHit _rayHit, _col.bounds.size.y / 2 + MIN_FLY_HEIGHT, _groundLayers);
+        private bool RayVectorDown => Physics.Raycast(_collider.bounds.center, Vector3.down, out var rayHit,
+            _collider.bounds.size.y / 2 + MIN_FLY_HEIGHT, _groundLayers);
+
+        private void Awake(){
+            _rigidbody = GetComponent<Rigidbody>();
+            _collider = GetComponent<Collider>();
         }
 
-        private void Awake() {
-            _rb = GetComponent<Rigidbody>();
-            _col = GetComponent<Collider>();        
-        }
-
-        public void Initialize(Vector3 position, float bulletSpeed, float ricochetHeight, Vector3 moveDirection, LayerMask groundLayers) {
+        public void Initialize(Vector3 position, float bulletSpeed, float ricochetHeight, Vector3 moveDirection, LayerMask groundLayers){
             gameObject.SetActive(true);
             transform.position = position;
             _bulletSpeed = bulletSpeed;
@@ -34,52 +33,52 @@ namespace PrefabSripts
             _groundLayers = groundLayers;
             _ricochetHappened = false;
         }
-        private void FixedUpdate() {
-            if (!_ricochetHappened && _rayVectorDown)
-                RicocheteState();
 
+        private void FixedUpdate(){
+            if (!_ricochetHappened && RayVectorDown)
+                RicochetState();
             Move();
         }
 
-        private void Move() {
-            if (_ricochetHappened) {
-                if (_maxFlyHeight <= Vector3.Distance(_ricocheteStartPoint, transform.position)) {
+        private void Move(){
+            if (_ricochetHappened){
+                if (_maxFlyHeight <= Vector3.Distance(_ricochetStartPoint, transform.position)){
                     ChangeVerticalDirection();
-                    _ricocheteStartPoint = transform.position;
+                    _ricochetStartPoint = transform.position;
                 }
             }
-            _rb.velocity = _moveDirection * _bulletSpeed;
+            _rigidbody.velocity = _moveDirection * _bulletSpeed;
         }
 
-        private void RicocheteState() {
+        private void RicochetState(){
             ChangeVerticalDirection();
             _ricochetHappened = true;
-            _ricocheteStartPoint = transform.position;
+            _ricochetStartPoint = transform.position;
         }
 
-        private void ChangeVerticalDirection() {
+        private void ChangeVerticalDirection(){
             _moveDirection = new Vector3(_moveDirection.x, _moveDirection.y * -1, _moveDirection.z);
         }
 
-        private void OnTriggerEnter(Collider other) {
+        private void OnTriggerEnter(Collider other){
             Hit(other);
         }
 
-        private void Hit(Collider other) {
-            ActiveEnemy activeEnemy = other.GetComponentInParent<ActiveEnemy>();
-            if (activeEnemy) 
+        private void Hit(Collider other){
+            var activeEnemy = other.GetComponentInParent<ActiveEnemy>();
+            if (activeEnemy)
                 activeEnemy.DownHit();
-  
+
             Deactivate();
         }
 
-        void Deactivate() {
+        private void Deactivate(){
             gameObject.SetActive(false);
         }
 
-        private void OnDrawGizmos() {
-            if (_col == null) return;
-            Debug.DrawLine(transform.position, transform.position + Vector3.down * (_col.bounds.size.y / 2 + MIN_FLY_HEIGHT));
+        private void OnDrawGizmos(){
+            if (_collider == null) return;
+            Debug.DrawLine(transform.position, transform.position + Vector3.down * (_collider.bounds.size.y / 2 + MIN_FLY_HEIGHT));
         }
     }
 }

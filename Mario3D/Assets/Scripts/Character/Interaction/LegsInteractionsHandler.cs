@@ -24,7 +24,7 @@ namespace Character.Interaction
             _bounceInstance = bounceInstance;
             _interactCollider = collider;
             _direction = direction;
-            _interactor = new Interactor(collider, Axis.vertical, inspectLength, inspectLayer, boxIndent);
+            _interactor = new Interactor(collider, Axis.Vertical, inspectLength, inspectLayer, boxIndent);
         }
 
         public void CollisionCheck(){

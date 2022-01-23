@@ -21,8 +21,8 @@ namespace Enemys
         protected virtual void Awake() {
             _collider = GetComponent<BoxCollider>();
             _motor = GetComponent<Motor>();
-            _frontInteractor = new Interactor(_collider, Axis.horisontal, PATROL_CHECK_DISTANCE, _patrolLayer, PATROL_BOX_INDENT);
-            _groundInteractor = new Interactor(_collider, Axis.vertical, PATROL_CHECK_DISTANCE, _patrolLayer, PATROL_BOX_INDENT);
+            _frontInteractor = new Interactor(_collider, Axis.Horizontal, PATROL_CHECK_DISTANCE, _patrolLayer, PATROL_BOX_INDENT);
+            _groundInteractor = new Interactor(_collider, Axis.Vertical, PATROL_CHECK_DISTANCE, _patrolLayer, PATROL_BOX_INDENT);
         }
 
         protected virtual void FixedUpdate() {

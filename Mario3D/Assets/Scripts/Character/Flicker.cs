@@ -7,27 +7,21 @@ namespace Character
     public class Flicker
     {
         private const int FREQUENCY = 30;
-        private int _flickCount;
-        private GameObject obj;
-        private bool isActive;
+        private bool _isActive;
 
-        public void SetObject(GameObject instance){
-            obj = instance;
-        }
-
-        public async void FlickerPlay(){
+        public async void FlickerPlay(GameObject obj){
             if (!obj) return;
-            isActive = true;
+            _isActive = true;
 
-            while (isActive){
+            while (_isActive){
                 await Task.Delay(FREQUENCY);
-                obj.SetActive(obj.activeSelf == false ? true : false);
+                obj.SetActive(obj.activeSelf == false);
             }
             obj.SetActive(true);
         }
 
         public void FlickerStop(){
-            isActive = false;
+            _isActive = false;
         }
 
         /*

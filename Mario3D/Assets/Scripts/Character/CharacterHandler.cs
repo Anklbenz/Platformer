@@ -12,40 +12,40 @@ namespace Character
 {
     [RequireComponent(typeof(CapsuleCollider))]
     [RequireComponent(typeof(Rigidbody))]
-    public sealed class CharacterHandler : MonoBehaviour, ICharacterComponets, IMoveInfo, GameInput.IPlayerActions
+    public sealed class CharacterHandler : MonoBehaviour, ICharacterComponents, IMoveInfo, GameInput.IPlayerActions
     {
-        private const float ISGROUND_BOX_INDENT = 0.95f; 
-        
-        [Header("FireballSpawner")]
-        [SerializeField] private BallSpawnerData _spawnerData;
+        private const float ISGROUND_BOX_INDENT = 0.95f;
 
-        [SerializeField] private Transform _firePoint, _fireballParent;
-        [SerializeField] private LayerMask _groundLayers;
+        [Header("FireballSpawner")]
+        [SerializeField] private BallSpawnerData spawnerData;
+
+        [SerializeField] private Transform firePoint, fireballParent;
+        [SerializeField] private LayerMask groundLayers;
         private BallSpawner.BallSpawner _ballSpawner;
 
         [Header("StateHandler")]
-        [SerializeField] private StateData _juniorState;
+        [SerializeField] private StateData juniorState;
 
-        [SerializeField] private StateData _middleState;
-        [SerializeField] private StateData _seniorState;
-        [SerializeField] private Transform _skinsParent;
-        [SerializeField] private int _hurtTime;
-        [SerializeField] private int _unsopableTime;
-        public Transform SkinsParent => _skinsParent;
+        [SerializeField] private StateData middleState;
+        [SerializeField] private StateData seniorState;
+        [SerializeField] private Transform skinsParent;
+        [SerializeField] private int flickerLength;
+        [SerializeField] private int unstopLength;
+        public Transform SkinsParent => skinsParent;
         public StateSystem StateSystem;
 
         [Header("InteractionsHandler")]
-        [SerializeField] private float _isGroundedLength;
+        [SerializeField] private float isGroundedLength;
 
-        [SerializeField] private float _topLength;
-        [SerializeField] private float _bottomLength;
-        [SerializeField] private LayerMask _topLayer, _bottomLayer, _isGroundedLayer;
+        [SerializeField] private float topLength;
+        [SerializeField] private float bottomLength;
+        [SerializeField] private LayerMask topLayer, bottomLayer, isGroundedLayer;
         private InteractionsHandler _interactionsHandler;
         private Interactor _isGrounded;
         public bool IsGrounded => _isGrounded.InteractionBoxcast(Vector3.down);
 
         [Header("MoveHandler")]
-        [SerializeField] private MoveData _moveData;
+        [SerializeField] private MoveData moveData;
 
         private Move _move;
         private GameInput _gameInput;
@@ -53,27 +53,31 @@ namespace Character
         public bool MovingDown => MainRigidbody.velocity.y < 0;
         public CapsuleCollider MainCollider{ get; private set; }
         public Rigidbody MainRigidbody{ get; private set; }
+        public Transform MainTransform{ get; private set; }
 
 
         private void Awake(){
             MainCollider = GetComponent<CapsuleCollider>();
             MainRigidbody = GetComponent<Rigidbody>();
-            StateSystem = new StateSystem(this, _juniorState, _middleState, _seniorState, _hurtTime, _unsopableTime);
+            MainTransform = GetComponent<Transform>();
+            
+            StateSystem = new StateSystem(this, juniorState, middleState, seniorState, flickerLength, unstopLength);
 
             _gameInput = new GameInput();
             _gameInput.Enable();
             _gameInput.Player.SetCallbacks(this);
 
-            _ballSpawner = new BallSpawner.BallSpawner(_firePoint, _groundLayers, _fireballParent, _spawnerData);
-            _isGrounded = new Interactor(MainCollider, Axis.vertical, _isGroundedLength, _isGroundedLayer, ISGROUND_BOX_INDENT);
-            _move = new Move(this, _moveData, MainRigidbody, MainCollider, _isGroundedLength, _isGroundedLayer);
-            _interactionsHandler = new InteractionsHandler(StateSystem, MainCollider, this, _move, _topLength,
-                _topLayer, _bottomLength, _bottomLayer);
+            _ballSpawner = new BallSpawner.BallSpawner(firePoint, groundLayers, fireballParent, spawnerData);
+            _isGrounded = new Interactor(MainCollider, Axis.Vertical, isGroundedLength, isGroundedLayer, ISGROUND_BOX_INDENT, true);
+            _move = new Move(this, moveData, MainRigidbody, MainCollider, isGroundedLength, isGroundedLayer);
+            _interactionsHandler = new InteractionsHandler(StateSystem, MainCollider, this, _move, topLength,
+                topLayer, bottomLength, bottomLayer);
         }
 
         private void FixedUpdate(){
-            if (StateSystem.IsActiveState)
+            if (StateSystem.ExtraState == ExtraState.NormalState)
                 _interactionsHandler.LegsInteractionsCheck();
+            
             _interactionsHandler.HeadInteractionCheck();
             _move.RecalculateMoving();
         }
@@ -87,17 +91,19 @@ namespace Character
         }
 
         public void OnMove(InputAction.CallbackContext context){
-            var movement = Vector3.forward * context.ReadValue<float>();
+          var movement = Vector3.forward * context.ReadValue<float>();
             _move.OnMove(movement);
         }
 
         public void OnExtra(InputAction.CallbackContext context){
             if (context.phase == InputActionPhase.Performed){
-                if (StateSystem.CanShoot) _ballSpawner.Spawn();
+                if (StateSystem.Data.CanShoot)
+                    _ballSpawner.Spawn();
+
                 _move.OnExtra(true);
             }
-            
-            if(context.phase == InputActionPhase.Canceled)
+
+            if (context.phase == InputActionPhase.Canceled)
                 _move.OnExtra(false);
         }
 

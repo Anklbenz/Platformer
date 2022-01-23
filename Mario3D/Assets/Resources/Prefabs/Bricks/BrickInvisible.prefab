@@ -46,13 +46,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e7db9ab5f8909b947af3fa6b93b16800, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _bonusesCount: 1
-  _bonusType: 4
-  _primaryMesh: {fileID: 0}
-  _secondaryMesh: {fileID: 7531780575115396083}
-  _brickCollider: {fileID: 4743832699782468344}
-  _bonusCreationPoint: {fileID: 6430840679570832131}
-  _triggerCollider: {fileID: 1108749781608216481}
+  bonusesCount: 0
+  bonusType: 0
+  primaryMesh: {fileID: 0}
+  secondaryMesh: {fileID: 7531780575115396083}
+  brickCollider: {fileID: 4743832699782468344}
+  bonusCreationPoint: {fileID: 6430840679570832131}
+  triggerCollider: {fileID: 1108749781608216481}
 --- !u!65 &1108749781608216481
 BoxCollider:
   m_ObjectHideFlags: 0

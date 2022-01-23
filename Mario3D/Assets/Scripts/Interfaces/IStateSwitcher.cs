@@ -1,9 +1,13 @@
 ﻿using Character.States;
+using Character.States.Data;
 
 namespace Interfaces
 {
     public interface IStateSwitcher {
-        void StateSwitch<T>() where T : State;
-        void HurtExtraState();
+        void MainStateSwitch<T>() where T : State;
+  
+        void ExtraStateFlicker();
+        
+        void Resize();
     }
 }

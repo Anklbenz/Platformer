@@ -10,8 +10,6 @@ public class MoveData : ScriptableObject
 
     [SerializeField] private float _addForceStep = 3.67f;
     [SerializeField] private float _bouncePower = 5f;
-    [SerializeField] private LayerMask _isGroundedLayer;
-    [SerializeField] private LayerMask _wallCheckLayer;
 
     public float MaxJumpForceDuration => _maxJumpForceDuration;
 

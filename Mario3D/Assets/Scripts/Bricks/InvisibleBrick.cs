@@ -5,19 +5,18 @@ namespace Bricks
 {
     public class InvisibleBrick : Brick
     {
-        [SerializeField] private Collider _triggerCollider;
+        [SerializeField] private Collider triggerCollider;
 
         public override void BrickHit(StateSystem state) {
-            if (!_isActive) return;
-
-            if (_bonusesCount > 0) {
-                base.BonusShow(state);
-                _bonusesCount--;
-                _brickCollider.enabled = true;
-                _triggerCollider.enabled = false;
-                _isActive = false;
-                _secondaryMesh.SetActive(true);
-            }
+            if (!IsActive) return;
+            if (bonusesCount <= 0) return;
+            
+            base.BonusShow(state);
+            bonusesCount--;
+            brickCollider.enabled = true;
+            triggerCollider.enabled = false;
+            IsActive = false;
+            secondaryMesh.SetActive(true);
         }
     }
 }

@@ -17,8 +17,8 @@ namespace Character
         private float _jumpForceDuration, _maxSpeed, _walkStep;
 
         private Vector3 _moveDirection;
-        private bool isWallContact => _wallContactInteractor.InteractionBoxcast(_moveDirection);
-        private Vector3 rbVelocity => _rigidbody.velocity;
+        private Vector3 RbVelocity => _rigidbody.velocity;
+        private bool IsWallContact => _wallContactInteractor.InteractionBoxcast(_moveDirection);
 
         public Move(IMoveInfo moveInfo, MoveData data, Rigidbody rBody, Collider collider, float wallInspectLength, LayerMask wallLayer){
             _moveInfo = moveInfo;
@@ -26,12 +26,12 @@ namespace Character
             _maxSpeed = data.MaxWalkSpeed;
             _walkStep = data.WalkForceStep;
             _rigidbody = rBody;
-            _wallContactInteractor = new Interactor(collider, Axis.horisontal, wallInspectLength, wallLayer, WALL_BOX_INDENT);
+            _wallContactInteractor = new Interactor(collider, Axis.Horizontal, wallInspectLength, wallLayer, WALL_BOX_INDENT);
         }
 
         public void RecalculateMoving(){
 
-            if (!isWallContact) Walk();
+            if (!IsWallContact) Walk();
 
             if (_jumping) Jump();
 
@@ -42,13 +42,11 @@ namespace Character
                 _canSlide = true;
         }
 
-        // [SerializeField] private Transform _characterTransform;
         private void Walk(){
-            Debug.Log($"maxSpeed {_maxSpeed}  walkStep { _walkStep}");
-            float currentBodySpeed = Mathf.Abs(rbVelocity.z);
+            var currentBodySpeed = Mathf.Abs(RbVelocity.z);
+            
             if (currentBodySpeed < _maxSpeed)
                 _rigidbody.AddForce(_moveDirection * _walkStep, ForceMode.VelocityChange);
-            //  Flip(_characterTransform, _moveDirection);
         }
 
         private void Jump(){
@@ -66,7 +64,7 @@ namespace Character
         }
 
         private void SideImpulse(){
-            Vector3 t = new Vector3(0, rbVelocity.y * -1, 0);
+            var t = new Vector3(0, RbVelocity.y * -1, 0);
             _rigidbody.velocity += t;
             _canSlide = false;
         }
@@ -75,13 +73,6 @@ namespace Character
             var velocity = _rigidbody.velocity;
             velocity = new Vector3(velocity.x, 0, velocity.z);
             _rigidbody.velocity = velocity;
-        }
-
-        private void Flip(Transform go, Vector3 direction){
-            if (direction == Vector3.back)
-                go.rotation = Quaternion.Euler(new Vector3(0, 180, 0));
-            if (direction == Vector3.forward)
-                go.rotation = Quaternion.Euler(new Vector3(0, 0, 0));
         }
 
         public void OnMove(Vector3 movement) => _moveDirection = movement;

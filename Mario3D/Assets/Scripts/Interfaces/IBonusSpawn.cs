@@ -4,9 +4,9 @@ using UnityEngine;
 
 namespace Interfaces
 {
-    public interface IBonusSpawnNotify
+    public interface IBonusSpawn
     {
-        event Action<IBonusSpawnNotify> BonusSpawnEvent;
+        event Action<IBonusSpawn> BonusSpawnEvent;
         BonusType BonusType { get; }
         Vector3 BonusCreatePoint { get; }
     }

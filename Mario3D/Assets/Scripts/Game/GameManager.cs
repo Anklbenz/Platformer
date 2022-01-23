@@ -7,36 +7,45 @@ namespace Game
     public class GameManager : MonoBehaviour
     {
         [Header("UI Draw")]
-        [SerializeField] private Text _scoreLabel;
-        [SerializeField] private Text _coinLabel;
-        [SerializeField] private Text _lifesLabel;
-        [SerializeField] private ScoreLabel _scoreLabelsPrefab;
-        [SerializeField] private Transform _scoreLabelParent;
+        [SerializeField] private Text scoreLabel;
+
+        [SerializeField] private Text coinLabel;
+        [SerializeField] private Text lifeLabel;
+        [SerializeField] private Text timeLabel;
+        [SerializeField] private ScoreLabel scoreLabelsPrefab;
+        [SerializeField] private Transform scoreLabelParent;
 
         [Header("BonusSpawner")]
-        [SerializeField] private SpawnFactory _spawnFactory;
-        [SerializeField] private Transform _bonusParent;
+        [SerializeField] private BonusFactory bonusFactory;
 
-        [Header("Lifes")]
-        [SerializeField] private int _lifes;
+        [SerializeField] private Transform bonusParent;
 
-        private ObjectSystem objectSystem;
-        private CoinSystem coinSystem;
-        private ScoreSystem ScoreSystem;
-        private LifesSystem lifesSystem;
-        private BonusSpawner BonusSpawner;
-        private UIDrawer uiDrawer;
+        [Header("Life")]
+        [SerializeField] private int lifeCount;
 
-        //particalesSpawner;
+        [Header("TimeSystem")]
+        [SerializeField] private int levelTime;
 
-        private void Awake() {
-            objectSystem = new ObjectSystem();
-            coinSystem = new CoinSystem(objectSystem.CoinCollectNotifies);
-            ScoreSystem = new ScoreSystem(objectSystem.ScoreNotifies);
-            lifesSystem = new LifesSystem(_lifes, ScoreSystem);
-            uiDrawer = new UIDrawer(ScoreSystem, coinSystem, lifesSystem, _lifesLabel, _scoreLabel, _coinLabel, _scoreLabelsPrefab, _scoreLabelParent);
-        
-            BonusSpawner = new BonusSpawner(ScoreSystem, coinSystem, lifesSystem, objectSystem.BonusBricksList, _spawnFactory, _bonusParent);
+        private ObjectSystem _objectSystem;
+        private CoinSystem _coinSystem;
+        private ScoreSystem _scoreSystem;
+        private LifeSystem _lifeSystem;
+        private BonusSpawner _bonusSpawner;
+        private TimeSystem _timeSystem;
+        private UIDrawer _uiDrawer;
+
+
+        private void Awake(){
+            _objectSystem = new ObjectSystem();
+            _scoreSystem = new ScoreSystem(_objectSystem.ScoreNotifies);
+            _lifeSystem = new LifeSystem(lifeCount, _scoreSystem);
+            _coinSystem = new CoinSystem(_objectSystem.CoinCollectNotifies);
+            _timeSystem = new TimeSystem(levelTime);
+            _uiDrawer = new UIDrawer(_scoreSystem, _coinSystem, _lifeSystem, _timeSystem, lifeLabel, scoreLabel, coinLabel, timeLabel,
+                scoreLabelsPrefab, scoreLabelParent);
+
+            _bonusSpawner = new BonusSpawner(_scoreSystem, _coinSystem, _lifeSystem, _objectSystem.BonusBricksList, bonusFactory,
+                bonusParent);
         }
     }
 }

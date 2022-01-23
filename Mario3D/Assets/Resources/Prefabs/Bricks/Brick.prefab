@@ -45,18 +45,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cbba1fee40afe334ca1c2577492a19d7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _bonusesCount: 0
-  _bonusType: 0
-  _primaryMesh: {fileID: 6783730360741096392}
-  _secondaryMesh: {fileID: 7531780575115396083}
-  _brickCollider: {fileID: 4743832699782468344}
-  _bonusCreationPoint: {fileID: 6430840679570832131}
-  _crushParticales: {fileID: 5964601693738042814, guid: 3bbff29991a708a48833bd7f8177ba38,
+  bonusesCount: 0
+  bonusType: 0
+  primaryMesh: {fileID: 6783730360741096392}
+  secondaryMesh: {fileID: 7531780575115396083}
+  brickCollider: {fileID: 4743832699782468344}
+  bonusCreationPoint: {fileID: 6430840679570832131}
+  crushParticles: {fileID: 5964601693738042814, guid: 3bbff29991a708a48833bd7f8177ba38,
     type: 3}
-  _animator: {fileID: 4743832699782468351}
-  _timeToDestroyBrickAfterHit: 0.1
-  _brickCanBeCrushed: 1
-  _dropLayer:
+  animator: {fileID: 4743832699782468351}
+  timeToDestroyBrickAfterHit: 2500
+  brickCanBeCrushed: 1
+  dropLayer:
     serializedVersion: 2
     m_Bits: 1280
 --- !u!1 &3652126619730974259
@@ -347,6 +347,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Layer
       value: 11
+      objectReference: {fileID: 0}
+    - target: {fileID: 7684496136793664355, guid: ad5dd9e7ca73594448a590d55303353f,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ad5dd9e7ca73594448a590d55303353f, type: 3}

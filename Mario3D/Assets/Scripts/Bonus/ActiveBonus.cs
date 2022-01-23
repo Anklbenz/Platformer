@@ -8,7 +8,7 @@ namespace Bonus
     {
         private bool _isActive = true;
 
-        protected override void Interaction(StateSystem state, Vector3 pos) {
+        protected override void Interaction(StateSystem state, Vector3 pos){
             if (!_isActive) return;
 
             _isActive = false;
@@ -16,7 +16,7 @@ namespace Bonus
             Destroy(gameObject);
         }
 
-        public override void DownHit() {
+        public override void DownHit(){
             if (_motor.isActiveAndEnabled)
                 _motor.DirectionChange();
         }

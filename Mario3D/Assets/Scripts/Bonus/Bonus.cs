@@ -8,7 +8,7 @@ namespace Bonus
 {
     public abstract class Bonus : InteractiveObject, IScoreChangeNotify
     {
-        public event Action<IScoreChangeNotify, int> ScoreNotifyEvent;
+        public event Action<IScoreChangeNotify, int> ScoreChangeEvent;
         public Vector3 Position => transform.position;
 
         private bool _isActive = true;
@@ -23,7 +23,7 @@ namespace Bonus
         protected abstract void BonusTake(StateSystem state);
 
         protected virtual void SendScore(int scoreListElement) {
-            ScoreNotifyEvent?.Invoke(this, scoreListElement);
+            ScoreChangeEvent?.Invoke(this, scoreListElement);
         }
     }
 }

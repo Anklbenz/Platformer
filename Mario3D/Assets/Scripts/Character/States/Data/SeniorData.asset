@@ -12,12 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e730142ac66ab5744b3ad01ee3ecc809, type: 3}
   m_Name: SeniorData
   m_EditorClassIdentifier: 
-  _immortalTime: 3000
-  _touchKillsTime: 10000
-  _canCrush: 1
-  _canSit: 1
-  _canShoot: 1
-  _colliderSize: {x: 1.6, y: 3.2, z: 1.6}
-  _sitColliderSize: {x: 1.3, y: 1, z: 1.3}
-  SkinGameObject: {fileID: 1431828340438068661, guid: da14827158fde1b4686996f2af547388,
+  canCrush: 1
+  canSit: 1
+  canShoot: 1
+  colliderSize: {x: 1.6, y: 3.2, z: 1.6}
+  sitColliderSize: {x: 1.6, y: 1.6, z: 1.6}
+  skinObject: {fileID: 1431828340438068661, guid: da14827158fde1b4686996f2af547388,
     type: 3}

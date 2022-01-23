@@ -138,17 +138,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _patrolLayer:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 34817
   _groundCheckActive: 0
   _timeToDestroyAfterDrop: 2
-  _engageSpeed: 10
-  _cooldownTime: 50
-  _currentState: 1
-  collisionInEngage:
-    serializedVersion: 2
-    m_Bits: 512
-  _mainMesh: {fileID: 1943920063657576541}
-  _secondaryMesh: {fileID: 2907905224118743662}
+  engageSpeed: 10
+  cooldownTime: 5
+  currentState: 1
+  mainMesh: {fileID: 1943920063657576541}
+  secondaryMesh: {fileID: 2907905224118743662}
 --- !u!1 &5550573262994712544
 GameObject:
   m_ObjectHideFlags: 0
@@ -304,6 +301,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Layer
       value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 4818676015577073241, guid: 1bd220a57d2e3944da5ad441b5bcdeaf,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8786250036248559421, guid: 1bd220a57d2e3944da5ad441b5bcdeaf,
         type: 3}

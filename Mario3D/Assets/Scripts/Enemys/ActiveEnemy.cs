@@ -7,7 +7,7 @@ namespace Enemys
 {
     public class ActiveEnemy : ActiveInteractiveObject, IJumpOn, IScoreChangeNotify
     {
-        public event Action<IScoreChangeNotify, int> ScoreNotifyEvent;
+        public event Action<IScoreChangeNotify, int> ScoreChangeEvent;
 
         [Header("ActiveEnemy")]
         [SerializeField] protected float _timeToDestroyAfterDrop = 0f;
@@ -43,7 +43,7 @@ namespace Enemys
         }
 
         protected void SendScore(int InRowCount) {
-            ScoreNotifyEvent?.Invoke(this, InRowCount);
+            ScoreChangeEvent?.Invoke(this, InRowCount);
         }
 
         public override void DownHit() {

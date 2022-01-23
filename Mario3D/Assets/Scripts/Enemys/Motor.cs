@@ -14,7 +14,7 @@ namespace Enemys
         private Vector3 _direction = Vector3.back;
 
         private void Awake() {
-            _direction = MoveDirection == Direction.left ? Vector3.back : Vector3.forward;
+            _direction = MoveDirection == Direction.Left ? Vector3.back : Vector3.forward;
             _rb = GetComponent<Rigidbody>();
         }
 
@@ -40,7 +40,7 @@ namespace Enemys
         }
 
         public void SetDirection(Direction dir) {
-            _direction = dir == Direction.left ? Vector3.back : Vector3.forward;
+            _direction = dir == Direction.Left ? Vector3.back : Vector3.forward;
         }
 
         public Vector3 GetDirection() {

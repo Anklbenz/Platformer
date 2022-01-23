@@ -1,4 +1,5 @@
-﻿using Character.States;
+﻿using System.Threading.Tasks;
+using Character.States;
 using Enemys;
 using Enums;
 using UnityEngine;
@@ -7,48 +8,50 @@ namespace Bricks
 {
     public sealed class BrickBox : Brick
     {
+        private const int COLLIDER_DEACTIVATE_DELAY = 5;
         private const float DROP_CHECK_DISTANCE = 0.1f;
 
-        [SerializeField] private ParticleSystem _crushParticales;
-        [SerializeField] private Animator _animator;
-        [SerializeField] private float _timeToDestroyBrickAfterHit;
-        [SerializeField] private bool _brickCanBeCrushed = false;
-        [SerializeField] private LayerMask _dropLayer;
+        [SerializeField] private ParticleSystem crushParticles;
+        [SerializeField] private Animator animator;
+        [SerializeField] private int timeToDestroyBrickAfterHit;
+        [SerializeField] private bool brickCanBeCrushed = false;
+        [SerializeField] private LayerMask dropLayer;
         private Interactor _interactor;
 
         private void Awake(){
             ParticleInitialize();
-            _interactor = new Interactor(_brickCollider, Axis.vertical, DROP_CHECK_DISTANCE, _dropLayer);
+            _interactor = new Interactor(brickCollider, Axis.Vertical, DROP_CHECK_DISTANCE, dropLayer);
         }
 
         private void ParticleInitialize(){
-            if (!_crushParticales) return;
+            if (!crushParticles) return;
 
-            _crushParticales = Instantiate(_crushParticales, this.transform);
-            _crushParticales.transform.position = transform.position;
-            _crushParticales.gameObject.SetActive(false);
+            crushParticles = Instantiate(crushParticles, this.transform);
+            crushParticles.transform.position = transform.position;
+            crushParticles.gameObject.SetActive(false);
         }
 
         public override void BrickHit(StateSystem state){
-            if (!_isActive) return;
+            if (!IsActive) return;
 
             this.DownHit();
-            _animator.SetTrigger("hit");
+            animator.SetTrigger("hit");
 
-            if (_bonusesCount > 0){
+            if (bonusesCount > 0){
                 base.BonusShow(state);
-                _bonusesCount--;
+                bonusesCount--;
 
-                if (_bonusesCount == 0){
-                    _isActive = false;
-                    _primaryMesh.SetActive(false);
-                    _secondaryMesh.SetActive(true);
+                if (bonusesCount == 0){
+                    IsActive = false;
+                    primaryMesh.SetActive(false);
+                    secondaryMesh.SetActive(true);
                 }
 
             }
-            else if (state.CanCrush && _brickCanBeCrushed){
-                _crushParticales.gameObject.SetActive(true);
-                Destroy(gameObject, _timeToDestroyBrickAfterHit);
+            else if (state.Data.CanCrush && brickCanBeCrushed){
+                crushParticles.gameObject.SetActive(true);
+              //  Destroy(gameObject, timeToDestroyBrickAfterHit);
+              Crush(timeToDestroyBrickAfterHit);
             }
         }
 
@@ -57,14 +60,22 @@ namespace Bricks
             if (interactions.Length < 1) return;
 
             foreach (var obj in interactions){
-                ActiveInteractiveObject activeObject = obj.transform.GetComponentInParent<ActiveInteractiveObject>();
+                var activeObject = obj.transform.GetComponentInParent<ActiveInteractiveObject>();
                 if (activeObject)
                     activeObject.DownHit();
             }
-
         }
 
-        void OnDrawGizmos(){
+        private async void Crush(int destroyTime){
+            await Task.Delay(COLLIDER_DEACTIVATE_DELAY);
+            brickCollider.enabled = false;
+            primaryMesh.SetActive(false);
+            
+            await Task.Delay(destroyTime);
+            Destroy(gameObject);
+        }
+
+        private void OnDrawGizmos(){
             _interactor?.OnDrawGizmos(Color.red);
         }
     }

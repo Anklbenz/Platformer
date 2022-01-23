@@ -10,7 +10,7 @@ namespace Bonus
         private const int SCORE_LIST_ELEMENT = 5;
 
         public Vector3 Position => _collider.bounds.center;
-        public event Action<IScoreChangeNotify, int> ScoreNotifyEvent;
+        public event Action<IScoreChangeNotify, int> ScoreChangeEvent;
 
         protected override void Awake() {
             base.Awake();
@@ -23,8 +23,8 @@ namespace Bonus
 
         protected override void BounsTake(StateSystem state) {
             Debug.Log("Unstopabel state");
-            state.UnstobaleExtraState();
-            ScoreNotifyEvent?.Invoke(this, SCORE_LIST_ELEMENT);
+            state.ExtraStateUnstop();
+            ScoreChangeEvent?.Invoke(this, SCORE_LIST_ELEMENT);
         }
     }
 }

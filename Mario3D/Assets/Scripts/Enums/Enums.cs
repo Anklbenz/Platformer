@@ -2,13 +2,20 @@
 {
     public enum BonusType
     {
-        none = 0,
-        coin = 1,
-        growUp = 2,
-        flower = 3,
-        lifesUp = 4,
-        jumpStar = 5,
-        walker = 6
+        None = 0,
+        Coin = 1,
+        GrowUp = 2,
+        Flower = 3,
+        LifeUp = 4,
+        JumpStar = 5,
+        Walker = 6
+    }
+
+    public enum ExtraState
+    {
+        NormalState = 0,
+        FlickerState = 1,
+        UnstopState = 2
     }
 
     public enum PusherState
@@ -20,14 +27,14 @@
 
     public enum Direction
     {
-        none,
-        left,
-        rigth,
+        None,
+        Left,
+        Right,
     }
 
     public enum Axis
     {
-        horisontal = 0,
-        vertical = 1
+        Horizontal = 0,
+        Vertical = 1
     }
 }

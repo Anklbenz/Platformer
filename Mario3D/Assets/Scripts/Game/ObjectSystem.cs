@@ -6,7 +6,7 @@ namespace Game
 {
     public class ObjectSystem
     {
-        public List<IBonusSpawnNotify> BonusBricksList = new List<IBonusSpawnNotify>();
+        public List<IBonusSpawn> BonusBricksList = new List<IBonusSpawn>();
         public List<IScoreChangeNotify> ScoreNotifies = new List<IScoreChangeNotify>();
         public List<ICoinCollectNotify> CoinCollectNotifies = new List<ICoinCollectNotify>();
 
@@ -22,8 +22,8 @@ namespace Game
                 if (instance is IScoreChangeNotify)
                     ScoreNotifies.Add(instance as IScoreChangeNotify);
 
-                if (instance is IBonusSpawnNotify)
-                    BonusBricksList.Add(instance as IBonusSpawnNotify);
+                if (instance is IBonusSpawn)
+                    BonusBricksList.Add(instance as IBonusSpawn);
 
                 if (instance is ICoinCollectNotify)
                     CoinCollectNotifies.Add(instance as ICoinCollectNotify);
