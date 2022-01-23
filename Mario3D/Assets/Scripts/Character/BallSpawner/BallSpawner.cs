@@ -6,19 +6,18 @@ namespace Character.BallSpawner
     public sealed class BallSpawner
     { 
         private readonly Transform _firePoint;
-        private readonly Transform _fireballParent;
+        private readonly BallSpawnerData _data;
         private readonly LayerMask _groundLayers;
         private readonly FireBall[] _fireBallPool;
- 
-        private readonly BallSpawnerData _data;
+        private readonly Transform _fireballParent;
 
         private float _nextFire;
 
         public BallSpawner(Transform firePoint, LayerMask groundLayers, Transform fireballParent, BallSpawnerData data){
-            _firePoint = firePoint;
-            _fireballParent = fireballParent;
-            _groundLayers = groundLayers;
             _data = data;
+            _firePoint = firePoint;
+            _groundLayers = groundLayers;
+            _fireballParent = fireballParent;
             _fireBallPool = new FireBall[_data.BulletCount];
 
             InitializePool();
@@ -32,8 +31,8 @@ namespace Character.BallSpawner
         }
 
         public void Spawn() {
-            if (AllElementsIsFree() || Timer()){
-                var ball = GetFreeElement();
+            if (AllBallsIsFree() || Timer()){
+                var ball = GetFreeBall();
                 
                 if(ball!=null)
                     ball.Initialize(_firePoint.position, _data.BulletSpeed, _data.MaxFlyHeight, _firePoint.forward, _groundLayers);
@@ -46,7 +45,7 @@ namespace Character.BallSpawner
             return true;
         }
 
-        private bool AllElementsIsFree(){
+        private bool AllBallsIsFree(){
             foreach (var ball in _fireBallPool) {
                 if (ball.gameObject.activeInHierarchy)
                     return false;
@@ -54,7 +53,7 @@ namespace Character.BallSpawner
             return true;
         }
         
-        private FireBall GetFreeElement() {
+        private FireBall GetFreeBall() {
             foreach (var ball in _fireBallPool) {
                 if (!ball.gameObject.activeInHierarchy)
                     return ball;
