@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Character.States.Data;
-using Enemys;
+using Enemy;
 using Enums;
 using Interfaces;
 using UnityEngine;
@@ -54,6 +54,7 @@ namespace Character.States
         public async void ExtraStateUnstop(){
             ExtraState = ExtraState.UnstopState;
             Debug.Log("ExtraStateUnstop is start");
+            
             await Task.Delay(_unstopLength);
             ExtraState = ExtraState.NormalState;
             Debug.Log("ExtraStateUnstop is end");
@@ -62,6 +63,7 @@ namespace Character.States
         public async void ExtraStateFlicker(){
             ExtraState = ExtraState.FlickerState;
             _flicker.FlickerPlay(Data.Skin);
+            
             await Task.Delay(_flickerLength);
             ExtraState = ExtraState.NormalState;
             _flicker.FlickerStop();

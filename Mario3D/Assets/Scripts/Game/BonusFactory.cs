@@ -1,5 +1,5 @@
 ﻿using Bonus;
-using Enemys;
+using Enemy;
 using Enums;
 using UnityEngine;
 

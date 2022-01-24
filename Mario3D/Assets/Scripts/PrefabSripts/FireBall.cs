@@ -1,4 +1,4 @@
-﻿using Enemys;
+﻿using Enemy;
 using UnityEngine;
 
 namespace PrefabSripts

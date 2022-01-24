@@ -1,5 +1,5 @@
 ﻿using Character.States;
-using Enemys;
+using Enemy;
 using UnityEngine;
 
 namespace Bonus
@@ -12,15 +12,15 @@ namespace Bonus
             if (!_isActive) return;
 
             _isActive = false;
-            BounsTake(state);
+            BonusTake(state);
             Destroy(gameObject);
         }
 
         public override void DownHit(){
-            if (_motor.isActiveAndEnabled)
-                _motor.DirectionChange();
+            if (Motor.isActiveAndEnabled)
+                Motor.DirectionChange();
         }
 
-        protected abstract void BounsTake(StateSystem state);
+        protected abstract void BonusTake(StateSystem state);
     }
 }

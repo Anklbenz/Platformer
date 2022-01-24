@@ -4,7 +4,7 @@ using Character.States;
 using Enums;
 using UnityEngine;
 
-namespace Enemys
+namespace Enemy
 {
     public class EnemyPushed : ActiveEnemy
     {
@@ -16,44 +16,43 @@ namespace Enemys
 
         [SerializeField] private float cooldownTime;
         [SerializeField] private PusherState currentState = PusherState.Walk;
-        [SerializeField] private MeshRenderer mainMesh;
-        [SerializeField] private MeshRenderer secondaryMesh;
+        [SerializeField] private MeshRenderer mainMesh, secondaryMesh;
 
-        private float _patrolSpeed;
         private readonly InRowCounter _inRowCounter = new InRowCounter();
+        private float _patrolSpeed;
         private Coroutine _endOfCooldown;
 
         protected override void Awake(){
             base.Awake();
-            _patrolSpeed = base._motor.GetSpeed();
+            _patrolSpeed = base.Motor.GetSpeed();
         }
 
         protected override void Interaction(StateSystem state, Vector3 pos){
             if (currentState == PusherState.Cooldown){
                 SendScore(SCORE_LIST_ELEMENT);
-                TransitonInEngage(pos);
+                TransitionToEngage(pos);
                 return;
             }
 
             base.Interaction(state, pos);
         }
 
-        public override void JumpOn(Vector3 senderCenter, int inRowJumpCount){
+        public override void JumpOn(Vector3 senderCenter, int jumpsInRowCount){
             if (currentState == PusherState.Cooldown){
                 base.SendScore(_inRowCounter.Count);
-                TransitonInEngage(senderCenter);
+                TransitionToEngage(senderCenter);
                 return;
             }
 
             this._inRowCounter.Reset();
-            base.JumpOn(senderCenter, inRowJumpCount);
+            base.JumpOn(senderCenter, jumpsInRowCount);
             this.ChangeMesh(false);
             StartCoroutine(CooldownDelay());
             _endOfCooldown = StartCoroutine(EndOfCooldown());
         }
 
-        private void TransitonInEngage(Vector3 boundsCenter){
-            var dir = boundsCenter.z >= _collider.bounds.center.z ? Direction.Left : Direction.Right;
+        private void TransitionToEngage(Vector3 boundsCenter){
+            var dir = boundsCenter.z >= Collider.bounds.center.z ? Direction.Left : Direction.Right;
             StartCoroutine(Engage(dir));
         }
 
@@ -62,7 +61,7 @@ namespace Enemys
 
             if (currentState == PusherState.Engage && activeEnemy){
                 if (activeEnemy is EnemyPushed pushedEnemy && pushedEnemy.currentState == PusherState.Engage){
-                    base._motor.DirectionChange();
+                    base.Motor.DirectionChange();
                 }
                 else{
                     activeEnemy.Drop();
@@ -71,15 +70,15 @@ namespace Enemys
                 }
             }
             else{
-                base._motor.DirectionChange();
+                base.Motor.DirectionChange();
             }
         }
 
         private IEnumerator Engage(Direction dir){
             StopCoroutine(_endOfCooldown);
-            base._motor.SetActive(true);
-            base._motor.SetDirection(dir);
-            base._motor.SetSpeed(engageSpeed);
+            base.Motor.SetActive(true);
+            base.Motor.SetDirection(dir);
+            base.Motor.SetSpeed(engageSpeed);
             currentState = PusherState.Engage;
 
             yield return new WaitForSeconds(STATES_TRANSITON_DELAY);
@@ -94,8 +93,8 @@ namespace Enemys
 
         private IEnumerator EndOfCooldown(){
             yield return new WaitForSeconds(cooldownTime);
-            base._motor.SetActive(true);
-            base._motor.SetSpeed(_patrolSpeed);
+            base.Motor.SetActive(true);
+            base.Motor.SetSpeed(_patrolSpeed);
             base.DoDamage = true;
             base.DoBounce = true;
             this.ChangeMesh(true);

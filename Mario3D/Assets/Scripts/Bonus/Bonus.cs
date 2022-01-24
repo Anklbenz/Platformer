@@ -1,6 +1,6 @@
 ﻿using System;
 using Character.States;
-using Enemys;
+using Enemy;
 using Interfaces;
 using UnityEngine;
 

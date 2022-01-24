@@ -21,6 +21,7 @@ namespace Character.States
 
         public override void StateDown(){
             StateSwitcher.MainStateSwitch<JuniorState>();
+            StateSwitcher.ExtraStateFlicker();
         }
 
         public override void StateUp(){

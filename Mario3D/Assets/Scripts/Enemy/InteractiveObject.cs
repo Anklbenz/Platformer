@@ -2,7 +2,7 @@
 using Character.States;
 using UnityEngine;
 
-namespace Enemys
+namespace Enemy
 {
     public abstract class InteractiveObject : MonoBehaviour
     {
@@ -10,11 +10,10 @@ namespace Enemys
 
         protected void OnTriggerEnter(Collider other) {
             var character = other.GetComponent<CharacterHandler>();
-
-            if (character != null) {
-                var state = character.StateSystem;
-                Interaction(state, other.bounds.center); 
-            }
+            if (character == null) return;
+            
+            var state = character.StateSystem;
+            Interaction(state, other.bounds.center);
         }
     }
 }

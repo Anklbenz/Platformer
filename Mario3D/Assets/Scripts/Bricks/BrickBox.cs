@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 using Character.States;
-using Enemys;
+using Enemy;
 using Enums;
 using UnityEngine;
 
