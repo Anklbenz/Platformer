@@ -1,4 +1,7 @@
-﻿using UnityEngine;
+﻿using System;
+using Enums;
+using UnityEngine;
+using Object = System.Object;
 
 namespace Character.States.Data
 {
@@ -20,11 +23,15 @@ namespace Character.States.Data
         [SerializeField] private Vector3 sitColliderSize;
         public Vector3 SitColliderSize => sitColliderSize;
 
-        [SerializeField] private GameObject skinObject;
+        [SerializeField] private GameObject skinObjectLink;
 
-        public GameObject SkinObject => skinObject;
+        public GameObject Skin{ get; private set; }
 
-        public GameObject Skin{ get; set; }
+        public void SkinInstantiate(Transform parent){
+            if(Skin != null) return;
+            
+            Skin = Instantiate(skinObjectLink, parent);
+        }
     }
 }
 

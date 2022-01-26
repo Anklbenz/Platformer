@@ -1,4 +1,5 @@
 ﻿using Character.States.Data;
+using Enums;
 using Interfaces;
 using UnityEngine;
 
@@ -6,22 +7,13 @@ namespace Character.States
 {
     public class SeniorState : State
     {
-        public SeniorState(ICharacterComponents character, IStateSwitcher stateSwitcher, StateData data) : base(character, stateSwitcher,
+        public SeniorState( IStateSwitcher stateSwitcher, StateData data) : base(stateSwitcher,
             data){
         }
 
-        public override void Enter(){
-            Data.Skin.SetActive(true);
-            StateSwitcher.Resize();
-        }
-
-        public override void Exit(){
-            Data.Skin.SetActive(false);
-        }
-
         public override void StateDown(){
-            StateSwitcher.MainStateSwitch<JuniorState>();
-            StateSwitcher.ExtraStateFlicker();
+            StateSwitcher.StateSwitch<JuniorState>();
+            StateSwitcher.ExtraStateSwitch(ExtraState.FlickerState);
         }
 
         public override void StateUp(){

@@ -5,8 +5,8 @@ namespace Interfaces
     public interface ICharacterComponents
     {
         Transform MainTransform{ get; }
-        Rigidbody MainRigidbody{ get; }
         CapsuleCollider MainCollider{ get; }
+        Rigidbody MainRigidbody{ get; }
         Transform SkinsParent{ get; }
     }
 }
