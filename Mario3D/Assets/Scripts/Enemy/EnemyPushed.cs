@@ -2,6 +2,7 @@
 using Character;
 using Character.States;
 using Enums;
+using Interfaces;
 using UnityEngine;
 
 namespace Enemy
@@ -14,7 +15,7 @@ namespace Enemy
         [Header("EnemyPusher")]
         [SerializeField] private float engageSpeed;
 
-        [SerializeField] private float cooldownTime;
+        [SerializeField] private float cooldownTime, dropForce;
         [SerializeField] private PusherState currentState = PusherState.Walk;
         [SerializeField] private MeshRenderer mainMesh, secondaryMesh;
 
@@ -27,14 +28,14 @@ namespace Enemy
             _patrolSpeed = base.Motor.GetSpeed();
         }
 
-        protected override void Interaction(StateSystem state, Vector3 pos){
+        protected override void Interaction(IStateHandlerInteraction stateHandler, Vector3 pos){
             if (currentState == PusherState.Cooldown){
                 SendScore(SCORE_LIST_ELEMENT);
                 TransitionToEngage(pos);
                 return;
             }
 
-            base.Interaction(state, pos);
+            base.Interaction(stateHandler, pos);
         }
 
         public override void JumpOn(Vector3 senderCenter, int jumpsInRowCount){
@@ -52,7 +53,7 @@ namespace Enemy
         }
 
         private void TransitionToEngage(Vector3 boundsCenter){
-            var dir = boundsCenter.z >= Collider.bounds.center.z ? Direction.Left : Direction.Right;
+            var dir = boundsCenter.z >= ObjectCollider.bounds.center.z ? Direction.Left : Direction.Right;
             StartCoroutine(Engage(dir));
         }
 
@@ -64,7 +65,7 @@ namespace Enemy
                     base.Motor.DirectionChange();
                 }
                 else{
-                    activeEnemy.Drop();
+                    activeEnemy.Drop(dropForce);
                     base.SendScore(_inRowCounter.Count);
                     _inRowCounter.Inreace();
                 }

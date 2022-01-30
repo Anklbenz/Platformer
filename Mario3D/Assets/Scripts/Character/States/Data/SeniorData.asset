@@ -17,5 +17,5 @@ MonoBehaviour:
   canShoot: 1
   colliderSize: {x: 1.6, y: 3.2, z: 1.6}
   sitColliderSize: {x: 1.6, y: 1.6, z: 1.6}
-  skinObject: {fileID: 1431828340438068661, guid: da14827158fde1b4686996f2af547388,
+  skinPrefab: {fileID: 1431828340438068661, guid: da14827158fde1b4686996f2af547388,
     type: 3}

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Enums;
 using Interfaces;
 using UnityEngine;
 
@@ -6,27 +7,33 @@ namespace Game
 {
     public class ObjectSystem
     {
-        public List<IBonusSpawn> BonusBricksList = new List<IBonusSpawn>();
-        public List<IScoreChangeNotify> ScoreNotifies = new List<IScoreChangeNotify>();
-        public List<ICoinCollectNotify> CoinCollectNotifies = new List<ICoinCollectNotify>();
+        public readonly List<IBonusSpawn> BonusBricksList = new List<IBonusSpawn>();
+        public readonly List<IScoreChangeNotify> ScoreNotifies = new List<IScoreChangeNotify>();
+        public readonly List<ICoinCollectNotify> CoinCollectNotifies = new List<ICoinCollectNotify>();
+        public readonly List<IScreenActivator> ScreenActivatorSensitives = new List<IScreenActivator>();
 
-        private List<MonoBehaviour> allObjectsList = new List<MonoBehaviour>();
+        private readonly List<MonoBehaviour> _listAllObjects = new List<MonoBehaviour>();
 
         public ObjectSystem() {
-            allObjectsList.AddRange(Object.FindObjectsOfType<MonoBehaviour>());
+            _listAllObjects.AddRange(Object.FindObjectsOfType<MonoBehaviour>());
             SortObjectsOfType();
         }
 
         private void SortObjectsOfType() {
-            foreach (var instance in allObjectsList) {
-                if (instance is IScoreChangeNotify)
-                    ScoreNotifies.Add(instance as IScoreChangeNotify);
+            foreach (var instance in _listAllObjects) {
+                if (instance is IScoreChangeNotify notify)
+                    ScoreNotifies.Add(notify);
 
-                if (instance is IBonusSpawn)
-                    BonusBricksList.Add(instance as IBonusSpawn);
+                if (instance is IBonusSpawn bonus)
+                    BonusBricksList.Add(bonus);
 
-                if (instance is ICoinCollectNotify)
-                    CoinCollectNotifies.Add(instance as ICoinCollectNotify);
+                if (instance is ICoinCollectNotify coin)
+                    CoinCollectNotifies.Add(coin);
+
+                if (instance is IScreenActivator enemy)
+                    //ScreenActivatorSensitives.Add(enemy);
+                    enemy.Standby();
+              
             }
         }
     }

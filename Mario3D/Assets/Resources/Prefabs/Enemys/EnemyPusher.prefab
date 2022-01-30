@@ -121,9 +121,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: adad6e6e82c199b4b801b1851bdc4047, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _speed: 2
-  MoveDirection: 0
-  _bouncePower: 20
+  speed: 0
+  jumpingPower: 0
+  jumpingMode: 0
+  moveDirection: 0
 --- !u!114 &4019175005913563379
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -136,13 +137,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 16d6e8cab9769814e95103496174d97a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _patrolLayer:
+  patrolLayer:
     serializedVersion: 2
-    m_Bits: 34817
-  _groundCheckActive: 0
-  _timeToDestroyAfterDrop: 2
+    m_Bits: 3073
+  destroyDropTime: 3
   engageSpeed: 10
   cooldownTime: 5
+  dropForce: 20
   currentState: 1
   mainMesh: {fileID: 1943920063657576541}
   secondaryMesh: {fileID: 2907905224118743662}

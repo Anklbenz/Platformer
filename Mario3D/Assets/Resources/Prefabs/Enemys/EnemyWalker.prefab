@@ -143,6 +143,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 1.4
   jumpingPower: 0
+  jumpingMode: 0
   moveDirection: 0
 --- !u!114 &8422206331231859417
 MonoBehaviour:
@@ -159,8 +160,8 @@ MonoBehaviour:
   patrolLayer:
     serializedVersion: 2
     m_Bits: 3073
-  addJumpingMove: 0
-  destroyTimeDrop: 2
+  destroyDropTime: 3
+  dropForce: 20
   destroyStompTime: 1.5
 --- !u!1001 &6442575915522978840
 PrefabInstance:

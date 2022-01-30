@@ -13,35 +13,28 @@ namespace Character.States
   {
     public event Action<StateData> StateChangedEvent;
     public event Action<ExtraState> ExtraStateChangedEvent;
-    
-    private ExtraState _extraState;
+    public StateData CurrentStateData => CurrentState.Data;
+    public ExtraState ExtraState{ get; private set; }
+    public State CurrentState{ get; private set; }
     private readonly List<State> _stateMap;
     private readonly int _flickerLength, _unstopLength;
-    private State _currentState;
-    //private StateData CurrentStateData => _currentState.Data;
 
-    public StateSwitcher(StateData junior, StateData middle, StateData senior, int flickerLength, int unstopLength){
+    public StateSwitcher(IReadOnlyList<StateData> stateData, /*StateData junior, StateData middle, StateData senior,*/ int flickerLength, int unstopLength){
+      ExtraState = ExtraState.NormalState;
       _flickerLength = flickerLength;
       _unstopLength = unstopLength;
-      _extraState = ExtraState.NormalState;
-      
+
       _stateMap = new List<State>()
       {
-        new JuniorState(this, junior), new MiddleState(this, middle), new SeniorState(this, senior)
+        new JuniorState(this, stateData[0]), new MiddleState(this, stateData[1]), new SeniorState(this, stateData[2])
       };
     }
 
     public void StateSwitch<T>() where T : State{
       var state = _stateMap.FirstOrDefault(source => source is T);
       if (state == null) return;
-     _currentState = state;
-
-     StateChangedEvent?.Invoke(_currentState.Data);
-    }
-
-    public bool CompareCurrentState<T>() where T : State{
-      var state = _stateMap.FirstOrDefault(source => source is T);
-      return _currentState == state;
+      CurrentState = state;
+      StateChangedEvent?.Invoke(CurrentState.Data);
     }
 
     public void ExtraStateSwitch(ExtraState state){
@@ -49,37 +42,20 @@ namespace Character.States
         case (ExtraState.NormalState):
           break;
         case (ExtraState.FlickerState):
-          ExtraSwitcher(ExtraState.FlickerState, _flickerLength);
+          ExtraStateCountdown(_flickerLength);
           break;
         case (ExtraState.UnstopState):
-          ExtraSwitcher(ExtraState.UnstopState, _unstopLength);
+          ExtraStateCountdown(_unstopLength);
           break;
+        default:
+          throw new ArgumentOutOfRangeException(nameof(state), state, null);
       }
-
-      _extraState = state;
-      ExtraStateChangedEvent?.Invoke(_extraState);
+      ExtraState = state;
+      ExtraStateChangedEvent?.Invoke(ExtraState);
     }
 
-    public void StateUp(){
-      _currentState.StateUp();
-    }
-
-    public void EnemyTouch(ActiveEnemy sender){
-      switch (_extraState){
-        case (ExtraState.NormalState):
-          _currentState.StateDown();
-          break;
-        case (ExtraState.UnstopState):
-          sender.DownHit();
-          break;
-        case ExtraState.FlickerState:
-          return;
-      }
-    }
-
-    private async void ExtraSwitcher(ExtraState state, int length){
-      ExtraStateSwitch(state);
-      await Task.Delay(length);
+    private async void ExtraStateCountdown(int timer){
+      await Task.Delay(timer);
       ExtraStateSwitch(ExtraState.NormalState);
     }
   }

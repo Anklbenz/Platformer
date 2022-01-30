@@ -9,57 +9,58 @@ namespace Enemy
 
     public abstract class ActiveInteractiveObject : InteractiveObject
     {
-        private const float PATROL_BOX_INDENT = 0.5f;//%
+        private const float PATROL_BOX_INDENT = 0.5f; //%
         private const float PATROL_CHECK_DISTANCE = 0.05f;
-        
+
         [Header("ActiveInterObject")]
         [SerializeField] protected LayerMask patrolLayer;
 
         protected Motor Motor;
         protected Rigidbody Rigidbody;
-        protected BoxCollider Collider;
-       
-        private Interactor _frontInteract, _groundInteract;
+        protected BoxCollider ObjectCollider;
 
-        protected virtual void Awake() {
+        private Interacting _frontInteract, _groundInteract;
+
+        protected virtual void Awake(){
             Motor = GetComponent<Motor>();
-            Rigidbody = GetComponent<Rigidbody>();        
-            Collider = GetComponent<BoxCollider>();
-       
-            _groundInteract = new Interactor(Collider, Axis.Vertical, PATROL_CHECK_DISTANCE, patrolLayer, PATROL_BOX_INDENT);
-            _frontInteract = new Interactor(Collider, Axis.Horizontal, PATROL_CHECK_DISTANCE, patrolLayer, PATROL_BOX_INDENT);
+            Rigidbody = GetComponent<Rigidbody>();
+            ObjectCollider = GetComponent<BoxCollider>();
+
+            _groundInteract = new Interacting(ObjectCollider, Axis.Vertical, PATROL_CHECK_DISTANCE, patrolLayer, PATROL_BOX_INDENT);
+            _frontInteract = new Interacting(ObjectCollider, Axis.Horizontal, PATROL_CHECK_DISTANCE, patrolLayer, PATROL_BOX_INDENT);
         }
 
-        protected virtual void FixedUpdate() {
+        protected virtual void FixedUpdate(){
             PatrolCollisionCheck();
 
             if (Motor.JumpingMode)
                 GroundCollisionCheck();
         }
 
-        private void PatrolCollisionCheck() {
+        private void PatrolCollisionCheck(){
             if (_frontInteract.InteractionBoxcast(Motor.GetDirection(), out var obj))
                 OnFrontCollision(obj);
         }
 
-        private void GroundCollisionCheck() {
+        private void GroundCollisionCheck(){
             if (_groundInteract.InteractionBoxcast(Vector3.down))
-                OnIsGrounded();        
+                OnIsGrounded();
         }
 
-        protected virtual void OnFrontCollision(RaycastHit obj) {
+        protected virtual void OnFrontCollision(RaycastHit obj){
             Motor.DirectionChange();
         }
 
-        protected virtual void OnIsGrounded() {}
+        protected virtual void OnIsGrounded(){
+        }
 
-        public abstract void DownHit();
+        public abstract void DownHit(float dropForce);
 
-        private void OnDrawGizmos() {
+        private void OnDrawGizmos(){
             if (_frontInteract == null) return;
 
-            _frontInteract.OnDrawGizmos(Color.white);
-            _groundInteract.OnDrawGizmos(Color.white);
+            _frontInteract.OnDrawGizmos(Color.red);
+            _groundInteract.OnDrawGizmos(Color.yellow);
         }
     }
 }

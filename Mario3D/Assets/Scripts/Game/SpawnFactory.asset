@@ -18,7 +18,7 @@ MonoBehaviour:
     type: 3}
   _flowerPrefab: {fileID: 2467347187042207607, guid: d5d0b7d62e64fd24cae796b4c3196736,
     type: 3}
-  _lifesUpPrefab: {fileID: -3199050723184793809, guid: acf4cdd946ab2ce468f21775fc61d680,
+  lifeUpPrefab: {fileID: -3199050723184793809, guid: acf4cdd946ab2ce468f21775fc61d680,
     type: 3}
   _jumpingStarPrefab: {fileID: 6621541574897914263, guid: 26c94efe71b854b4fb8b2b098b9e4b47,
     type: 3}

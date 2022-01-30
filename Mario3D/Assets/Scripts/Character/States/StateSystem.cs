@@ -84,17 +84,17 @@ namespace Character.States
 
 
         public void StateSwitch<T>() where T : State{
-            var state = _mainStateMap.FirstOrDefault(source => source is T);
-            if (state == null) return;
+            var stateHandler = _mainStateMap.FirstOrDefault(source => source is T);
+            if (stateHandler == null) return;
 
             _currentState?.Exit();
-            _currentState = state;
+            _currentState = stateHandler;
             _currentState.Enter();
         }
 
         public bool CompareCurrentState<T>() where T : State{
-            var state = _mainStateMap.FirstOrDefault(source => source is T);
-            return _currentState == state ? true : false;
+            var stateHandler = _mainStateMap.FirstOrDefault(source => source is T);
+            return _currentState == stateHandler ? true : false;
         }
     }
 }*/

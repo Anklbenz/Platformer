@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 3894669555101092506}
   - component: {fileID: 960953663393949637}
   - component: {fileID: 3320685874552789971}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: FIreBall
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -75,9 +75,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 633cdd7b0106b904bad08087a6c1792d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _groundLayers:
-    serializedVersion: 2
-    m_Bits: 32768
 --- !u!1 &5355057075275158553
 GameObject:
   m_ObjectHideFlags: 0
@@ -89,7 +86,7 @@ GameObject:
   - component: {fileID: 8226288300945252654}
   - component: {fileID: 3474028117532354345}
   - component: {fileID: 1334871217280187235}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Mesh
   m_TagString: Untagged
   m_Icon: {fileID: 0}

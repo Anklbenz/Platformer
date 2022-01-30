@@ -11,7 +11,7 @@ namespace Game
         [SerializeField] Coin _coinPrefab;
         [SerializeField] GrowupBonus _growupBonusPrefab;
         [SerializeField] Flower _flowerPrefab;
-        [SerializeField] LifesUpBonus _lifesUpPrefab;
+        [SerializeField] LifeUpBonus lifeUpPrefab;
         [SerializeField] JumpingStar _jumpingStarPrefab;
         [SerializeField] EnemyWalker _enemyWalkerPrefab;
 
@@ -24,7 +24,7 @@ namespace Game
                 case BonusType.Flower:
                     return Get(_flowerPrefab, pos, parent);
                 case BonusType.LifeUp:
-                    return Get(_lifesUpPrefab, pos, parent);
+                    return Get(lifeUpPrefab, pos, parent);
                 case BonusType.JumpStar:
                     return Get(_jumpingStarPrefab, pos, parent);
                 case BonusType.Walker:

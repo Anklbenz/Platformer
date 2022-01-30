@@ -16,7 +16,7 @@ namespace Bonus
             Destroy(this.gameObject, _destroyTime);
         }
 
-        protected override void BonusTake(StateSystem state) {
+        protected override void BonusTake(IStateHandlerInteraction stateHandler) {
             SendScore(SCORE_LIST_ELEMENT);
             CoinCollectNotify?.Invoke();
         }

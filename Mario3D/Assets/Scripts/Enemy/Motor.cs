@@ -6,7 +6,9 @@ namespace Enemy
     public class Motor : MonoBehaviour
     {
         [Range(0, 15)]
-        [SerializeField] private float speed, jumpingPower;
+        [SerializeField] private float speed;
+        [Range(5, 40)]
+        [SerializeField] private float jumpingPower;
         [SerializeField] private bool jumpingMode;
         [SerializeField] private Direction moveDirection;
         public bool JumpingMode => jumpingMode;

@@ -10,10 +10,10 @@ namespace Bonus
         private const int SCORE_LIST_ELEMENT = 5;
 
         public event Action<IScoreChangeNotify, int> ScoreChangeEvent;
-        public Vector3 Position => Collider.bounds.center;
+        public Vector3 Position => ObjectCollider.bounds.center;
 
-        protected override void BonusTake(StateSystem state) {
-            state.LevelUp();
+        protected override void BonusTake(IStateHandlerInteraction stateHandler) {
+            stateHandler.BonusTake();
             ScoreChangeEvent?.Invoke(this, SCORE_LIST_ELEMENT);
         }
     }

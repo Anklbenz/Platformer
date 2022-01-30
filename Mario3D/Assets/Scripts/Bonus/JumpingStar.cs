@@ -9,7 +9,7 @@ namespace Bonus
     {
         private const int SCORE_LIST_ELEMENT = 5;
 
-        public Vector3 Position => Collider.bounds.center;
+        public Vector3 Position => ObjectCollider.bounds.center;
         public event Action<IScoreChangeNotify, int> ScoreChangeEvent;
 
         protected override void Awake(){
@@ -18,13 +18,16 @@ namespace Bonus
         }
 
         protected override void OnIsGrounded(){
-            Motor.Jumping();
+           Motor.Jumping();
         }
-
-        protected override void BonusTake(StateSystem state){
-            state.ExtraStateUnstop();
+  
+        protected override void BonusTake(IStateHandlerInteraction stateHandler){
+            stateHandler.UnstopBonusTake();
             ScoreChangeEvent?.Invoke(this, SCORE_LIST_ELEMENT);
         }
+
+    //    public override void DownHit(float force){}
+
     }
 }
 

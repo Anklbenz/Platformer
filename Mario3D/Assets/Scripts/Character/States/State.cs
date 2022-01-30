@@ -4,9 +4,10 @@ using UnityEngine;
 
 namespace Character.States
 {
+   
     public abstract class State
     {
-        public StateData Data{ get; protected set; }
+      public StateData Data{ get; protected set; }
         protected readonly IStateSwitcher StateSwitcher;
 
         protected State(IStateSwitcher stateSwitcher, StateData data){

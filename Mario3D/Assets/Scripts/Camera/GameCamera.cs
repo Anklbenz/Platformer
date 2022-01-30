@@ -12,7 +12,7 @@ namespace Camera
 
     
             posZ = target.position.z -6;
-            // transform.position = n
+          
         }
 
         void LateUpdate() {

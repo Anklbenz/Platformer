@@ -9,7 +9,7 @@ namespace Character.Interaction
         private const float SIDE_ENTER_DEPTH = 0.3f;
 
         private readonly InRowCounter InRowCounter = new InRowCounter();
-        private readonly Interactor _interactor;
+        private readonly Interacting _interacting;
         private readonly Collider _interactCollider;
         private readonly Vector3 _direction;
         private readonly IMoveInfo _moveInfo;
@@ -24,11 +24,11 @@ namespace Character.Interaction
             _bounceInstance = bounceInstance;
             _interactCollider = collider;
             _direction = direction;
-            _interactor = new Interactor(collider, Axis.Vertical, inspectLength, inspectLayer, boxIndent);
+            _interacting = new Interacting(collider, Axis.Vertical, inspectLength, inspectLayer, boxIndent);
         }
 
         public void CollisionCheck(){
-            var interactions = _interactor.InteractionOverlap(_direction);
+            var interactions = _interacting.InteractionOverlap(_direction);
 
             if (_moveInfo.MovingDown && !_collisionDetected && interactions.Length > 0){
                 _collisionDetected = true;
@@ -70,7 +70,7 @@ namespace Character.Interaction
             return Mathf.Abs(overlapDirection.z) > SIDE_ENTER_DEPTH;
         }
         public void OnDrawGizmos(Color color){
-            _interactor.OnDrawGizmos(color);
+            _interacting.OnDrawGizmos(color);
         }
     }
 }

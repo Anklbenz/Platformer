@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Character.BallSpawner;
 using Character.Interaction;
 using Character.States;
@@ -16,32 +17,28 @@ namespace Character
     {
         private const float ISGROUND_BOX_INDENT = 0.95f;
 
-        [Header("FireballSpawner")]
         [SerializeField] private BallSpawnerData spawnerData;
-
         [SerializeField] private Transform firePoint, fireballParent;
-        [SerializeField] private LayerMask groundLayers;
+        [SerializeField] private LayerMask groundLayer, targetLayer;
         private BallSpawner.BallSpawner _ballSpawner;
 
         [Header("StateHandler")]
-        [SerializeField] private StateData juniorState;
+        [SerializeField] private List<StateData> stateDataList;
 
-        [SerializeField] private StateData middleState;
-        [SerializeField] private StateData seniorState;
         [SerializeField] private Transform skinsParent;
-        [SerializeField] private int flickerLength;
-        [SerializeField] private int unstopLength;
+        [SerializeField] private float unstopStateHitForce;
+        [SerializeField] private int flickerLength, unstopLength;
+
         public Transform SkinsParent => skinsParent;
-        public StateSystem StateSystem;
+        public StateHandler StateHandler;
 
         [Header("InteractionsHandler")]
         [SerializeField] private float isGroundedLength;
 
-        [SerializeField] private float topLength;
-        [SerializeField] private float bottomLength;
+        [SerializeField] private float topLength, bottomLength;
         [SerializeField] private LayerMask topLayer, bottomLayer, isGroundedLayer;
         private InteractionsHandler _interactionsHandler;
-        private Interactor _isGrounded;
+        private Interacting _isGrounded;
         public bool IsGrounded => _isGrounded.InteractionBoxcast(Vector3.down);
 
         [Header("MoveHandler")]
@@ -55,29 +52,28 @@ namespace Character
         public Rigidbody MainRigidbody{ get; private set; }
         public Transform MainTransform{ get; private set; }
 
-
         private void Awake(){
             MainCollider = GetComponent<CapsuleCollider>();
             MainRigidbody = GetComponent<Rigidbody>();
             MainTransform = GetComponent<Transform>();
-            
-            StateSystem = new StateSystem(this, juniorState, middleState, seniorState, flickerLength, unstopLength);
+
+            StateHandler = new StateHandler(this, stateDataList, unstopStateHitForce, flickerLength, unstopLength);
 
             _gameInput = new GameInput();
             _gameInput.Enable();
             _gameInput.Player.SetCallbacks(this);
 
-            _ballSpawner = new BallSpawner.BallSpawner(firePoint, groundLayers, fireballParent, spawnerData);
-            _isGrounded = new Interactor(MainCollider, Axis.Vertical, isGroundedLength, isGroundedLayer, ISGROUND_BOX_INDENT, true);
+            _ballSpawner = new BallSpawner.BallSpawner(spawnerData, firePoint, fireballParent, groundLayer, targetLayer);
+            _isGrounded = new Interacting(MainCollider, Axis.Vertical, isGroundedLength, isGroundedLayer, ISGROUND_BOX_INDENT, true);
             _move = new Move(this, moveData, MainRigidbody, MainCollider, isGroundedLength, isGroundedLayer);
-            _interactionsHandler = new InteractionsHandler(StateSystem, MainCollider, this, _move, topLength,
+            _interactionsHandler = new InteractionsHandler(StateHandler, MainCollider, this, _move, topLength,
                 topLayer, bottomLength, bottomLayer);
         }
 
         private void FixedUpdate(){
-            if (StateSystem.ExtraState == ExtraState.NormalState)
+            if (StateHandler.ExtraState == ExtraState.NormalState)
                 _interactionsHandler.LegsInteractionsCheck();
-            
+
             _interactionsHandler.HeadInteractionCheck();
             _move.RecalculateMoving();
         }
@@ -91,13 +87,13 @@ namespace Character
         }
 
         public void OnMove(InputAction.CallbackContext context){
-          var movement = Vector3.forward * context.ReadValue<float>();
+            var movement = Vector3.forward * context.ReadValue<float>();
             _move.OnMove(movement);
         }
 
         public void OnExtra(InputAction.CallbackContext context){
             if (context.phase == InputActionPhase.Performed){
-                if (StateSystem.Data.CanShoot)
+                if (StateHandler.Data.CanShoot)
                     _ballSpawner.Spawn();
 
                 _move.OnExtra(true);

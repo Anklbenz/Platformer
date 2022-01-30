@@ -23,13 +23,13 @@ namespace Bricks
         public Vector3 BonusCreatePoint =>bonusCreationPoint.position;
         public BonusType BonusType => bonusType;
 
-        public abstract void BrickHit(StateSystem state);
+        public abstract void BrickHit(bool canCrush);
 
-        protected void BonusShow(StateSystem state) {
+        protected void BonusShow(bool canCrush){
             if (bonusType == BonusType.None) return;
 
-            if (bonusType == BonusType.GrowUp || bonusType == BonusType.Flower) 
-                bonusType = state.CompareCurrentState<JuniorState>() ? BonusType.GrowUp : BonusType.Flower;      
+            if (bonusType == BonusType.GrowUp || bonusType == BonusType.Flower)
+                bonusType = canCrush ? BonusType.Flower : BonusType.GrowUp;
 
             BonusSpawnEvent?.Invoke(this);
         }

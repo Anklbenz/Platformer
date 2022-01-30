@@ -5,12 +5,12 @@ using UnityEngine;
 
 namespace Bonus
 {
-    public class LifesUpBonus : ActiveBonus, ILifeIncreaseNotify
+    public class LifeUpBonus : ActiveBonus, ILifeIncreaseNotify
     {
         public event Action<Vector3> IncreaseLifeEvent;
-        public Vector3 Position => Collider.bounds.center;
+        public Vector3 Position => ObjectCollider.bounds.center;
 
-        protected override void BonusTake(StateSystem state) {
+        protected override void BonusTake(IStateHandlerInteraction stateHandler) {
             IncreaseLifeEvent?.Invoke(Position);
         }
     }

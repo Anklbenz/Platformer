@@ -1,5 +1,6 @@
 ﻿using Character.States;
 using Enemy;
+using Interfaces;
 using UnityEngine;
 
 namespace Bonus
@@ -8,19 +9,19 @@ namespace Bonus
     {
         private bool _isActive = true;
 
-        protected override void Interaction(StateSystem state, Vector3 pos){
+        protected override void Interaction(IStateHandlerInteraction stateHandler, Vector3 pos){
             if (!_isActive) return;
 
             _isActive = false;
-            BonusTake(state);
+            BonusTake(stateHandler);
             Destroy(gameObject);
         }
 
-        public override void DownHit(){
+        public override void DownHit(float force){
             if (Motor.isActiveAndEnabled)
                 Motor.DirectionChange();
         }
 
-        protected abstract void BonusTake(StateSystem state);
+        protected abstract void BonusTake(IStateHandlerInteraction stateHandler);
     }
 }

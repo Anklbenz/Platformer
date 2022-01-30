@@ -1,36 +1,42 @@
 ﻿using Enemy;
+using Interfaces;
 using UnityEngine;
 
 namespace PrefabSripts
 {
-    public sealed class FireBall : MonoBehaviour
+    public sealed class FireBall : MonoBehaviour, IScreenDeactivator
     {
         private const float MIN_FLY_HEIGHT = 0.1f;
-        private LayerMask _groundLayers;
-        private float _bulletSpeed;
-        private float _maxFlyHeight;
-        private Vector3 _moveDirection;
-        private Vector3 _ricochetStartPoint;
+     
+        private Vector3 _moveDirection, _ricochetStartPoint;
+        private LayerMask _groundLayer, _targetLayer;
+        private float _bulletSpeed, _maxFlyHeight, _hitForce;
         private bool _ricochetHappened = false;
 
         private Rigidbody _rigidbody;
         private Collider _collider;
 
         private bool RayVectorDown => Physics.Raycast(_collider.bounds.center, Vector3.down, out var rayHit,
-            _collider.bounds.size.y / 2 + MIN_FLY_HEIGHT, _groundLayers);
+            _collider.bounds.size.y / 2 + MIN_FLY_HEIGHT, _groundLayer);
 
         private void Awake(){
             _rigidbody = GetComponent<Rigidbody>();
             _collider = GetComponent<Collider>();
         }
 
-        public void Initialize(Vector3 position, float bulletSpeed, float ricochetHeight, Vector3 moveDirection, LayerMask groundLayers){
+        public void Initialize(float bulletSpeed, float maxFlyHeight, float hitForce, LayerMask groundLayer, LayerMask targetLayer){
+            _bulletSpeed = bulletSpeed;
+            _maxFlyHeight = maxFlyHeight;
+            _hitForce = hitForce;
+            _targetLayer = targetLayer;
+            _groundLayer = groundLayer;
+        }
+
+        public void Activate(Vector3 position, Vector3 moveDirection){
             gameObject.SetActive(true);
             transform.position = position;
-            _bulletSpeed = bulletSpeed;
-            _maxFlyHeight = ricochetHeight;
+            
             _moveDirection = moveDirection + Vector3.down; // 45 degrees down
-            _groundLayers = groundLayers;
             _ricochetHappened = false;
         }
 
@@ -61,18 +67,19 @@ namespace PrefabSripts
         }
 
         private void OnTriggerEnter(Collider other){
-            Hit(other);
+            if ((_targetLayer.value & (1 << other.transform.gameObject.layer)) > 0)
+                Hit(other);
         }
 
         private void Hit(Collider other){
             var activeEnemy = other.GetComponentInParent<ActiveEnemy>();
             if (activeEnemy)
-                activeEnemy.DownHit();
-
+                activeEnemy.DownHit(_hitForce);
+            
             Deactivate();
         }
 
-        private void Deactivate(){
+        public void Deactivate(){
             gameObject.SetActive(false);
         }
 

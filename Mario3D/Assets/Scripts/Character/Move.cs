@@ -11,14 +11,14 @@ namespace Character
         private readonly IMoveInfo _moveInfo;
         private readonly MoveData _data;
         private readonly Rigidbody _rigidbody;
-        private readonly Interactor _wallContactInteractor;
+        private readonly Interacting _wallContactInteracting;
 
         private bool _canSlide, _jumping, _jumpInput;
         private float _jumpForceDuration, _maxSpeed, _walkStep;
 
         private Vector3 _moveDirection;
         private Vector3 RbVelocity => _rigidbody.velocity;
-        private bool IsWallContact => _wallContactInteractor.InteractionBoxcast(_moveDirection);
+        private bool IsWallContact => _wallContactInteracting.InteractionBoxcast(_moveDirection);
 
         public Move(IMoveInfo moveInfo, MoveData data, Rigidbody rBody, Collider collider, float wallInspectLength, LayerMask wallLayer){
             _moveInfo = moveInfo;
@@ -26,7 +26,7 @@ namespace Character
             _maxSpeed = data.MaxWalkSpeed;
             _walkStep = data.WalkForceStep;
             _rigidbody = rBody;
-            _wallContactInteractor = new Interactor(collider, Axis.Horizontal, wallInspectLength, wallLayer, WALL_BOX_INDENT);
+            _wallContactInteracting = new Interacting(collider, Axis.Horizontal, wallInspectLength, wallLayer, WALL_BOX_INDENT);
         }
 
         public void RecalculateMoving(){
@@ -101,7 +101,7 @@ namespace Character
         }
 
         public void OnDrawGizmos(Color color){
-            _wallContactInteractor.OnDrawGizmos(color);
+            _wallContactInteracting.OnDrawGizmos(color);
         }
     }
 }

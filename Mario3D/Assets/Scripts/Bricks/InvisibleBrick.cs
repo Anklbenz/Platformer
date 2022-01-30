@@ -7,11 +7,11 @@ namespace Bricks
     {
         [SerializeField] private Collider triggerCollider;
 
-        public override void BrickHit(StateSystem state) {
+        public override void BrickHit(bool canCrush) {
             if (!IsActive) return;
             if (bonusesCount <= 0) return;
             
-            base.BonusShow(state);
+            base.BonusShow(canCrush);
             bonusesCount--;
             brickCollider.enabled = true;
             triggerCollider.enabled = false;

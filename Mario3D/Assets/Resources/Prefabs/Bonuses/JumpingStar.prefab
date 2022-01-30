@@ -135,7 +135,7 @@ GameObject:
   - component: {fileID: 4330699601131381392}
   - component: {fileID: 8407825469699040667}
   - component: {fileID: 2877307668070477403}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Cube (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -325,9 +325,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: adad6e6e82c199b4b801b1851bdc4047, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _speed: 2
-  MoveDirection: 0
-  _bouncePower: 20
+  speed: 3.2
+  jumpingPower: 31.2
+  jumpingMode: 1
+  moveDirection: 2
 --- !u!114 &6621541574897914263
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -340,7 +341,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0af240862150a5341a717524ed7e9491, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _patrolLayer:
+  patrolLayer:
     serializedVersion: 2
     m_Bits: 1
-  _groundCheckActive: 1
