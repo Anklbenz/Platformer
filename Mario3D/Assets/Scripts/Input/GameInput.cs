@@ -41,6 +41,14 @@ public class @GameInput : IInputActionCollection, IDisposable
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""SitDown"",
+                    ""type"": ""Button"",
+                    ""id"": ""e1f8ce16-eb05-40fa-ab3c-3eda1d5e1ac8"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -109,6 +117,28 @@ public class @GameInput : IInputActionCollection, IDisposable
                     ""action"": ""Extra"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""7c519f05-5aa5-4e2c-a1e2-805f3a159522"",
+                    ""path"": ""<Keyboard>/s"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""SitDown"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""6c6ad540-f6ec-435b-9ef3-c9ee19262feb"",
+                    ""path"": ""<Keyboard>/downArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""SitDown"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -120,6 +150,7 @@ public class @GameInput : IInputActionCollection, IDisposable
         m_Player_Jump = m_Player.FindAction("Jump", throwIfNotFound: true);
         m_Player_Move = m_Player.FindAction("Move", throwIfNotFound: true);
         m_Player_Extra = m_Player.FindAction("Extra", throwIfNotFound: true);
+        m_Player_SitDown = m_Player.FindAction("SitDown", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -172,6 +203,7 @@ public class @GameInput : IInputActionCollection, IDisposable
     private readonly InputAction m_Player_Jump;
     private readonly InputAction m_Player_Move;
     private readonly InputAction m_Player_Extra;
+    private readonly InputAction m_Player_SitDown;
     public struct PlayerActions
     {
         private @GameInput m_Wrapper;
@@ -179,6 +211,7 @@ public class @GameInput : IInputActionCollection, IDisposable
         public InputAction @Jump => m_Wrapper.m_Player_Jump;
         public InputAction @Move => m_Wrapper.m_Player_Move;
         public InputAction @Extra => m_Wrapper.m_Player_Extra;
+        public InputAction @SitDown => m_Wrapper.m_Player_SitDown;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -197,6 +230,9 @@ public class @GameInput : IInputActionCollection, IDisposable
                 @Extra.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnExtra;
                 @Extra.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnExtra;
                 @Extra.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnExtra;
+                @SitDown.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSitDown;
+                @SitDown.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSitDown;
+                @SitDown.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSitDown;
             }
             m_Wrapper.m_PlayerActionsCallbackInterface = instance;
             if (instance != null)
@@ -210,6 +246,9 @@ public class @GameInput : IInputActionCollection, IDisposable
                 @Extra.started += instance.OnExtra;
                 @Extra.performed += instance.OnExtra;
                 @Extra.canceled += instance.OnExtra;
+                @SitDown.started += instance.OnSitDown;
+                @SitDown.performed += instance.OnSitDown;
+                @SitDown.canceled += instance.OnSitDown;
             }
         }
     }
@@ -219,5 +258,6 @@ public class @GameInput : IInputActionCollection, IDisposable
         void OnJump(InputAction.CallbackContext context);
         void OnMove(InputAction.CallbackContext context);
         void OnExtra(InputAction.CallbackContext context);
+        void OnSitDown(InputAction.CallbackContext context);
     }
 }

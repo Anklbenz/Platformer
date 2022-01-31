@@ -1,4 +1,4 @@
-﻿using System;
+﻿/*using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -74,27 +74,27 @@ namespace Character.States
         
         public void Resize(){
             var height = _character.MainCollider.height;
-            var verticalDifference = Vector3.up * (Data.ColliderSize.y - height) / 2;
+            var verticalDifference = Vector3.up * (Data.ColliderResize.y - height) / 2;
             _character.MainTransform.position += verticalDifference;
 
-            _character.MainCollider.height = Data.ColliderSize.y;
-            _character.MainCollider.radius = Data.ColliderSize.x / 2;
+            _character.MainCollider.height = Data.ColliderResize.y;
+            _character.MainCollider.radius = Data.ColliderResize.x / 2;
 
         }
 
 
         public void StateSwitch<T>() where T : State{
-            var state = _mainStateMap.FirstOrDefault(source => source is T);
-            if (state == null) return;
+            var stateHandler = _mainStateMap.FirstOrDefault(source => source is T);
+            if (stateHandler == null) return;
 
             _currentState?.Exit();
-            _currentState = state;
+            _currentState = stateHandler;
             _currentState.Enter();
         }
 
         public bool CompareCurrentState<T>() where T : State{
-            var state = _mainStateMap.FirstOrDefault(source => source is T);
-            return _currentState == state ? true : false;
+            var stateHandler = _mainStateMap.FirstOrDefault(source => source is T);
+            return _currentState == stateHandler ? true : false;
         }
     }
-}
+}*/

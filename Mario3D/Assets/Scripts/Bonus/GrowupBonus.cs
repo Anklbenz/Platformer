@@ -12,7 +12,7 @@ namespace Bonus
         public event Action<IScoreChangeNotify, int> ScoreChangeEvent;
         public Vector3 Position => ObjectCollider.bounds.center;
 
-        protected override void BonusTake(IStateHandlerInteraction stateHandler) {
+        protected override void BonusTake(IStateMethods stateHandler) {
             stateHandler.BonusTake();
             ScoreChangeEvent?.Invoke(this, SCORE_LIST_ELEMENT);
         }

@@ -1,4 +1,7 @@
-﻿public interface IBounce
+﻿namespace Interfaces
 {
-    void Bounce();
+    public interface IBounce
+    {
+        void Bounce();
+    }
 }

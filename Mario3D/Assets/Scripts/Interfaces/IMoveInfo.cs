@@ -4,8 +4,9 @@ namespace Interfaces
 {
     public interface IMoveInfo
     {
-        bool MovingUp { get; }
-        bool MovingDown { get; }
-        bool IsGrounded { get; }
+        bool MovingUp{ get; }
+        bool MovingDown{ get; }
+        bool IsGrounded{ get; }
+        bool IsSittingState{ get; }
     }
 }

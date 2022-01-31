@@ -9,7 +9,7 @@ namespace Bonus
     {
         private bool _isActive = true;
 
-        protected override void Interaction(IStateHandlerInteraction stateHandler, Vector3 pos){
+        protected override void Interaction(IStateMethods stateHandler, Vector3 pos){
             if (!_isActive) return;
 
             _isActive = false;
@@ -22,6 +22,6 @@ namespace Bonus
                 Motor.DirectionChange();
         }
 
-        protected abstract void BonusTake(IStateHandlerInteraction stateHandler);
+        protected abstract void BonusTake(IStateMethods stateHandler);
     }
 }

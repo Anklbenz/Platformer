@@ -1,4 +1,5 @@
 ﻿using Enemy;
+using Enums;
 using Interfaces;
 using UnityEngine;
 
@@ -6,18 +7,18 @@ namespace PrefabSripts
 {
     public sealed class FireBall : MonoBehaviour, IScreenDeactivator
     {
-        private const float MIN_FLY_HEIGHT = 0.1f;
-     
-        private Vector3 _moveDirection, _ricochetStartPoint;
+        private const float MIN_FLY_HEIGHT = 0.2f;
+        private const float GROUND_BOX_INDENT = 0.95f;
+
+        private bool _ricochetHappened;
         private LayerMask _groundLayer, _targetLayer;
+        private Vector3 _moveDirection, _ricochetStartPoint;
         private float _bulletSpeed, _maxFlyHeight, _hitForce;
-        private bool _ricochetHappened = false;
 
-        private Rigidbody _rigidbody;
         private Collider _collider;
-
-        private bool RayVectorDown => Physics.Raycast(_collider.bounds.center, Vector3.down, out var rayHit,
-            _collider.bounds.size.y / 2 + MIN_FLY_HEIGHT, _groundLayer);
+        private Rigidbody _rigidbody;
+        private Interacting _groundInteract;
+        private bool GroundCheck => _groundInteract.InteractionBoxcast(Vector3.down);
 
         private void Awake(){
             _rigidbody = GetComponent<Rigidbody>();
@@ -30,18 +31,20 @@ namespace PrefabSripts
             _hitForce = hitForce;
             _targetLayer = targetLayer;
             _groundLayer = groundLayer;
+
+            _groundInteract = new Interacting(_collider, Axis.Vertical, MIN_FLY_HEIGHT, _groundLayer, GROUND_BOX_INDENT);
         }
 
         public void Activate(Vector3 position, Vector3 moveDirection){
             gameObject.SetActive(true);
             transform.position = position;
-            
+
             _moveDirection = moveDirection + Vector3.down; // 45 degrees down
             _ricochetHappened = false;
         }
 
         private void FixedUpdate(){
-            if (!_ricochetHappened && RayVectorDown)
+            if (!_ricochetHappened && GroundCheck)
                 RicochetState();
             Move();
         }
@@ -53,6 +56,7 @@ namespace PrefabSripts
                     _ricochetStartPoint = transform.position;
                 }
             }
+
             _rigidbody.velocity = _moveDirection * _bulletSpeed;
         }
 
@@ -75,7 +79,7 @@ namespace PrefabSripts
             var activeEnemy = other.GetComponentInParent<ActiveEnemy>();
             if (activeEnemy)
                 activeEnemy.DownHit(_hitForce);
-            
+
             Deactivate();
         }
 
@@ -85,7 +89,7 @@ namespace PrefabSripts
 
         private void OnDrawGizmos(){
             if (_collider == null) return;
-            Debug.DrawLine(transform.position, transform.position + Vector3.down * (_collider.bounds.size.y / 2 + MIN_FLY_HEIGHT));
+            _groundInteract.OnDrawGizmos(Color.blue);
         }
     }
 }

@@ -1,4 +1,6 @@
 ﻿using Character.States;
+using Character.States.Data;
+using Enums;
 using Interfaces;
 using UnityEngine;
 
@@ -6,18 +8,24 @@ namespace Character.Interaction
 {
     public class InteractionsHandler
     {
-        const float OVERHEAD_BOX_INDENT = 0.93f;
+        private const float IS_GROUNDED_BOX_INDENT = 0.95f;
+        public bool IsGrounded => _isGrounded.InteractionBoxcast(Vector3.down);
+        
+        private const float OVERHEAD_BOX_INDENT = 0.93f;
         private readonly LegsInteractionsHandler _legsInteractionsHandler;
         private readonly HeadInteractionsHandler _headInteractionsHandler;
+        private readonly Interacting _isGrounded;
 
-        public InteractionsHandler(IStateData state, Collider collider, IMoveInfo moveInfo, IBounce bounce, float topCheckLength,
-            LayerMask topCheckLayer, float bottomCheckLength, LayerMask bottomCheckLayer){
 
-            var moveData = moveInfo;
-            _headInteractionsHandler = new HeadInteractionsHandler(state, collider, moveData, Vector3.up, topCheckLength,
-                topCheckLayer, OVERHEAD_BOX_INDENT);
+        public InteractionsHandler(IStateData data, Collider collider, IMoveInfo moveInfo, IBounce bounce, float topCheckLength,
+            LayerMask topCheckLayer, float bottomCheckLength, LayerMask bottomCheckLayer, float isGroundLength, LayerMask isGroundLayer){
 
-            _legsInteractionsHandler = new LegsInteractionsHandler(collider, moveData, bounce, Vector3.down, bottomCheckLength, bottomCheckLayer);
+            _headInteractionsHandler = new HeadInteractionsHandler(data, collider, moveInfo, Vector3.up, topCheckLength, topCheckLayer,
+                OVERHEAD_BOX_INDENT);
+            
+            _legsInteractionsHandler = new LegsInteractionsHandler(collider, moveInfo, bounce, Vector3.down, bottomCheckLength, bottomCheckLayer);
+
+            _isGrounded = new Interacting(collider, Axis.Vertical, isGroundLength, isGroundLayer, IS_GROUNDED_BOX_INDENT, true);
         }
 
         public void HeadInteractionCheck(){

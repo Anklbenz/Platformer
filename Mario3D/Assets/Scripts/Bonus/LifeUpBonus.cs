@@ -10,7 +10,7 @@ namespace Bonus
         public event Action<Vector3> IncreaseLifeEvent;
         public Vector3 Position => ObjectCollider.bounds.center;
 
-        protected override void BonusTake(IStateHandlerInteraction stateHandler) {
+        protected override void BonusTake(IStateMethods stateHandler) {
             IncreaseLifeEvent?.Invoke(Position);
         }
     }

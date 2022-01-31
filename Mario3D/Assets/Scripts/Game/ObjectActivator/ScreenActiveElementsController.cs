@@ -5,12 +5,12 @@ namespace Game
 {
     public class ScreenActiveElementsController : MonoBehaviour
     {
-        private const float BACKWALL_WIDTH = 2f;
+        private const float BACK_WALL_WIDTH = 2f;
 
         [SerializeField] private UnityEngine.Camera mainCam;
         [SerializeField] private Activator activator;
         [SerializeField] private Deactivator deactivator;
-        [SerializeField] private float activatorIndent, deactivatorIndent, viewportRectDepth;
+        [SerializeField] private float activatorIndentZ, activatorIndentY, deactivatorIndentZ, deactivatorIndentY, viewportRectDepth;
         [SerializeField] private BoxCollider backWall;
 
         private Vector3 _viewRectCenter, _backWallCenter;
@@ -49,19 +49,20 @@ namespace Game
             var leftBottom = mainCam.ViewportToWorldPoint(new Vector3(0, 0, distance)); // 0,0 leftBottom Corner
 
             _viewRectCenter = ActivatorCenterCalculate(rightTop, leftBottom);
-            _activatorCollider.size = ColliderSizeCalculate(rightTop, leftBottom, activatorIndent);
-            _deactivatorCollider.size = ColliderSizeCalculate(rightTop, leftBottom, deactivatorIndent);
+            _activatorCollider.size = ColliderSizeCalculate(rightTop, leftBottom, activatorIndentY, activatorIndentZ);
+            _deactivatorCollider.size = ColliderSizeCalculate(rightTop, leftBottom,deactivatorIndentY, deactivatorIndentZ);
 
             _horizontalOffset = _viewRectCenter.z - camPosition.z;
 
-            _backWallOffset = (rightTop.z - leftBottom.z + BACKWALL_WIDTH) / 2;
-            backWall.size = new Vector3(viewportRectDepth, rightTop.y - leftBottom.y, BACKWALL_WIDTH);
+            _backWallOffset = (rightTop.z - leftBottom.z + BACK_WALL_WIDTH) / 2;
+            backWall.size = new Vector3(viewportRectDepth, rightTop.y - leftBottom.y, BACK_WALL_WIDTH);
         }
 
-        private Vector3 ColliderSizeCalculate(Vector3 rightTop, Vector3 leftBottom, float indent){
+        private Vector3 ColliderSizeCalculate(Vector3 rightTop, Vector3 leftBottom, float indentY, float indentZ ){
             var width = rightTop.z - leftBottom.z;
             var height = rightTop.y - leftBottom.y;
-            width += 2 * indent;
+            width += 2 * indentZ;
+            height += 2 * indentY;
 
             return new Vector3(viewportRectDepth, height, width);
         }

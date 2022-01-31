@@ -21,7 +21,7 @@ namespace Bonus
            Motor.Jumping();
         }
   
-        protected override void BonusTake(IStateHandlerInteraction stateHandler){
+        protected override void BonusTake(IStateMethods stateHandler){
             stateHandler.UnstopBonusTake();
             ScoreChangeEvent?.Invoke(this, SCORE_LIST_ELEMENT);
         }

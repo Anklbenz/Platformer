@@ -13,14 +13,14 @@ namespace Bonus
 
         private bool _isActive = true;
 
-        protected override void Interaction(IStateHandlerInteraction stateHandler, Vector3 pos) {
+        protected override void Interaction(IStateMethods stateHandler, Vector3 pos) {
             if (!_isActive) return;
 
             _isActive = false;
             BonusTake(stateHandler);
             Destroy(gameObject);
         }
-        protected abstract void BonusTake(IStateHandlerInteraction stateHandler);
+        protected abstract void BonusTake(IStateMethods stateHandler);
 
         protected virtual void SendScore(int scoreListElement) {
             ScoreChangeEvent?.Invoke(this, scoreListElement);

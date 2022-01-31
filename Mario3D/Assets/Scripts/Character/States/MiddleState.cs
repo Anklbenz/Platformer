@@ -8,7 +8,7 @@ namespace Character.States
     public class MiddleState : State
     {
         public MiddleState(IStateSwitcher stateSwitcher, StateData data) : base(stateSwitcher, data){
-        }
+        } 
 
         public override void StateUp(){
             StateSwitcher.StateSwitch<SeniorState>();

@@ -28,6 +28,14 @@
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": ""
+                },
+                {
+                    "name": "SitDown",
+                    "type": "Button",
+                    "id": "e1f8ce16-eb05-40fa-ab3c-3eda1d5e1ac8",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
                 }
             ],
             "bindings": [
@@ -94,6 +102,28 @@
                     "processors": "",
                     "groups": "",
                     "action": "Extra",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "7c519f05-5aa5-4e2c-a1e2-805f3a159522",
+                    "path": "<Keyboard>/s",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "SitDown",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "6c6ad540-f6ec-435b-9ef3-c9ee19262feb",
+                    "path": "<Keyboard>/downArrow",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "SitDown",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

@@ -1,38 +1,31 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
-[CreateAssetMenu]
-public class MoveData : ScriptableObject
+namespace Character
 {
-    [Header("Jump")]
-    [SerializeField] private float _maxJumpForceDuration = 0.15f;
+    [CreateAssetMenu]
+    public class MoveData : ScriptableObject
+    {
+        [Header("Jump")]
+        [SerializeField] private float maxJumpForceDuration;
+        [SerializeField] private float addForceStep;
+        [SerializeField] private float bouncePower;
 
-    [SerializeField] private float _addForceStep = 3.67f;
-    [SerializeField] private float _bouncePower = 5f;
+        [Header("Walk")]
+        [SerializeField] private float maxWalkSpeed;
+        [SerializeField] private float walkForceStep;
+        
+        [Header("ExtraWalk")]
+        [SerializeField] private float maxExtraWalkSpeed;
+        [SerializeField] private float extraWalkForceStep;
 
-    public float MaxJumpForceDuration => _maxJumpForceDuration;
-
-    public float AddForceStep => _addForceStep;
-
-    public float BouncePower => _bouncePower;
-
-
-    [Header("Walk")]
-    [SerializeField] private float _maxWalkSpeed = 9;
-
-    [SerializeField] private float _walkForceStep = 1.1f;
-    [SerializeField] public float _minActionSpeed = 0.3f;
-
-    public float MaxWalkSpeed => _maxWalkSpeed;
-
-    public float WalkForceStep => _walkForceStep;
-
-    [Header("ExtraWalk")]
-    [SerializeField] private float _maxExtraWalkSpeed = 9;
-    [SerializeField] private float _extraWalkForceStep = 1.1f;
-
-    public float MaxExtraWalkSpeed => _maxExtraWalkSpeed;
-
-    public float ExtraWalkForceStep => _extraWalkForceStep;
+        [Header("Sitting")]
+        [SerializeField] private Vector3 sitColliderSize;
+        public float MaxWalkSpeed => maxWalkSpeed;
+        public float WalkForceStep => walkForceStep;
+        public float MaxJumpForceDuration => maxJumpForceDuration;
+        public float AddForceStep => addForceStep;
+        public float BouncePower => bouncePower;
+        public float MaxExtraWalkSpeed => maxExtraWalkSpeed;
+        public float ExtraWalkForceStep => extraWalkForceStep;
+    }
 }

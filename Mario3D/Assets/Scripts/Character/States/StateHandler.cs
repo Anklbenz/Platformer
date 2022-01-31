@@ -8,57 +8,91 @@ using UnityEngine;
 
 namespace Character.States
 {
-   public class StateHandler : IStateData, IStateHandlerInteraction
+   public class StateHandler : IStateMethods, IDisposable
    {
-      public StateData Data => _stateSwitch.CurrentStateData;
-      public ExtraState ExtraState => _stateSwitch.ExtraState;
+      public StateData Data => _stateSwitcher.CurrentStateData;
+      public ExtraState ExtraState => _stateSwitcher.ExtraState;
+      public IStateMethods StateMethods{ get; }
+      public bool IsSitting{ get; private set; }
 
       private readonly float _unstopStateDropForce;
-      private readonly StateSwitcher _stateSwitch;
-      private StateVisualizer _stateVisualizer;
+      private readonly Flicker _flicker;
+      private readonly StateSwitcher _stateSwitcher;
+      private readonly CharacterResizer _characterResizer;
 
-      public StateHandler(ICharacterComponents character, IReadOnlyList<StateData> stateMap, float unstopStateDropForce,
+      public StateHandler(ICharacterComponents components, IReadOnlyList<StateData> stateMap, float unstopStateDropForce,
          int flickerLength, int unstopLength){
-         
-         SkinsInstantiate(stateMap, character.SkinsParent);
+         InstantiateSkins(stateMap, components.SkinsParent);
+         StateMethods = this;
 
-         _stateSwitch = new StateSwitcher( /*juniorState, middleState, seniorState,*/stateMap, flickerLength, unstopLength);
-         _stateVisualizer = new StateVisualizer(character, _stateSwitch);
+         _flicker = new Flicker();
+         _characterResizer = new CharacterResizer(components.MainCollider, components.MainTransform);
 
+         _stateSwitcher = new StateSwitcher(stateMap, flickerLength, unstopLength);
          _unstopStateDropForce = unstopStateDropForce;
-         _stateSwitch.StateSwitch<JuniorState>();
-      }
 
-      private void SkinsInstantiate(IEnumerable<StateData> stateMap, Transform parent){
-         foreach (var stateData in stateMap)
-            stateData.SkinInstantiate(parent);
+         _stateSwitcher.FlickStartEvent += OnStartFlick;
+         _stateSwitcher.FlickStopEvent += OnStopFlick;
+         _stateSwitcher.StateEnter += OnStateEnter;
+         _stateSwitcher.StateExit += OnStateExit;
+
+         _stateSwitcher.StateSwitch<JuniorState>();
       }
 
       public void BonusTake(){
-         _stateSwitch.CurrentState.StateUp();
+         _stateSwitcher.CurrentState.StateUp();
       }
 
       public void UnstopBonusTake(){
-         _stateSwitch.ExtraStateSwitch(ExtraState.UnstopState);
+         _stateSwitcher.ExtraStateSwitch(ExtraState.UnstopState);
       }
 
       public void EnemyTouch(ActiveEnemy sender){
          switch (ExtraState){
+
             case (ExtraState.NormalState):
-               _stateSwitch.CurrentState.StateDown();
+               _stateSwitcher.CurrentState.StateDown();
                break;
+
             case (ExtraState.UnstopState):
                sender.DownHit(_unstopStateDropForce);
                break;
+
             case ExtraState.FlickerState:
                return;
+
             default:
                throw new ArgumentOutOfRangeException();
          }
       }
 
-      private void SkinsInstantiate(){
-         
+      public void SitDown(bool sitInput){
+         if (!Data.CanSit) return;
+
+         IsSitting = sitInput;
+
+         _characterResizer.ColliderResize(sitInput ? Data.SitColliderSize : Data.ColliderSize);
+      }
+
+      private void InstantiateSkins(IEnumerable<StateData> stateMap, Transform parent){
+         foreach (var stateData in stateMap)
+            stateData.SkinInstantiate(parent);
+      }
+
+      private void OnStateEnter(){
+         _characterResizer.ColliderResize(Data.ColliderSize);
+         Data.Skin.SetActive(true);
+      }
+
+      private void OnStateExit() => Data.Skin.SetActive(false);
+      private void OnStartFlick() => _flicker.Play(Data.Skin);
+      private void OnStopFlick() => _flicker.Stop();
+
+      public void Dispose(){
+         _stateSwitcher.FlickStartEvent -= OnStartFlick;
+         _stateSwitcher.FlickStopEvent -= OnStopFlick;
+         _stateSwitcher.StateEnter -= OnStateEnter;
+         _stateSwitcher.StateExit -= OnStateExit;
       }
    }
 }

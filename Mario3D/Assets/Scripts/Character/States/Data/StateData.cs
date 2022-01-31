@@ -3,14 +3,14 @@
 namespace Character.States.Data
 {
     [CreateAssetMenu(fileName = "NewState", menuName = "stateData")]
-    
+
     public class StateData : ScriptableObject
     {
         [SerializeField] private bool canCrush;
         [SerializeField] private bool canShoot;
         [SerializeField] private bool canSit;
         [SerializeField] private Vector3 colliderSize;
-        [SerializeField] private Vector3 sitColliderSize;
+        [SerializeField] private Vector3 sitColliderSize; 
         [SerializeField] private GameObject skinPrefab;
         public bool CanCrush => canCrush;
 
@@ -19,9 +19,7 @@ namespace Character.States.Data
         public bool CanShoot => canShoot;
 
         public Vector3 ColliderSize => colliderSize;
-
         public Vector3 SitColliderSize => sitColliderSize;
-
 
         public GameObject Skin{ get; private set; }
 

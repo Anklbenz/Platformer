@@ -7,33 +7,28 @@ namespace Character.BallSpawner
     {
         private readonly BallSpawnerData _data;
         private readonly FireBall[] _fireBallPool;
-        private readonly Transform _firePoint, _fireballParent;
-        private readonly LayerMask _groundLayer, _targetLayer;
-
+        private readonly Transform _firePoint;
         private float _nextFire;
 
         public BallSpawner(BallSpawnerData data, Transform firePoint, Transform fireballParent, LayerMask groundLayer,
             LayerMask targetLayer){
             _data = data;
             _firePoint = firePoint;
-            _groundLayer = groundLayer;
-            _targetLayer = targetLayer;
-            _fireballParent = fireballParent;
             _fireBallPool = new FireBall[_data.BulletCount];
 
-            InitializePool();
+            InitializePool(groundLayer, targetLayer, fireballParent);
         }
 
-        private void InitializePool(){
+        private void InitializePool(LayerMask groundLayer, LayerMask targetLayer,  Transform fireballParent){
             for (var i = 0; i < _data.BulletCount; i++){
-                _fireBallPool[i] = Object.Instantiate(_data.Prefab, _fireballParent);
-                _fireBallPool[i].Initialize(_data.BulletSpeed, _data.MaxFlyHeight, _data.HitForce, _groundLayer, _targetLayer);
+                _fireBallPool[i] = Object.Instantiate(_data.Prefab, fireballParent);
+                _fireBallPool[i].Initialize(_data.BulletSpeed, _data.MaxFlyHeight, _data.HitForce, groundLayer, targetLayer);
                 _fireBallPool[i].gameObject.SetActive(false);
             }
         }
 
         public void Spawn(){
-            if (AllBallsIsFree() || Timer()){
+            if (AllBallsIsFree() || ShootTimer()){
                 var ball = GetFreeBall();
 
                 if (ball != null)
@@ -41,7 +36,7 @@ namespace Character.BallSpawner
             }
         }
 
-        private bool Timer(){
+        private bool ShootTimer(){
             if (Time.realtimeSinceStartup < _nextFire + _data.FireDelay) return false;
             _nextFire = Time.realtimeSinceStartup;
             return true;

@@ -3,23 +3,22 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Character.States.Data;
-using Enemy;
 using Enums;
 using Interfaces;
 
 namespace Character.States
 {
-  public class StateSwitcher : IStateSwitcher, IStateSwitchActions
+  public class StateSwitcher : IStateSwitcher
   {
-    public event Action<StateData> StateChangedEvent;
-    public event Action<ExtraState> ExtraStateChangedEvent;
+    public event Action FlickStartEvent, FlickStopEvent, StateEnter, StateExit ;
+    
     public StateData CurrentStateData => CurrentState.Data;
     public ExtraState ExtraState{ get; private set; }
     public State CurrentState{ get; private set; }
     private readonly List<State> _stateMap;
     private readonly int _flickerLength, _unstopLength;
 
-    public StateSwitcher(IReadOnlyList<StateData> stateData, /*StateData junior, StateData middle, StateData senior,*/ int flickerLength, int unstopLength){
+    public StateSwitcher(IReadOnlyList<StateData> stateData, int flickerLength, int unstopLength){
       ExtraState = ExtraState.NormalState;
       _flickerLength = flickerLength;
       _unstopLength = unstopLength;
@@ -33,16 +32,22 @@ namespace Character.States
     public void StateSwitch<T>() where T : State{
       var state = _stateMap.FirstOrDefault(source => source is T);
       if (state == null) return;
+
+      if (CurrentState != null)
+        StateExit?.Invoke();
+
       CurrentState = state;
-      StateChangedEvent?.Invoke(CurrentState.Data);
+      StateEnter?.Invoke();
     }
 
     public void ExtraStateSwitch(ExtraState state){
       switch (state){
         case (ExtraState.NormalState):
+          FlickStopEvent?.Invoke();
           break;
         case (ExtraState.FlickerState):
           ExtraStateCountdown(_flickerLength);
+          FlickStartEvent?.Invoke();
           break;
         case (ExtraState.UnstopState):
           ExtraStateCountdown(_unstopLength);
@@ -51,8 +56,7 @@ namespace Character.States
           throw new ArgumentOutOfRangeException(nameof(state), state, null);
       }
       ExtraState = state;
-      ExtraStateChangedEvent?.Invoke(ExtraState);
-    }
+   }
 
     private async void ExtraStateCountdown(int timer){
       await Task.Delay(timer);

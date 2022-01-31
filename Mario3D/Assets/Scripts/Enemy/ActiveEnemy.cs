@@ -18,7 +18,7 @@ namespace Enemy
         
         private Vector3 RandomSideDirection =>  (UnityEngine.Random.Range(0, 2) == 0 ? Vector3.left : Vector3.right);
 
-        protected override void Interaction(IStateHandlerInteraction stateHandler, Vector3 pos){
+        protected override void Interaction(IStateMethods stateHandler, Vector3 pos){
             if (DoDamage)
                 stateHandler?.EnemyTouch(this);
         }

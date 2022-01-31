@@ -1,4 +1,5 @@
 ﻿using Character.States;
+using Character.States.Data;
 using Enums;
 using Interfaces;
 using UnityEngine;
@@ -7,8 +8,8 @@ namespace Character.Interaction
 {
     public class HeadInteractionsHandler
     {
-        private readonly IStateData _characterState;
         private readonly IMoveInfo _moveInfo;
+        private readonly IStateData _characterData;
         private readonly Interacting _interacting;
         private readonly Collider _interactCollider;
         private readonly Vector3 _direction;
@@ -16,10 +17,10 @@ namespace Character.Interaction
         private bool _collisionDetected;
         private Vector3 ColliderCenter => _interactCollider.bounds.center; 
 
-        public HeadInteractionsHandler(IStateData state, Collider collider, IMoveInfo moveInfo, Vector3 direction, float inspectLength,
+        public HeadInteractionsHandler(IStateData data, Collider collider, IMoveInfo moveInfo, Vector3 direction, float inspectLength,
             LayerMask inspectLayer, float boxIndent = 1f){
             
-            _characterState = state;
+            _characterData = data;
             _moveInfo = moveInfo;
             _interactCollider = collider;
             _direction = direction;
@@ -52,7 +53,7 @@ namespace Character.Interaction
         }
         private void HitNearestCollider(Collider[] overheadColliders) {
             var nearestCollider = overheadColliders.Length == 1 ? overheadColliders[0] : ChooseNearestCollider(overheadColliders, ColliderCenter);
-            nearestCollider.GetComponentInParent<IBrickHit>()?.BrickHit(_characterState.Data.CanCrush);
+            nearestCollider.GetComponentInParent<IBrickHit>()?.BrickHit(_characterData.Data.CanCrush);
         }
         public void OnDrawGizmos(Color color) {
             _interacting?.OnDrawGizmos(color);

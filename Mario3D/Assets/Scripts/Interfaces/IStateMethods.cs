@@ -2,7 +2,7 @@
 
 namespace Interfaces
 {
-    public interface IStateHandlerInteraction
+    public interface IStateMethods
     {
         void BonusTake();
         void UnstopBonusTake();

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Character.BallSpawner;
 using Character.Interaction;
 using Character.States;
@@ -13,10 +12,9 @@ namespace Character
 {
     [RequireComponent(typeof(CapsuleCollider))]
     [RequireComponent(typeof(Rigidbody))]
-    public sealed class CharacterHandler : MonoBehaviour, ICharacterComponents, IMoveInfo, GameInput.IPlayerActions
+    public sealed class CharacterHandler : MonoBehaviour, IStateData, ICharacterComponents, IMoveInfo, GameInput.IPlayerActions, IScreenDeactivator
     {
-        private const float ISGROUND_BOX_INDENT = 0.95f;
-
+        [Header("BallSpawner")]
         [SerializeField] private BallSpawnerData spawnerData;
         [SerializeField] private Transform firePoint, fireballParent;
         [SerializeField] private LayerMask groundLayer, targetLayer;
@@ -24,54 +22,55 @@ namespace Character
 
         [Header("StateHandler")]
         [SerializeField] private List<StateData> stateDataList;
-
         [SerializeField] private Transform skinsParent;
-        [SerializeField] private float unstopStateHitForce;
+        [SerializeField] private float unstopHitForce;
         [SerializeField] private int flickerLength, unstopLength;
-
-        public Transform SkinsParent => skinsParent;
-        public StateHandler StateHandler;
+        private StateHandler _stateHandler;
 
         [Header("InteractionsHandler")]
         [SerializeField] private float isGroundedLength;
-
         [SerializeField] private float topLength, bottomLength;
         [SerializeField] private LayerMask topLayer, bottomLayer, isGroundedLayer;
         private InteractionsHandler _interactionsHandler;
-        private Interacting _isGrounded;
-        public bool IsGrounded => _isGrounded.InteractionBoxcast(Vector3.down);
 
         [Header("MoveHandler")]
         [SerializeField] private MoveData moveData;
-
         private Move _move;
+
         private GameInput _gameInput;
         public bool MovingUp => MainRigidbody.velocity.y > 0;
         public bool MovingDown => MainRigidbody.velocity.y < 0;
+        public bool IsGrounded => _interactionsHandler.IsGrounded;
+        public bool IsSittingState => _stateHandler.IsSitting;
+        public Transform SkinsParent => skinsParent;
         public CapsuleCollider MainCollider{ get; private set; }
         public Rigidbody MainRigidbody{ get; private set; }
         public Transform MainTransform{ get; private set; }
+  
+        public IStateMethods StateMethods => _stateHandler.StateMethods;
+        public StateData Data => _stateHandler.Data;
 
         private void Awake(){
             MainCollider = GetComponent<CapsuleCollider>();
             MainRigidbody = GetComponent<Rigidbody>();
             MainTransform = GetComponent<Transform>();
-
-            StateHandler = new StateHandler(this, stateDataList, unstopStateHitForce, flickerLength, unstopLength);
+           
+            
+            _stateHandler = new StateHandler(this, stateDataList, unstopHitForce, flickerLength, unstopLength);
 
             _gameInput = new GameInput();
             _gameInput.Enable();
             _gameInput.Player.SetCallbacks(this);
 
             _ballSpawner = new BallSpawner.BallSpawner(spawnerData, firePoint, fireballParent, groundLayer, targetLayer);
-            _isGrounded = new Interacting(MainCollider, Axis.Vertical, isGroundedLength, isGroundedLayer, ISGROUND_BOX_INDENT, true);
             _move = new Move(this, moveData, MainRigidbody, MainCollider, isGroundedLength, isGroundedLayer);
-            _interactionsHandler = new InteractionsHandler(StateHandler, MainCollider, this, _move, topLength,
-                topLayer, bottomLength, bottomLayer);
+
+            _interactionsHandler = new InteractionsHandler(this, MainCollider, this, _move, topLength,
+                topLayer, bottomLength, bottomLayer, isGroundedLength, isGroundedLayer);
         }
 
         private void FixedUpdate(){
-            if (StateHandler.ExtraState == ExtraState.NormalState)
+            if (_stateHandler.ExtraState == ExtraState.NormalState)
                 _interactionsHandler.LegsInteractionsCheck();
 
             _interactionsHandler.HeadInteractionCheck();
@@ -93,7 +92,7 @@ namespace Character
 
         public void OnExtra(InputAction.CallbackContext context){
             if (context.phase == InputActionPhase.Performed){
-                if (StateHandler.Data.CanShoot)
+                if (_stateHandler.Data.CanShoot)
                     _ballSpawner.Spawn();
 
                 _move.OnExtra(true);
@@ -103,9 +102,22 @@ namespace Character
                 _move.OnExtra(false);
         }
 
+        public void OnSitDown(InputAction.CallbackContext context){
+           if(context.phase == InputActionPhase.Performed)
+              _stateHandler.SitDown(true);
+           
+           if(context.phase == InputActionPhase.Canceled)
+               _stateHandler.SitDown(false);
+        }
+
         private void OnDrawGizmos(){
             _move?.OnDrawGizmos(Color.cyan);
             _interactionsHandler?.OnDrawGizmos(Color.grey);
         }
+
+        public void Deactivate(){
+            Debug.LogError("GAME OVER Fall");
+        }
+       
     }
 }

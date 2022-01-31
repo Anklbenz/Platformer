@@ -15,7 +15,6 @@ namespace Character
 
         private bool _canSlide, _jumping, _jumpInput;
         private float _jumpForceDuration, _maxSpeed, _walkStep;
-
         private Vector3 _moveDirection;
         private Vector3 RbVelocity => _rigidbody.velocity;
         private bool IsWallContact => _wallContactInteracting.InteractionBoxcast(_moveDirection);
@@ -31,7 +30,7 @@ namespace Character
 
         public void RecalculateMoving(){
 
-            if (!IsWallContact) Walk();
+            if (!IsWallContact && !_moveInfo.IsSittingState) Walk();
 
             if (_jumping) Jump();
 

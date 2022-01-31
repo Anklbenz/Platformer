@@ -9489,6 +9489,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 700d0c3d90702f04e9f01aaf9a5a4b33, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  activeLayer:
+    serializedVersion: 2
+    m_Bits: 1024
 --- !u!4 &918190818 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4484067535329360775, guid: d8ad84c375297a043af014552cbab533,
@@ -12548,8 +12551,10 @@ MonoBehaviour:
   mainCam: {fileID: 963194227}
   activator: {fileID: 858946970}
   deactivator: {fileID: 906341684}
-  activatorIndent: 1
-  deactivatorIndent: 6
+  activatorIndentZ: 0
+  activatorIndentY: 0
+  deactivatorIndentZ: 0
+  deactivatorIndentY: 0
   viewportRectDepth: 4
   backWall: {fileID: 1949714553}
 --- !u!1001 &1181423304
@@ -21097,14 +21102,16 @@ MonoBehaviour:
   fireballParent: {fileID: 922560812}
   groundLayer:
     serializedVersion: 2
-    m_Bits: 2049
+    m_Bits: 133121
   targetLayer:
     serializedVersion: 2
     m_Bits: 3073
-  juniorState: {fileID: 11400000, guid: c83e20e73a05cf94899df3e4e09ec903, type: 2}
-  middleState: {fileID: 11400000, guid: 8037278550179de409d165e0a2a08e10, type: 2}
-  seniorState: {fileID: 11400000, guid: dd71149fec5250745bee4408e7ff98e3, type: 2}
+  stateDataList:
+  - {fileID: 11400000, guid: c83e20e73a05cf94899df3e4e09ec903, type: 2}
+  - {fileID: 11400000, guid: 8037278550179de409d165e0a2a08e10, type: 2}
+  - {fileID: 11400000, guid: dd71149fec5250745bee4408e7ff98e3, type: 2}
   skinsParent: {fileID: 2002088791}
+  unstopHitForce: 30
   flickerLength: 3000
   unstopLength: 10000
   isGroundedLength: 0.1

@@ -7,21 +7,16 @@ namespace Character.BallSpawner
     public class BallSpawnerData : ScriptableObject
     {
         [SerializeField] private FireBall _prefab;
-        [SerializeField] private float _fireDelay;
-        [SerializeField] private int _bulletCount;
-        [SerializeField] private float _bulletSpeed;
-        [SerializeField] private float _maxFlyHeight;
+        [SerializeField] private float fireDelay;
+        [SerializeField] private int bulletCount;
+        [SerializeField] private float bulletSpeed;
+        [SerializeField] private float maxFlyHeight;
         [SerializeField] private float hitForce;
-        public FireBall Prefab => _prefab;
-
-        public float FireDelay => _fireDelay;
-
-        public int BulletCount => _bulletCount;
-
-        public float BulletSpeed => _bulletSpeed;
-
-        public float MaxFlyHeight => _maxFlyHeight;
-
         public float HitForce => hitForce;
+        public FireBall Prefab => _prefab;
+        public float FireDelay => fireDelay;
+        public int BulletCount => bulletCount;
+        public float BulletSpeed => bulletSpeed;
+        public float MaxFlyHeight => maxFlyHeight;
     }
 }

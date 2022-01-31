@@ -28,7 +28,7 @@ namespace Enemy
             _patrolSpeed = base.Motor.GetSpeed();
         }
 
-        protected override void Interaction(IStateHandlerInteraction stateHandler, Vector3 pos){
+        protected override void Interaction(IStateMethods stateHandler, Vector3 pos){
             if (currentState == PusherState.Cooldown){
                 SendScore(SCORE_LIST_ELEMENT);
                 TransitionToEngage(pos);
