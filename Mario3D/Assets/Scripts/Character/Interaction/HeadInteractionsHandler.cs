@@ -8,7 +8,7 @@ namespace Character.Interaction
 {
     public class HeadInteractionsHandler
     {
-        private readonly IMoveInfo _moveInfo;
+        private readonly IMoveData _moveData;
         private readonly IStateData _characterData;
         private readonly Interacting _interacting;
         private readonly Collider _interactCollider;
@@ -17,11 +17,11 @@ namespace Character.Interaction
         private bool _collisionDetected;
         private Vector3 ColliderCenter => _interactCollider.bounds.center; 
 
-        public HeadInteractionsHandler(IStateData data, Collider collider, IMoveInfo moveInfo, Vector3 direction, float inspectLength,
+        public HeadInteractionsHandler(IStateData data, Collider collider, IMoveData moveData, Vector3 direction, float inspectLength,
             LayerMask inspectLayer, float boxIndent = 1f){
             
             _characterData = data;
-            _moveInfo = moveInfo;
+            _moveData = moveData;
             _interactCollider = collider;
             _direction = direction;
             _interacting = new Interacting(collider, Axis.Vertical, inspectLength, inspectLayer, boxIndent);
@@ -30,7 +30,7 @@ namespace Character.Interaction
         public void CollisionCheck() {
             var interactions = _interacting.InteractionOverlap(_direction);
     
-            if (_moveInfo.MovingUp && !_collisionDetected && interactions.Length > 0) {
+            if (_moveData.MovingUp && !_collisionDetected && interactions.Length > 0) {
                 _collisionDetected = true;
                 HitNearestCollider(interactions);
 

@@ -21,7 +21,7 @@ namespace Game
 
             var instance = other.GetComponent<IScreenDeactivator>();
             if (instance == null) return;
-            Debug.Log(other.transform.name);
+        
             DeactivateObjectEvent?.Invoke(instance);
         }
     }

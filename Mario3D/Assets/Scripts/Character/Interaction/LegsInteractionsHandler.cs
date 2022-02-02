@@ -12,15 +12,15 @@ namespace Character.Interaction
         private readonly Interacting _interacting;
         private readonly Collider _interactCollider;
         private readonly Vector3 _direction;
-        private readonly IMoveInfo _moveInfo;
+        private readonly IMoveData _moveData;
         private readonly IBounce _bounceInstance;
         
         private bool _collisionDetected;
         private Vector3 _colliderCenter => _interactCollider.bounds.center;
         
-        public LegsInteractionsHandler(Collider collider, IMoveInfo moveInfo, IBounce bounceInstance, Vector3 direction, float inspectLength, LayerMask inspectLayer,
+        public LegsInteractionsHandler(Collider collider, IMoveData moveData, IBounce bounceInstance, Vector3 direction, float inspectLength, LayerMask inspectLayer,
             float boxIndent = 1f){
-            _moveInfo = moveInfo;
+            _moveData = moveData;
             _bounceInstance = bounceInstance;
             _interactCollider = collider;
             _direction = direction;
@@ -30,7 +30,7 @@ namespace Character.Interaction
         public void CollisionCheck(){
             var interactions = _interacting.InteractionOverlap(_direction);
 
-            if (_moveInfo.MovingDown && !_collisionDetected && interactions.Length > 0){
+            if (_moveData.MovingDown && !_collisionDetected && interactions.Length > 0){
                 _collisionDetected = true;
                 Interaction(interactions);
             }
@@ -38,7 +38,7 @@ namespace Character.Interaction
                 _collisionDetected = false;
             }
 
-            if (_moveInfo.IsGrounded)
+            if (_moveData.IsGrounded)
                 InRowCounter.Reset();
         }
 

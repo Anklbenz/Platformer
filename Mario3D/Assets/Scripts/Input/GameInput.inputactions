@@ -22,7 +22,7 @@
                     "interactions": ""
                 },
                 {
-                    "name": "Extra",
+                    "name": "ExtraAction",
                     "type": "Button",
                     "id": "8c290570-32ec-485d-acaa-f99e7266a49f",
                     "expectedControlType": "Button",
@@ -101,7 +101,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Extra",
+                    "action": "ExtraAction",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },

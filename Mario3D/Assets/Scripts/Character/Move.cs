@@ -6,38 +6,32 @@ namespace Character
 {
     public sealed class Move : IBounce
     {
-        private const float WALL_BOX_INDENT = 0.5f;
-
-        private readonly IMoveInfo _moveInfo;
+        private readonly IMoveData _moveData;
         private readonly MoveData _data;
         private readonly Rigidbody _rigidbody;
-        private readonly Interacting _wallContactInteracting;
 
         private bool _canSlide, _jumping, _jumpInput;
         private float _jumpForceDuration, _maxSpeed, _walkStep;
-        private Vector3 _moveDirection;
         private Vector3 RbVelocity => _rigidbody.velocity;
-        private bool IsWallContact => _wallContactInteracting.InteractionBoxcast(_moveDirection);
+        public Vector3 MoveDirection{ get; private set; }
 
-        public Move(IMoveInfo moveInfo, MoveData data, Rigidbody rBody, Collider collider, float wallInspectLength, LayerMask wallLayer){
-            _moveInfo = moveInfo;
+        public Move(IMoveData moveData, MoveData data, Rigidbody rBody, Collider collider, float wallInspectLength, LayerMask wallLayer){
+            _moveData = moveData;
             _data = data;
             _maxSpeed = data.MaxWalkSpeed;
             _walkStep = data.WalkForceStep;
             _rigidbody = rBody;
-            _wallContactInteracting = new Interacting(collider, Axis.Horizontal, wallInspectLength, wallLayer, WALL_BOX_INDENT);
         }
 
         public void RecalculateMoving(){
-
-            if (!IsWallContact && !_moveInfo.IsSittingState) Walk();
+            if (!_moveData.IsWallContact && !_moveData.IsSittingState) Walk();
 
             if (_jumping) Jump();
 
-            if (_moveInfo.IsGrounded && _canSlide)
+            if (_moveData.IsGrounded && _canSlide)
                 SideImpulse();
 
-            if (!_moveInfo.IsGrounded)
+            if (!_moveData.IsGrounded)
                 _canSlide = true;
         }
 
@@ -45,7 +39,7 @@ namespace Character
             var currentBodySpeed = Mathf.Abs(RbVelocity.z);
             
             if (currentBodySpeed < _maxSpeed)
-                _rigidbody.AddForce(_moveDirection * _walkStep, ForceMode.VelocityChange);
+                _rigidbody.AddForce(MoveDirection * _walkStep, ForceMode.VelocityChange);
         }
 
         private void Jump(){
@@ -74,7 +68,7 @@ namespace Character
             _rigidbody.velocity = velocity;
         }
 
-        public void OnMove(Vector3 movement) => _moveDirection = movement;
+        public void OnMove(Vector3 movement) => MoveDirection = movement;
 
         public void OnJump(bool jumpInput){
             if (jumpInput){
@@ -82,7 +76,7 @@ namespace Character
                 _jumping = false;
             }
 
-            if (jumpInput && _moveInfo.IsGrounded)
+            if (jumpInput && _moveData.IsGrounded)
                 _jumping = true;
 
             _jumpInput = jumpInput;
@@ -98,9 +92,6 @@ namespace Character
                 _walkStep = _data.WalkForceStep;
             }
         }
-
-        public void OnDrawGizmos(Color color){
-            _wallContactInteracting.OnDrawGizmos(color);
-        }
+        
     }
 }

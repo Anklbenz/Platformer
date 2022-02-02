@@ -18,15 +18,17 @@ namespace Character.States
       private readonly float _unstopStateDropForce;
       private readonly Flicker _flicker;
       private readonly StateSwitcher _stateSwitcher;
-      private readonly CharacterResizer _characterResizer;
+
+     private readonly CharacterResizer _characterResizer;
 
       public StateHandler(ICharacterComponents components, IReadOnlyList<StateData> stateMap, float unstopStateDropForce,
          int flickerLength, int unstopLength){
+
          InstantiateSkins(stateMap, components.SkinsParent);
          StateMethods = this;
 
          _flicker = new Flicker();
-         _characterResizer = new CharacterResizer(components.MainCollider, components.MainTransform);
+         _characterResizer = new CharacterResizer(components.MainCollider, components.SecondaryCollider, components.MainTransform);
 
          _stateSwitcher = new StateSwitcher(stateMap, flickerLength, unstopLength);
          _unstopStateDropForce = unstopStateDropForce;
@@ -68,7 +70,6 @@ namespace Character.States
 
       public void SitDown(bool sitInput){
          if (!Data.CanSit) return;
-
          IsSitting = sitInput;
 
          _characterResizer.ColliderResize(sitInput ? Data.SitColliderSize : Data.ColliderSize);

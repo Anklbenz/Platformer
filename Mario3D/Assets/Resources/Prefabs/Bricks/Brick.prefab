@@ -56,6 +56,7 @@ MonoBehaviour:
   animator: {fileID: 4743832699782468351}
   timeToDestroyBrickAfterHit: 2500
   brickCanBeCrushed: 1
+  dropForce: 15
   dropLayer:
     serializedVersion: 2
     m_Bits: 1280

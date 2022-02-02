@@ -35,7 +35,7 @@ public class @GameInput : IInputActionCollection, IDisposable
                     ""interactions"": """"
                 },
                 {
-                    ""name"": ""Extra"",
+                    ""name"": ""ExtraAction"",
                     ""type"": ""Button"",
                     ""id"": ""8c290570-32ec-485d-acaa-f99e7266a49f"",
                     ""expectedControlType"": ""Button"",
@@ -114,7 +114,7 @@ public class @GameInput : IInputActionCollection, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Extra"",
+                    ""action"": ""ExtraAction"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -149,7 +149,7 @@ public class @GameInput : IInputActionCollection, IDisposable
         m_Player = asset.FindActionMap("Player", throwIfNotFound: true);
         m_Player_Jump = m_Player.FindAction("Jump", throwIfNotFound: true);
         m_Player_Move = m_Player.FindAction("Move", throwIfNotFound: true);
-        m_Player_Extra = m_Player.FindAction("Extra", throwIfNotFound: true);
+        m_Player_ExtraAction = m_Player.FindAction("ExtraAction", throwIfNotFound: true);
         m_Player_SitDown = m_Player.FindAction("SitDown", throwIfNotFound: true);
     }
 
@@ -202,7 +202,7 @@ public class @GameInput : IInputActionCollection, IDisposable
     private IPlayerActions m_PlayerActionsCallbackInterface;
     private readonly InputAction m_Player_Jump;
     private readonly InputAction m_Player_Move;
-    private readonly InputAction m_Player_Extra;
+    private readonly InputAction m_Player_ExtraAction;
     private readonly InputAction m_Player_SitDown;
     public struct PlayerActions
     {
@@ -210,7 +210,7 @@ public class @GameInput : IInputActionCollection, IDisposable
         public PlayerActions(@GameInput wrapper) { m_Wrapper = wrapper; }
         public InputAction @Jump => m_Wrapper.m_Player_Jump;
         public InputAction @Move => m_Wrapper.m_Player_Move;
-        public InputAction @Extra => m_Wrapper.m_Player_Extra;
+        public InputAction @ExtraAction => m_Wrapper.m_Player_ExtraAction;
         public InputAction @SitDown => m_Wrapper.m_Player_SitDown;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
@@ -227,9 +227,9 @@ public class @GameInput : IInputActionCollection, IDisposable
                 @Move.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnMove;
                 @Move.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnMove;
                 @Move.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnMove;
-                @Extra.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnExtra;
-                @Extra.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnExtra;
-                @Extra.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnExtra;
+                @ExtraAction.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnExtraAction;
+                @ExtraAction.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnExtraAction;
+                @ExtraAction.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnExtraAction;
                 @SitDown.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSitDown;
                 @SitDown.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSitDown;
                 @SitDown.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSitDown;
@@ -243,9 +243,9 @@ public class @GameInput : IInputActionCollection, IDisposable
                 @Move.started += instance.OnMove;
                 @Move.performed += instance.OnMove;
                 @Move.canceled += instance.OnMove;
-                @Extra.started += instance.OnExtra;
-                @Extra.performed += instance.OnExtra;
-                @Extra.canceled += instance.OnExtra;
+                @ExtraAction.started += instance.OnExtraAction;
+                @ExtraAction.performed += instance.OnExtraAction;
+                @ExtraAction.canceled += instance.OnExtraAction;
                 @SitDown.started += instance.OnSitDown;
                 @SitDown.performed += instance.OnSitDown;
                 @SitDown.canceled += instance.OnSitDown;
@@ -257,7 +257,7 @@ public class @GameInput : IInputActionCollection, IDisposable
     {
         void OnJump(InputAction.CallbackContext context);
         void OnMove(InputAction.CallbackContext context);
-        void OnExtra(InputAction.CallbackContext context);
+        void OnExtraAction(InputAction.CallbackContext context);
         void OnSitDown(InputAction.CallbackContext context);
     }
 }

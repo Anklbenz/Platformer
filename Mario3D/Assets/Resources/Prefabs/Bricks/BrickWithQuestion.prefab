@@ -141,16 +141,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cbba1fee40afe334ca1c2577492a19d7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bonusesCount: 0
-  bonusType: 0
+  bonusesCount: 1
+  bonusType: 1
   primaryMesh: {fileID: 4526105130086229296}
   secondaryMesh: {fileID: 7200077296599456020}
   brickCollider: {fileID: 4519911059469318196}
   bonusCreationPoint: {fileID: 5593973369525192892}
   crushParticles: {fileID: 0}
   animator: {fileID: 4519911059469318187}
-  timeToDestroyBrickAfterHit: 0.5
+  timeToDestroyBrickAfterHit: 0
   brickCanBeCrushed: 0
+  dropForce: 15
   dropLayer:
     serializedVersion: 2
     m_Bits: 1280

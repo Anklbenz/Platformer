@@ -1,7 +1,7 @@
 ﻿using PrefabSripts;
 using UnityEngine;
 
-namespace Character.BallSpawner
+namespace Character.Ball
 {
     [CreateAssetMenu]
     public class BallSpawnerData : ScriptableObject
