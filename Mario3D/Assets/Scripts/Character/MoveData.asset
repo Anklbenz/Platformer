@@ -12,11 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8829cd7f09340074e8a93223d5e5ef1e, type: 3}
   m_Name: MoveData
   m_EditorClassIdentifier: 
-  maxJumpForceDuration: 0.15
-  addForceStep: 3.67
-  bouncePower: 15
-  maxWalkSpeed: 9
-  walkForceStep: 1.1
-  minActionSpeed: 0.3
+  maxJumpForceDuration: 0.5
+  addForceStep: 1.8
+  bouncePower: 30
+  startImpulse: 23
+  additionalGravity: 2
+  maxWalkSpeed: 8.5
+  walkForceStep: 0.5
   maxExtraWalkSpeed: 12
   extraWalkForceStep: 1.2

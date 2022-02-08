@@ -21,8 +21,8 @@ TagManager:
   - Player
   - Enemy
   - Brick
-  - InvisibleForEnemy
-  - InvisibleForPlayer
+  - Activator
+  - 
   - OnlyGround
   - OnlyGroundAndBricks
   - OnlyEnemy

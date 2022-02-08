@@ -43,7 +43,7 @@ public class @GameInput : IInputActionCollection, IDisposable
                     ""interactions"": """"
                 },
                 {
-                    ""name"": ""SitDown"",
+                    ""name"": ""SitInput"",
                     ""type"": ""Button"",
                     ""id"": ""e1f8ce16-eb05-40fa-ab3c-3eda1d5e1ac8"",
                     ""expectedControlType"": ""Button"",
@@ -125,7 +125,7 @@ public class @GameInput : IInputActionCollection, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""SitDown"",
+                    ""action"": ""SitInput"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -136,7 +136,7 @@ public class @GameInput : IInputActionCollection, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""SitDown"",
+                    ""action"": ""SitInput"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -150,7 +150,7 @@ public class @GameInput : IInputActionCollection, IDisposable
         m_Player_Jump = m_Player.FindAction("Jump", throwIfNotFound: true);
         m_Player_Move = m_Player.FindAction("Move", throwIfNotFound: true);
         m_Player_ExtraAction = m_Player.FindAction("ExtraAction", throwIfNotFound: true);
-        m_Player_SitDown = m_Player.FindAction("SitDown", throwIfNotFound: true);
+        m_Player_SitDown = m_Player.FindAction("SitInput", throwIfNotFound: true);
     }
 
     public void Dispose()

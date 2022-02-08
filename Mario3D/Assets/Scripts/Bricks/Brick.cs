@@ -10,7 +10,7 @@ namespace Bricks
     {
         public event Action<IBonusSpawn> BonusSpawnEvent;
 
-        [Range(0, 10)]
+        [Range(0, 15)]
         [SerializeField] protected int bonusesCount;
         [SerializeField] protected BonusType bonusType;
         [SerializeField] protected GameObject primaryMesh;
@@ -19,8 +19,7 @@ namespace Bricks
         [SerializeField] protected Transform bonusCreationPoint;
 
         protected bool IsActive = true;
-    
-        public Vector3 BonusCreatePoint =>bonusCreationPoint.position;
+        public Vector3 BonusCreatePoint => bonusCreationPoint.position;
         public BonusType BonusType => bonusType;
 
         public abstract void BrickHit(bool canCrush);

@@ -21,7 +21,7 @@ namespace Character.Ball
             _ballSpawner = new BallSpawner(data, firePoint, fireballParent, groundLayer, targetLayer);
         }
 
-        public void Shoot(){
+        public void ShootInput(){
             if (_state.Data.CanShoot)
                 _ballSpawner.Spawn();
         }
@@ -31,7 +31,8 @@ namespace Character.Ball
 
             var size = _collider.size;
             var center = _collider.center;
-            var y = center.y + (size.y / 4);
+            //var y = center.y + (size.y / 4);
+             var y = center.y;
 
             _lastDirection = direction;
             _lastSize = size;

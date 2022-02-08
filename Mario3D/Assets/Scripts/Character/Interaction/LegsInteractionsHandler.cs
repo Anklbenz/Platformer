@@ -8,7 +8,7 @@ namespace Character.Interaction
     {
         private const float SIDE_ENTER_DEPTH = 0.3f;
 
-        private readonly InRowCounter InRowCounter = new InRowCounter();
+        private readonly InRowCounter _inRowCounter = new InRowCounter();
         private readonly Interacting _interacting;
         private readonly Collider _interactCollider;
         private readonly Vector3 _direction;
@@ -16,7 +16,7 @@ namespace Character.Interaction
         private readonly IBounce _bounceInstance;
         
         private bool _collisionDetected;
-        private Vector3 _colliderCenter => _interactCollider.bounds.center;
+        private Vector3 ColliderCenter => _interactCollider.bounds.center;
         
         public LegsInteractionsHandler(Collider collider, IMoveData moveData, IBounce bounceInstance, Vector3 direction, float inspectLength, LayerMask inspectLayer,
             float boxIndent = 1f){
@@ -29,7 +29,7 @@ namespace Character.Interaction
 
         public void CollisionCheck(){
             var interactions = _interacting.InteractionOverlap(_direction);
-
+          
             if (_moveData.MovingDown && !_collisionDetected && interactions.Length > 0){
                 _collisionDetected = true;
                 Interaction(interactions);
@@ -39,21 +39,21 @@ namespace Character.Interaction
             }
 
             if (_moveData.IsGrounded)
-                InRowCounter.Reset();
+                _inRowCounter.Reset();
         }
 
         private void Interaction(Collider[] bottomColliders){
             bool bounce = false;
 
             foreach (var collider in bottomColliders){
-                if (CollisionIsHorisontal(collider.ClosestPoint(_colliderCenter), _colliderCenter)) continue;
+                if (CollisionIsHorisontal(collider.ClosestPoint(ColliderCenter), ColliderCenter)) continue;
 
                 IJumpOn jumpOnInstance = collider.transform.GetComponentInParent<IJumpOn>();
 
                 if (jumpOnInstance == null) continue;
                 if (jumpOnInstance.DoBounce) bounce = true;
-                jumpOnInstance.JumpOn(_colliderCenter, InRowCounter.Count);
-                InRowCounter.Inreace();
+                jumpOnInstance.JumpOn(ColliderCenter, _inRowCounter.Count);
+                _inRowCounter.Inreace();
             }
             
             if (bounce) this.DoBounce();

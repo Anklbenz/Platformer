@@ -49,9 +49,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: adad6e6e82c199b4b801b1851bdc4047, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _speed: 2
-  MoveDirection: 0
-  _bouncePower: 20
+  speed: 5.4
+  additionalGravity: 0
+  jumpingPower: 0
+  jumpingMode: 0
+  moveDirection: 2
 --- !u!114 &-409408072987551338
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -64,10 +66,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 18e27449c82d0d64faa2c523e19b2514, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _patrolLayer:
+  patrolLayer:
     serializedVersion: 2
-    m_Bits: 2049
-  _groundCheckActive: 0
+    m_Bits: 1
 --- !u!95 &7973857634622750065
 Animator:
   serializedVersion: 3

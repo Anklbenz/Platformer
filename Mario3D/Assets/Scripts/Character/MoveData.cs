@@ -9,6 +9,8 @@ namespace Character
         [SerializeField] private float maxJumpForceDuration;
         [SerializeField] private float addForceStep;
         [SerializeField] private float bouncePower;
+        [SerializeField] private float startImpulse;
+        [SerializeField] private float additionalGravity; //project gravity -30
 
         [Header("Walk")]
         [SerializeField] private float maxWalkSpeed;
@@ -18,8 +20,6 @@ namespace Character
         [SerializeField] private float maxExtraWalkSpeed;
         [SerializeField] private float extraWalkForceStep;
 
-        [Header("Sitting")]
-        [SerializeField] private Vector3 sitColliderSize;
         public float MaxWalkSpeed => maxWalkSpeed;
         public float WalkForceStep => walkForceStep;
         public float MaxJumpForceDuration => maxJumpForceDuration;
@@ -27,5 +27,7 @@ namespace Character
         public float BouncePower => bouncePower;
         public float MaxExtraWalkSpeed => maxExtraWalkSpeed;
         public float ExtraWalkForceStep => extraWalkForceStep;
+        public float StartImpulse => startImpulse;
+        public float AdditionalGravity => additionalGravity;
     }
 }

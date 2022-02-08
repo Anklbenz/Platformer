@@ -7,35 +7,31 @@ namespace Game
 {
     public class ScoreSystem : ILifeIncreaseNotify, ILabelDrawer
     {
-        private readonly int[] SCORE_LIST = { 100, 200, 400, 500, 800, 1000, 2000, 4000, 5000, 10000 };
-    
+        private readonly int[] SCORE_LIST = {100, 200, 400, 500, 800, 1000, 2000, 4000, 5000, 10000};
         public event Action ScoreChangedEvent;
         public event Action<Vector3> IncreaseLifeEvent;
-        public event Action<Vector3, string> LabelDrawEvent; 
+        public event Action<Vector3, string> LabelDrawEvent;
+        public int TotalScore{ get; private set; }
 
-        public int TotalScore => _totalScore;
+        private readonly List<IScoreChangeNotify> _scoreNotifies;
 
-        private int _totalScore = 0;
-        private List<IScoreChangeNotify> _scoreNotifies;
-
-        public ScoreSystem(List<IScoreChangeNotify> scoreNotifies) {
+        public ScoreSystem(List<IScoreChangeNotify> scoreNotifies){
             _scoreNotifies = scoreNotifies;
             SubscribeAllActiveScoreNotifies();
         }
 
-        private void SubscribeAllActiveScoreNotifies() {
+        private void SubscribeAllActiveScoreNotifies(){
             foreach (var instance in _scoreNotifies)
-                SubsсribeOnScoreEvent(instance);
+                SubscribeOnScoreEvent(instance);
         }
 
-        public void SubsсribeOnScoreEvent(IScoreChangeNotify sender) {
+        public void SubscribeOnScoreEvent(IScoreChangeNotify sender){
             sender.ScoreChangeEvent += AddScore;
         }
 
-        public void AddScore(IScoreChangeNotify sender, int bounceCount) {
+        private void AddScore(IScoreChangeNotify sender, int bounceCount){
             var lastScoreElement = SCORE_LIST.Length - 1;
-            if (bounceCount >= lastScoreElement) { 
-                bounceCount = lastScoreElement;
+            if (bounceCount >= lastScoreElement){
                 IncreaseLifeEvent?.Invoke(sender.Position);
                 return;
             }
@@ -45,8 +41,8 @@ namespace Game
             LabelDrawEvent?.Invoke(sender.Position, score.ToString());
         }
 
-        private void TotalScoreUpdate(int points) {
-            _totalScore += points;
+        private void TotalScoreUpdate(int points){
+            TotalScore += points;
             ScoreChangedEvent?.Invoke();
         }
     }

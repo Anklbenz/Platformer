@@ -68,7 +68,7 @@ namespace Character.States
          }
       }
 
-      public void SitDown(bool sitInput){
+      public void SitInput(bool sitInput){
          if (!Data.CanSit) return;
          IsSitting = sitInput;
 

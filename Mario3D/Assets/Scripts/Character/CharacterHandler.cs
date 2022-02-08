@@ -15,11 +15,11 @@ namespace Character
     [RequireComponent(typeof(Rigidbody))]
     public sealed class CharacterHandler : MonoBehaviour, IStateData, ICharacterComponents, IMoveData, IScreenDeactivator
     {
-      [Header("BallSpawner")]
+        [Header("BallSpawner")]
         [SerializeField] private BallSpawnerData spawnerData;
         [SerializeField] private Transform firePoint, fireballParent;
         [SerializeField] private LayerMask groundLayer, targetLayer;
-       private BallShooter _ballShooter;
+        private BallShooter _ballShooter;
 
         [Header("StateHandler")]
         [SerializeField] private List<StateData> stateDataList;
@@ -47,44 +47,45 @@ namespace Character
         public bool IsGrounded => _interactionsHandler.IsGrounded;
         public bool IsWallContact => _interactionsHandler.IsWall;
         public bool IsSittingState => _stateHandler.IsSitting;
+        public Vector3 MoveDirection => _move.MoveDirection;
+
         public Transform SkinsParent => skinsParent;
         public BoxCollider MainCollider{ get; private set; }
         public SphereCollider SecondaryCollider{ get; private set; }
         public Rigidbody MainRigidbody{ get; private set; }
         public Transform MainTransform{ get; private set; }
-        public IStateMethods StateMethods => _stateHandler.StateMethods;
         public StateData Data => _stateHandler.Data;
-        public Vector3 MoveDirection => _move.MoveDirection;
+        public IStateMethods StateMethods => _stateHandler.StateMethods;
 
         private void Awake(){
-            MainCollider = GetComponent<BoxCollider>();
-            SecondaryCollider = GetComponent<SphereCollider>();
             MainRigidbody = GetComponent<Rigidbody>();
             MainTransform = GetComponent<Transform>();
+            MainCollider = GetComponent<BoxCollider>();
+            SecondaryCollider = GetComponent<SphereCollider>();
 
-            _move = new Move(this, moveData, MainRigidbody, MainCollider, isGroundedLength, isGroundedLayer);
+            _move = new Move(this, moveData, MainRigidbody);
             _stateHandler = new StateHandler(this, stateDataList, unstopHitForce, flickerLength, unstopLength);
-            _ballShooter = new BallShooter(this, this,  spawnerData, firePoint, fireballParent, groundLayer, targetLayer);
+            _ballShooter = new BallShooter(this, this, spawnerData, firePoint, fireballParent, groundLayer, targetLayer);
             _interactionsHandler = new InteractionsHandler(this, MainCollider, this, _move, topLength,
                 topLayer, bottomLength, bottomLayer, isGroundedLength, isGroundedLayer);
         }
 
         private void OnEnable(){
-            inputReader.JumpEvent += _move.OnJump;
-            inputReader.SitDownEvent += _stateHandler.SitDown;
-            inputReader.ShootEvent += _ballShooter.Shoot;
-            inputReader.ExtraActionEvent += _move.OnExtra;
-            inputReader.MoveEvent += _move.OnMove;
-            inputReader.MoveEvent += _ballShooter.SetFirePointPosition;
+            inputReader.JumpInputEvent += _move.OnJumpInput;
+            inputReader.SitInputEvent += _stateHandler.SitInput;
+            inputReader.ShootInputEvent += _ballShooter.ShootInput;
+            inputReader.ExtraInputEvent += _move.OnExtra;
+            inputReader.MoveInputEvent += _move.OnMoveInput;
+            inputReader.MoveInputEvent += _ballShooter.SetFirePointPosition;
         }
 
         private void OnDisable(){
-            inputReader.JumpEvent -= _move.OnJump;
-            inputReader.SitDownEvent -= _stateHandler.SitDown;
-            inputReader.ShootEvent -= _ballShooter.Shoot;
-            inputReader.ExtraActionEvent -= _move.OnExtra;
-            inputReader.MoveEvent -= _move.OnMove;
-            inputReader.MoveEvent -= _ballShooter.SetFirePointPosition;
+            inputReader.JumpInputEvent -= _move.OnJumpInput;
+            inputReader.SitInputEvent -= _stateHandler.SitInput;
+            inputReader.ShootInputEvent -= _ballShooter.ShootInput;
+            inputReader.ExtraInputEvent -= _move.OnExtra;
+            inputReader.MoveInputEvent -= _move.OnMoveInput;
+            inputReader.MoveInputEvent -= _ballShooter.SetFirePointPosition;
         }
 
         private void FixedUpdate(){
@@ -94,7 +95,7 @@ namespace Character
             _interactionsHandler.HeadInteractionCheck();
             _move.RecalculateMoving();
         }
-        
+
         private void OnDrawGizmos(){
             _interactionsHandler?.OnDrawGizmos(Color.grey);
         }
@@ -102,6 +103,5 @@ namespace Character
         public void Deactivate(){
             Debug.LogError("GAME OVER Fall");
         }
-
     }
 }

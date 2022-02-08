@@ -1,5 +1,4 @@
-﻿using Enums;
-using Interfaces;
+﻿using Interfaces;
 using UnityEngine;
 //  Application.targetFrameRate = 240;
 namespace Character
@@ -11,11 +10,12 @@ namespace Character
         private readonly Rigidbody _rigidbody;
 
         private bool _canSlide, _jumping, _jumpInput;
-        private float _jumpForceDuration, _maxSpeed, _walkStep;
+        private float _jumpStartTime, _maxSpeed, _walkStep;
         private Vector3 RbVelocity => _rigidbody.velocity;
         public Vector3 MoveDirection{ get; private set; }
+        private bool CanWalk => MoveDirection != Vector3.zero && !_moveData.IsWallContact && !_moveData.IsSittingState;
 
-        public Move(IMoveData moveData, MoveData data, Rigidbody rBody, Collider collider, float wallInspectLength, LayerMask wallLayer){
+        public Move(IMoveData moveData, MoveData data, Rigidbody rBody){
             _moveData = moveData;
             _data = data;
             _maxSpeed = data.MaxWalkSpeed;
@@ -24,7 +24,7 @@ namespace Character
         }
 
         public void RecalculateMoving(){
-            if (!_moveData.IsWallContact && !_moveData.IsSittingState) Walk();
+            if (CanWalk) Walk();
 
             if (_jumping) Jump();
 
@@ -33,22 +33,43 @@ namespace Character
 
             if (!_moveData.IsGrounded)
                 _canSlide = true;
+            
+            if (!_moveData.IsGrounded)
+                AdditionalGravityForPlayer();
+            
+         //  Debug.Log($"z {RbVelocity.z} ");
+        }
+
+        private void AdditionalGravityForPlayer(){
+            _rigidbody.AddForce(Vector3.down * _data.AdditionalGravity, ForceMode.VelocityChange);
         }
 
         private void Walk(){
             var currentBodySpeed = Mathf.Abs(RbVelocity.z);
-            
-            if (currentBodySpeed < _maxSpeed)
+
+            if (currentBodySpeed <= _maxSpeed)
                 _rigidbody.AddForce(MoveDirection * _walkStep, ForceMode.VelocityChange);
+           
         }
 
         private void Jump(){
             if (!_jumpInput) return;
 
-            _jumpForceDuration += Time.fixedDeltaTime;
+            var force = CalculateJumpForce();
+            _rigidbody.AddForce(force, ForceMode.VelocityChange);
+        }
 
-            if (_jumpForceDuration < _data.MaxJumpForceDuration)
-                _rigidbody.AddForce(Vector3.up * _data.AddForceStep, ForceMode.VelocityChange);
+        private Vector3 CalculateJumpForce(){
+            if (_jumpStartTime == 0){
+                _jumpStartTime = Time.realtimeSinceStartup;
+                return Vector3.up * _data.StartImpulse;
+            }
+            var timeDifference = Time.realtimeSinceStartup - _jumpStartTime;
+            
+            if (timeDifference < _data.MaxJumpForceDuration)
+                return  Vector3.up * _data.AddForceStep;
+            
+            return Vector3.zero;
         }
 
         public void Bounce(){
@@ -57,22 +78,20 @@ namespace Character
         }
 
         private void SideImpulse(){
-            var t = new Vector3(0, RbVelocity.y * -1, 0);
-            _rigidbody.velocity += t;
+            StopVerticalMove();
             _canSlide = false;
         }
 
         private void StopVerticalMove(){
-            var velocity = _rigidbody.velocity;
-            velocity = new Vector3(velocity.x, 0, velocity.z);
-            _rigidbody.velocity = velocity;
+            var project = Vector3.ProjectOnPlane(_rigidbody.velocity, Vector3.up);
+            _rigidbody.velocity = project;
         }
 
-        public void OnMove(Vector3 movement) => MoveDirection = movement;
+        public void OnMoveInput(Vector3 movement) => MoveDirection = movement;
 
-        public void OnJump(bool jumpInput){
+        public void OnJumpInput(bool jumpInput){
             if (jumpInput){
-                _jumpForceDuration = 0;
+                _jumpStartTime = 0;
                 _jumping = false;
             }
 

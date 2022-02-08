@@ -7,13 +7,13 @@ namespace PrefabSripts
 {
     public sealed class FireBall : MonoBehaviour, IScreenDeactivator
     {
-        private const float MIN_FLY_HEIGHT = 0.2f;
+        private const float MIN_FLY_HEIGHT = 0.3f;
         private const float GROUND_BOX_INDENT = 0.95f;
 
         private bool _ricochetHappened;
         private LayerMask _groundLayer, _targetLayer;
         private Vector3 _moveDirection, _ricochetStartPoint;
-        private float _bulletSpeed, _maxFlyHeight, _hitForce;
+        private float _bulletSpeed, _maxFlyHeight, _hitForce, _angle;
 
         private Collider _collider;
         private Rigidbody _rigidbody;
@@ -25,12 +25,13 @@ namespace PrefabSripts
             _collider = GetComponent<Collider>();
         }
 
-        public void Initialize(float bulletSpeed, float maxFlyHeight, float hitForce, LayerMask groundLayer, LayerMask targetLayer){
+        public void Initialize(float bulletSpeed, float maxFlyHeight, float hitForce, float angle, LayerMask groundLayer, LayerMask targetLayer){
             _bulletSpeed = bulletSpeed;
             _maxFlyHeight = maxFlyHeight;
             _hitForce = hitForce;
             _targetLayer = targetLayer;
             _groundLayer = groundLayer;
+            _angle = angle;
 
             _groundInteract = new Interacting(_collider, Axis.Vertical, MIN_FLY_HEIGHT, _groundLayer, GROUND_BOX_INDENT);
         }
@@ -38,8 +39,11 @@ namespace PrefabSripts
         public void Activate(Vector3 position, Vector3 moveDirection){
             gameObject.SetActive(true);
             transform.position = position;
+            
+            var angle = _angle;
+            angle = moveDirection.z > 0 ? angle : -angle;
 
-            _moveDirection = moveDirection + Vector3.down; // 45 degrees down
+            _moveDirection = Quaternion.Euler(angle, 0, 0) * moveDirection;
             _ricochetHappened = false;
         }
 

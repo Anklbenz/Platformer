@@ -1,23 +1,11 @@
-﻿using PrefabSripts;
-using UnityEngine;
-using UnityEngine.UI;
+﻿using UnityEngine;
 
 namespace Game
 {
     public class GameManager : MonoBehaviour
     {
-        [Header("UI Draw")]
-        [SerializeField] private Text scoreLabel;
-
-        [SerializeField] private Text coinLabel;
-        [SerializeField] private Text lifeLabel;
-        [SerializeField] private Text timeLabel;
-        [SerializeField] private ScoreLabel scoreLabelsPrefab;
-        [SerializeField] private Transform scoreLabelParent;
-
         [Header("BonusSpawner")]
         [SerializeField] private BonusFactory bonusFactory;
-
         [SerializeField] private Transform bonusParent;
 
         [Header("Life")]
@@ -26,14 +14,16 @@ namespace Game
         [Header("TimeSystem")]
         [SerializeField] private int levelTime;
 
-        private ObjectSystem _objectSystem;
+        [Header("UI Drawer")]
+        [SerializeField] private UIDrawer uiDrawer;
+
         private CoinSystem _coinSystem;
         private ScoreSystem _scoreSystem;
         private LifeSystem _lifeSystem;
-        private BonusSpawner _bonusSpawner;
         private TimeSystem _timeSystem;
-        private UIDrawer _uiDrawer;
 
+        private ObjectSystem _objectSystem;
+        private BonusSpawner _bonusSpawner;
 
         private void Awake(){
             _objectSystem = new ObjectSystem();
@@ -41,11 +31,11 @@ namespace Game
             _lifeSystem = new LifeSystem(lifeCount, _scoreSystem);
             _coinSystem = new CoinSystem(_objectSystem.CoinCollectNotifies);
             _timeSystem = new TimeSystem(levelTime);
-            _uiDrawer = new UIDrawer(_scoreSystem, _coinSystem, _lifeSystem, _timeSystem, lifeLabel, scoreLabel, coinLabel, timeLabel,
-                scoreLabelsPrefab, scoreLabelParent);
 
             _bonusSpawner = new BonusSpawner(_scoreSystem, _coinSystem, _lifeSystem, _objectSystem.BonusBricksList, bonusFactory,
                 bonusParent);
+            
+            uiDrawer.Initialize(_coinSystem, _lifeSystem,_timeSystem,_scoreSystem);
         }
     }
 }

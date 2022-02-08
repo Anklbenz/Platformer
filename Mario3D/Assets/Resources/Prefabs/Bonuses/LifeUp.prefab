@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 3526782824951368183}
   - component: {fileID: 4224800999321519810}
   m_Layer: 8
-  m_Name: LifesUp
+  m_Name: LifeUp
   m_TagString: Bonus
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -49,9 +49,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: adad6e6e82c199b4b801b1851bdc4047, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _speed: 2
-  MoveDirection: 0
-  _bouncePower: 20
+  speed: 5
+  jumpingPower: 0
+  jumpingMode: 0
+  moveDirection: 2
 --- !u!114 &-3199050723184793809
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -64,10 +65,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ce5adbf043525a140bdceb02cbc11eef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _patrolLayer:
+  patrolLayer:
     serializedVersion: 2
-    m_Bits: 2049
-  _groundCheckActive: 0
+    m_Bits: 1
 --- !u!95 &7973857634622750065
 Animator:
   serializedVersion: 3

@@ -7,9 +7,9 @@ namespace Input
     [CreateAssetMenu]
     public class InputReader : ScriptableObject, GameInput.IPlayerActions
     {
-        public event Action<bool> JumpEvent, SitDownEvent, ExtraActionEvent;
-        public event Action<Vector3> MoveEvent;
-        public event Action ShootEvent;
+        public event Action<bool> JumpInputEvent, SitInputEvent, ExtraInputEvent;
+        public event Action<Vector3> MoveInputEvent;
+        public event Action ShootInputEvent;
 
         private GameInput _gameInput;
 
@@ -25,33 +25,33 @@ namespace Input
 
         public void OnJump(InputAction.CallbackContext context){
             if (context.phase == InputActionPhase.Performed)
-                JumpEvent?.Invoke(true);
+                JumpInputEvent?.Invoke(true);
 
             if (context.phase == InputActionPhase.Canceled)
-                JumpEvent?.Invoke(false);
+                JumpInputEvent?.Invoke(false);
         }
 
         public void OnMove(InputAction.CallbackContext context){
             var movement = Vector3.forward * context.ReadValue<float>();
-            MoveEvent?.Invoke(movement);
+            MoveInputEvent?.Invoke(movement);
         }
 
         public void OnSitDown(InputAction.CallbackContext context){
             if (context.phase == InputActionPhase.Performed)
-                SitDownEvent?.Invoke(true);
+                SitInputEvent?.Invoke(true);
 
             if (context.phase == InputActionPhase.Canceled)
-                SitDownEvent?.Invoke(false);
+                SitInputEvent?.Invoke(false);
         }
 
         public void OnExtraAction(InputAction.CallbackContext context){
             if (context.phase == InputActionPhase.Performed){
-                ExtraActionEvent?.Invoke(true);
-                ShootEvent?.Invoke();
+                ExtraInputEvent?.Invoke(true);
+                ShootInputEvent?.Invoke();
             }
 
             if (context.phase == InputActionPhase.Canceled)
-                ExtraActionEvent?.Invoke(false);
+                ExtraInputEvent?.Invoke(false);
         }
     }
 }

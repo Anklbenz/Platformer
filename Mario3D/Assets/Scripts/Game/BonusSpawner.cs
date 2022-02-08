@@ -39,7 +39,7 @@ namespace Game
             var instance = _bonusFactory.SpawnObject(sender.BonusType, sender.BonusCreatePoint, _bonusPrefabParent);
 
             if (instance is IScoreChangeNotify score)
-                _scoreSystem.SubsсribeOnScoreEvent(score);
+                _scoreSystem.SubscribeOnScoreEvent(score);
             if (instance is ICoinCollectNotify coins)
                 _coinCounter.SubscribeColinCollectEvent(coins);
             if (instance is ILifeIncreaseNotify life)

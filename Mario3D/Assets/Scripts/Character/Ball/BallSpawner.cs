@@ -19,10 +19,10 @@ namespace Character.Ball
             InitializePool(groundLayer, targetLayer, fireballParent);
         }
 
-        private void InitializePool(LayerMask groundLayer, LayerMask targetLayer,  Transform fireballParent){
+        private void InitializePool(LayerMask groundLayer, LayerMask targetLayer, Transform fireballParent){
             for (var i = 0; i < _data.BulletCount; i++){
                 _fireBallPool[i] = Object.Instantiate(_data.Prefab, fireballParent);
-                _fireBallPool[i].Initialize(_data.BulletSpeed, _data.MaxFlyHeight, _data.HitForce, groundLayer, targetLayer);
+                _fireBallPool[i].Initialize(_data.BulletSpeed, _data.MaxFlyHeight, _data.HitForce, _data.Angle, groundLayer, targetLayer);
                 _fireBallPool[i].gameObject.SetActive(false);
             }
         }

@@ -58,18 +58,20 @@ namespace Enemy
             Drop(dropForce);
         }
 
+        private void ScreenActivateState(bool isActive){
+            Activated = isActive;
+            Motor.SetActive(isActive);
+            base.IsActive = isActive;
+            Rigidbody.useGravity = isActive;
+        }
+
         public void Standby(){
-            Activated = false;
-            Motor.SetActive(false);
-            Rigidbody.useGravity = false;
+           ScreenActivateState(false);
         }
 
         public void Activate(){
             if (Activated) return;
-            
-            Motor.SetActive(true);
-            Rigidbody.useGravity = true;
-            Activated = true;
+            ScreenActivateState(true);
         }
 
         public void Deactivate(){

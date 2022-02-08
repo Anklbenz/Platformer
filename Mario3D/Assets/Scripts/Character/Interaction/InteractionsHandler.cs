@@ -1,6 +1,4 @@
-﻿using Character.States;
-using Character.States.Data;
-using Enums;
+﻿using Enums;
 using Interfaces;
 using UnityEngine;
 
@@ -8,11 +6,12 @@ namespace Character.Interaction
 {
     public class InteractionsHandler
     {
-        private const float IS_GROUNDED_BOX_INDENT = 0.95f;
+        private const float IS_GROUNDED_BOX_INDENT = 0.999f;
+        private const float IS_WALL_BOX_INDENT = 0.99f;
+        private const float OVERHEAD_BOX_INDENT = 0.93f;
         public bool IsGrounded => _isGrounded.InteractionBoxcast(Vector3.down);
         public bool IsWall => _isWall.InteractionBoxcast(_moveData.MoveDirection);
         
-        private const float OVERHEAD_BOX_INDENT = 0.93f;
         private readonly LegsInteractionsHandler _legsInteractionsHandler;
         private readonly HeadInteractionsHandler _headInteractionsHandler;
         private readonly Interacting _isGrounded, _isWall;
@@ -27,7 +26,7 @@ namespace Character.Interaction
             _legsInteractionsHandler =
                 new LegsInteractionsHandler(collider, moveData, bounce, Vector3.down, bottomCheckLength, bottomCheckLayer);
             _isGrounded = new Interacting(collider, Axis.Vertical, isGroundLength, isGroundLayer, IS_GROUNDED_BOX_INDENT, true);
-            _isWall = new Interacting(collider, Axis.Horizontal, isGroundLength, isGroundLayer, IS_GROUNDED_BOX_INDENT, true);
+            _isWall = new Interacting(collider, Axis.Horizontal, isGroundLength, isGroundLayer, IS_WALL_BOX_INDENT, true);
 
             _moveData = moveData;
         }
@@ -41,6 +40,8 @@ namespace Character.Interaction
         }
 
         public void OnDrawGizmos(Color color){
+            _isWall?.OnDrawGizmos(color);
+            _isGrounded?.OnDrawGizmos(color);
             _headInteractionsHandler?.OnDrawGizmos(color);
             _legsInteractionsHandler?.OnDrawGizmos(color);
         }

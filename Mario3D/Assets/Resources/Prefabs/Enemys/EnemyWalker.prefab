@@ -141,10 +141,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: adad6e6e82c199b4b801b1851bdc4047, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 1.4
+  speed: 2.8
+  additionalGravity: 1
   jumpingPower: 0
   jumpingMode: 0
-  moveDirection: 0
+  moveDirection: 1
 --- !u!114 &8422206331231859417
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -159,9 +160,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   patrolLayer:
     serializedVersion: 2
-    m_Bits: 3073
+    m_Bits: 3585
   destroyDropTime: 3
-  dropForce: 20
   destroyStompTime: 1.5
 --- !u!1001 &6442575915522978840
 PrefabInstance:

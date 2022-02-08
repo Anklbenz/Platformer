@@ -7,29 +7,27 @@ namespace Game
     public class CoinSystem
     {
         public event Action CoinsCountChanged;
-        public int TotalCoin => _coinCount; 
-    
-        private int _coinCount;
+        public int TotalCoin{ get; private set; }
 
-        private List<ICoinCollectNotify> _coinCollectNotifies;
+        private readonly List<ICoinCollectNotify> _coinCollectNotifies;
 
         public CoinSystem(List<ICoinCollectNotify> coinCollectNotifies) {
             _coinCollectNotifies = coinCollectNotifies;
-            SubscribeAllActiveCoinColletNotifies();
+            SubscribeAllActiveCoinCollectNotifies();
         }
 
         public void SubscribeColinCollectEvent(ICoinCollectNotify sender) {
             sender.CoinCollectNotify += AddCoin;
         }
 
-        private void SubscribeAllActiveCoinColletNotifies() {
+        private void SubscribeAllActiveCoinCollectNotifies() {
             foreach (var instance in _coinCollectNotifies) {
                 SubscribeColinCollectEvent(instance);
             }
         }
 
         private void AddCoin() {
-            _coinCount++;
+            TotalCoin++;
             CoinsCountChanged?.Invoke();
         }
     }

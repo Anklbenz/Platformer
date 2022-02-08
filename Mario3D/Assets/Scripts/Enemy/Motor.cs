@@ -6,7 +6,7 @@ namespace Enemy
     public class Motor : MonoBehaviour
     {
         [Range(0, 15)]
-        [SerializeField] private float speed;
+        [SerializeField] private float speed, additionalGravity;
         [Range(5, 40)]
         [SerializeField] private float jumpingPower;
         [SerializeField] private bool jumpingMode;
@@ -25,10 +25,15 @@ namespace Enemy
         private void FixedUpdate(){
             if (_isActive)
                 Patrolling();
+            AdditionalGravity();
         }
 
         public void SetSpeed(float spd){
             speed = spd;
+        }
+
+        private void AdditionalGravity(){
+            _rigidbody.AddForce(Vector3.down * additionalGravity, ForceMode.VelocityChange);
         }
 
         public float GetSpeed(){
