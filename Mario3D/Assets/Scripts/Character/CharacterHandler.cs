@@ -13,7 +13,7 @@ namespace Character
     [RequireComponent(typeof(BoxCollider))]
     [RequireComponent(typeof(SphereCollider))]
     [RequireComponent(typeof(Rigidbody))]
-    public sealed class CharacterHandler : MonoBehaviour, IStateData, ICharacterComponents, IMoveData, IScreenDeactivator
+    public sealed class CharacterHandler : MonoBehaviour, IStateData, ICharacterComponents, IMoveData, ISecondScreenDeactivate
     {
         [Header("BallSpawner")]
         [SerializeField] private BallSpawnerData spawnerData;

@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace PrefabSripts
 {
-    public sealed class FireBall : MonoBehaviour, IScreenDeactivator
+    public sealed class FireBall : MonoBehaviour, IFirstScreenDeactivate
     {
         private const float MIN_FLY_HEIGHT = 0.3f;
         private const float GROUND_BOX_INDENT = 0.95f;
@@ -60,7 +60,6 @@ namespace PrefabSripts
                     _ricochetStartPoint = transform.position;
                 }
             }
-
             _rigidbody.velocity = _moveDirection * _bulletSpeed;
         }
 

@@ -43,18 +43,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 3952352051096699969}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: df5c9fa7becac3143ba279c9cb92ac97, type: 3}
+  m_Script: {fileID: 11500000, guid: f31ef0f96f899324eb8812f5c077b519, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   mainCam: {fileID: 0}
-  activator: {fileID: 3952352053065267259}
-  deactivator: {fileID: 3952352053011572885}
-  activatorIndentZ: 2
-  activatorIndentY: 4
-  deactivatorIndentZ: 6
-  deactivatorIndentY: 4
-  viewportRectDepth: 4
+  firstScreen: {fileID: 3952352053065267259}
+  secondScreen: {fileID: 3952352053011572885}
   backWall: {fileID: 3952352051907366360}
+  viewportRectDepth: 4
+  firstScreenIndent: {x: 2, y: 4}
+  secondScreenIndent: {x: 6, y: 4}
 --- !u!1 &3952352051907366358
 GameObject:
   m_ObjectHideFlags: 0
@@ -111,7 +109,7 @@ GameObject:
   - component: {fileID: 3952352053011572883}
   - component: {fileID: 3952352053011572885}
   m_Layer: 16
-  m_Name: Deactivator
+  m_Name: SecondScreen
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -171,7 +169,7 @@ GameObject:
   - component: {fileID: 3952352053065267257}
   - component: {fileID: 3952352053065267259}
   m_Layer: 16
-  m_Name: Activator
+  m_Name: FirstScreen
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -216,3 +214,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c959ef0ea4cf00a4891d3076d65a16c1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  activateLayer:
+    serializedVersion: 2
+    m_Bits: 1024
+  deactivateLayer:
+    serializedVersion: 2
+    m_Bits: 0

@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Enemy
 {
-    public class ActiveEnemy : ActiveInteractiveObject, IJumpOn, IScoreChangeNotify, IScreenActivator, IScreenDeactivator
+    public class ActiveEnemy : ActiveInteractiveObject, IJumpOn, IScoreChangeNotify, IFirstScreenActivate, ISecondScreenDeactivate
     {
         public event Action<IScoreChangeNotify, int> ScoreChangeEvent;
 

@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _prefab: {fileID: 3320685874552789971, guid: a45c950b084b95c4594b03d300ea00fa, type: 3}
   bulletCount: 2
-  fireDelay: 1
+  fireDelay: 0.15
   bulletSpeed: 30
-  maxFlyHeight: 4.1
+  maxFlyHeight: 4.2
   hitForce: 30
   angle: 25

@@ -10,7 +10,7 @@ namespace Game
         public readonly List<IBonusSpawn> BonusBricksList = new List<IBonusSpawn>();
         public readonly List<IScoreChangeNotify> ScoreNotifies = new List<IScoreChangeNotify>();
         public readonly List<ICoinCollectNotify> CoinCollectNotifies = new List<ICoinCollectNotify>();
-        public readonly List<IScreenActivator> ScreenActivatorSensitives = new List<IScreenActivator>();
+        public readonly List<IFirstScreenActivate> ScreenActivatorSensitives = new List<IFirstScreenActivate>();
 
         private readonly List<MonoBehaviour> _listAllObjects = new List<MonoBehaviour>();
 
@@ -30,7 +30,7 @@ namespace Game
                 if (instance is ICoinCollectNotify coin)
                     CoinCollectNotifies.Add(coin);
 
-                if (instance is IScreenActivator enemy)
+                if (instance is IFirstScreenActivate enemy)
                     //ScreenActivatorSensitives.Add(enemy);
                     enemy.Standby();
               

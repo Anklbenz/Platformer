@@ -22,7 +22,7 @@ TagManager:
   - Enemy
   - Brick
   - Activator
-  - 
+  - FireBall
   - OnlyGround
   - OnlyGroundAndBricks
   - OnlyEnemy

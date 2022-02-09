@@ -140,9 +140,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   patrolLayer:
     serializedVersion: 2
-    m_Bits: 3585
+    m_Bits: 3073
   destroyDropTime: 3
-  engageSpeed: 10
+  engageSpeed: 18
   cooldownTime: 5
   dropForce: 20
   currentState: 1

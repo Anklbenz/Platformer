@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 3894669555101092506}
   - component: {fileID: 960953663393949637}
   - component: {fileID: 3320685874552789971}
-  m_Layer: 10
+  m_Layer: 13
   m_Name: FIreBall
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -86,7 +86,7 @@ GameObject:
   - component: {fileID: 8226288300945252654}
   - component: {fileID: 3474028117532354345}
   - component: {fileID: 1334871217280187235}
-  m_Layer: 10
+  m_Layer: 13
   m_Name: Mesh
   m_TagString: Untagged
   m_Icon: {fileID: 0}

@@ -14,10 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxJumpForceDuration: 0.5
   addForceStep: 1.8
-  bouncePower: 30
-  startImpulse: 23
+  bouncePower: 18
+  startImpulse: 20
   additionalGravity: 2
   maxWalkSpeed: 8.5
   walkForceStep: 0.5
   maxExtraWalkSpeed: 12
-  extraWalkForceStep: 1.2
+  extraWalkForceStep: 1

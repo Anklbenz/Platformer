@@ -33,11 +33,11 @@ namespace Character
 
             if (!_moveData.IsGrounded)
                 _canSlide = true;
-            
+
             if (!_moveData.IsGrounded)
                 AdditionalGravityForPlayer();
-            
-         //  Debug.Log($"z {RbVelocity.z} ");
+
+            //  Debug.Log($"z {RbVelocity.z} ");
         }
 
         private void AdditionalGravityForPlayer(){
@@ -74,7 +74,8 @@ namespace Character
 
         public void Bounce(){
             StopVerticalMove();
-            _rigidbody.AddForce(Vector3.up * _data.BouncePower, ForceMode.Impulse);
+                // _rigidbody.AddForce(Vector3.up * _data.BouncePower, ForceMode.Impulse);
+                _rigidbody.AddForce(Vector3.up * _data.BouncePower, ForceMode.VelocityChange);
         }
 
         private void SideImpulse(){
@@ -87,7 +88,11 @@ namespace Character
             _rigidbody.velocity = project;
         }
 
-        public void OnMoveInput(Vector3 movement) => MoveDirection = movement;
+        public void OnMoveInput(Vector3 movement){
+            MoveDirection = movement;
+            Debug.Log(movement);
+        }
+        
 
         public void OnJumpInput(bool jumpInput){
             if (jumpInput){

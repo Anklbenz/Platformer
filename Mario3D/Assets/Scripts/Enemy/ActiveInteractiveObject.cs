@@ -28,8 +28,8 @@ namespace Enemy
             Rigidbody = GetComponent<Rigidbody>();
             ObjectCollider = GetComponent<BoxCollider>();
 
-            _groundInteract = new Interacting(ObjectCollider, Axis.Vertical, PATROL_CHECK_DISTANCE, patrolLayer, PATROL_BOX_INDENT, true);
-            _frontInteract = new Interacting(ObjectCollider, Axis.Horizontal, PATROL_CHECK_DISTANCE, patrolLayer, PATROL_BOX_INDENT,true);
+            _groundInteract = new Interacting(ObjectCollider, Axis.Vertical, PATROL_CHECK_DISTANCE, patrolLayer, PATROL_BOX_INDENT );
+            _frontInteract = new Interacting(ObjectCollider, Axis.Horizontal, PATROL_CHECK_DISTANCE, patrolLayer, PATROL_BOX_INDENT);
         }
 
         protected virtual void FixedUpdate(){

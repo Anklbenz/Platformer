@@ -25,6 +25,7 @@ namespace Enemy
         private void FixedUpdate(){
             if (_isActive)
                 Patrolling();
+            
             AdditionalGravity();
         }
 
@@ -62,7 +63,7 @@ namespace Enemy
 
         public void Jumping(){
             StopVerticalMove();
-            _rigidbody.AddForce(Vector3.up * jumpingPower, ForceMode.Impulse);
+            _rigidbody.AddForce(Vector3.up * jumpingPower, ForceMode.VelocityChange);
         }
 
         private void StopVerticalMove(){
