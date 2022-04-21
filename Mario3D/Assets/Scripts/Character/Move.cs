@@ -5,6 +5,8 @@ namespace Character
 {
     public sealed class Move : IBounce
     {
+        public Vector3 MoveDirection{ get; private set; }
+        
         private readonly IMoveData _moveData;
         private readonly MoveData _data;
         private readonly Rigidbody _rigidbody;
@@ -12,7 +14,6 @@ namespace Character
         private bool _canSlide, _jumping, _jumpInput;
         private float _jumpStartTime, _maxSpeed, _walkStep;
         private Vector3 RbVelocity => _rigidbody.velocity;
-        public Vector3 MoveDirection{ get; private set; }
         private bool CanWalk => MoveDirection != Vector3.zero && !_moveData.IsWallContact && !_moveData.IsSittingState;
 
         public Move(IMoveData moveData, MoveData data, Rigidbody rBody){
@@ -62,12 +63,12 @@ namespace Character
         private Vector3 CalculateJumpForce(){
             if (_jumpStartTime == 0){
                 _jumpStartTime = Time.realtimeSinceStartup;
-                return Vector3.up * _data.StartImpulse;
+                return Vector3.up * _data.JumpStartImpulse;
             }
             var timeDifference = Time.realtimeSinceStartup - _jumpStartTime;
             
-            if (timeDifference < _data.MaxJumpForceDuration)
-                return  Vector3.up * _data.AddForceStep;
+            if (timeDifference < _data.MAXJumpDuration)
+                return  Vector3.up * _data.JumpForceStep;
             
             return Vector3.zero;
         }
@@ -108,7 +109,7 @@ namespace Character
 
         public void OnExtra(bool extraMove){
             if (extraMove){
-                _maxSpeed = _data.MaxExtraWalkSpeed;
+                _maxSpeed = _data.ExtraMaxWalkSpeed;
                 _walkStep = _data.ExtraWalkForceStep;
             }
             else{
