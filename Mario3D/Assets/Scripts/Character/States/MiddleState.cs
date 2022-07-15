@@ -1,32 +1,22 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using Character.States.Data;
+using Enums;
+using Interfaces;
 using UnityEngine;
 
-public class MiddleState : State
+namespace Character.States
 {
+    public class MiddleState : State
+    {
+        public MiddleState(IStateSwitcher stateSwitcher, StateData data) : base(stateSwitcher, data){
+        } 
 
-    public MiddleState(Character character, IStateSwitcher stateSwitcher) : base(character, stateSwitcher) { }
-    public override void Enter() {
-        character.BallSpawnerSetActive(false);
-        character.SetTrasformSize(true);
-        character.CanCrush = true;
-        Debug.Log("Middle");
-    }
+        public override void StateUp(){
+            StateSwitcher.StateSwitch<SeniorState>();
+        }
 
-    public override void Exit() {
-      
-    }
-
-    public override void Hurt() {
-        character.PlayFlick();
-        stateSwitcher.StateSwitch<JuniorState>();
-        Debug.Log("LevelDown Middle -> Junior");
-
-    }
-
-    public override void LevelUp() {
-        stateSwitcher.StateSwitch<SeniorState>();
-        Debug.Log("LevelUp Middle -> Senior");
+        public override void StateDown(){
+            StateSwitcher.StateSwitch<JuniorState>();
+            StateSwitcher.ExtraStateSwitch(ExtraState.FlickerState);
+        }
     }
 }
-

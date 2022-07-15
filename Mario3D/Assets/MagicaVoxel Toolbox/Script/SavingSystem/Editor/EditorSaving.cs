@@ -1,4 +1,6 @@
-﻿namespace MagicaVoxelToolbox.Saving {
+﻿using MagicaVoxel_Toolbox.Script.SavingSystem;
+
+namespace MagicaVoxelToolbox.Saving {
 
 	using UnityEditor;
 	using UnityEngine;

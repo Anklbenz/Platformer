@@ -1,17 +1,22 @@
-﻿using UnityEngine;
+﻿using Character.States.Data;
+using Interfaces;
+using UnityEngine;
 
-public abstract class State
+namespace Character.States
 {
-    protected Character character;
-    protected readonly IStateSwitcher stateSwitcher;
+   
+    public abstract class State
+    {
+      public StateData Data{ get; protected set; }
+        protected readonly IStateSwitcher StateSwitcher;
 
-    protected State (Character character , IStateSwitcher stateSwitcher) {
-        this.character = character;
-        this.stateSwitcher = stateSwitcher;
+        protected State(IStateSwitcher stateSwitcher, StateData data){
+            StateSwitcher = stateSwitcher;
+            Data = data;
+        }
+
+        public abstract void StateDown();
+        public abstract void StateUp();
+
     }
-
-    public abstract void Enter();
-    public abstract void Exit();
-    public abstract void Hurt();
-    public abstract void LevelUp();
 }

@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 77e56e799bc849e40958c41c1c6acdea, type: 3}
+  m_Name: BallSpawnerData
+  m_EditorClassIdentifier: 
+  _prefab: {fileID: 3320685874552789971, guid: a45c950b084b95c4594b03d300ea00fa, type: 3}
+  bulletCount: 2
+  fireDelay: 0.15
+  bulletSpeed: 30
+  maxFlyHeight: 4.2
+  hitForce: 30
+  angle: 25

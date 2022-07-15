@@ -1,4 +1,6 @@
-﻿namespace MagicaVoxelToolbox {
+﻿using MagicaVoxel_Toolbox.Script.RectPacking;
+
+namespace MagicaVoxelToolbox {
 	using System.Collections;
 	using System.Collections.Generic;
 	using UnityEngine;

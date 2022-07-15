@@ -21,12 +21,12 @@ TagManager:
   - Player
   - Enemy
   - Brick
-  - InvisibleForEnemy
-  - InvisibleForPlayer
-  - 
-  - 
-  - 
-  - 
+  - Activator
+  - FireBall
+  - OnlyGround
+  - OnlyGroundAndBricks
+  - OnlyEnemy
+  - OnlyPlayer
   - 
   - 
   - 

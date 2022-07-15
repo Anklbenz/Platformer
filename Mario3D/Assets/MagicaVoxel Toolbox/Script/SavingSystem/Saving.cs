@@ -1,4 +1,4 @@
-﻿namespace MagicaVoxelToolbox.Saving {
+﻿namespace MagicaVoxel_Toolbox.Script.SavingSystem {
 
 
 	public abstract class Saving<T> {

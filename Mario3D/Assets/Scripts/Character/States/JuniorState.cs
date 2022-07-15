@@ -1,26 +1,21 @@
-﻿using UnityEngine;
+﻿using Character.States.Data;
+using Interfaces;
+using UnityEngine;
 
-public class JuniorState : State
+namespace Character.States
 {
-    public JuniorState(Character character, IStateSwitcher stateSwitcher) : base(character, stateSwitcher) { }
-    public override void Enter() {
-        character.BallSpawnerSetActive(false);
-        character.SetTrasformSize(false);
-        character.CanCrush = false;
-        Debug.Log("Junior");
-    }
 
-    public override void Exit() {
-        //throw new System.NotImplementedException();
-    }
+    public class JuniorState : State
+    {
+        public JuniorState(IStateSwitcher stateSwitcher, StateData data) : base(stateSwitcher, data){ }
 
-    public override void Hurt() {
-        Debug.LogError("GameOVER");
-    }
+        public override void StateDown() {
+            Debug.LogError("GameOver");
+        }
 
-    public override void LevelUp() {        
-        stateSwitcher.StateSwitch<MiddleState>();
-        Debug.Log("LevelUp Junior -> Middle");
+        public override void StateUp() {
+            StateSwitcher.StateSwitch<MiddleState>();
+        }
     }
 }
 

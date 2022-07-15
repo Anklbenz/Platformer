@@ -916,7 +916,7 @@
 						"[Middle drag] or [Alt + Left drag] Move camera\n" +
 						"[Mouse wheel] or [Alt + Right drag] Zoom camera\n" +
 						"[Shift + right click] Focus camera\n" +
-						"[Shift + S] Show/Hide state info\n" +
+						"[Shift + S] Show/Hide stateHandler info\n" +
 						"[P] Start/stop paint selecting bone\n" +
 						"[ESC] Stop painting weight point\n" +
 						"[V] [B] [N] Set brush type\n" +

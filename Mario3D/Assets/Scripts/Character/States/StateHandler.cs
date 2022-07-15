@@ -1,46 +1,99 @@
-﻿using System.Collections;
+﻿using System;
 using System.Collections.Generic;
-using System.Linq;
+using Character.States.Data;
+using Enemy;
+using Enums;
+using Interfaces;
 using UnityEngine;
 
-public class StateHandler : MonoBehaviour, IStateSwitcher
+namespace Character.States
 {
-    private Character _character;
-    public State CurrentState { get; private set; }
-    private List<State> stateMap;
+   public class StateHandler : IStateMethods, IDisposable
+   {
+      public StateData Data => _stateSwitcher.CurrentStateData;
+      public ExtraState ExtraState => _stateSwitcher.ExtraState;
+      public IStateMethods StateMethods{ get; }
+      public bool IsSitting{ get; private set; }
 
-    void Start() {
-        _character = GetComponent<Character>();
-        stateMap = new List<State>
-        {
-            new JuniorState(_character, this),
-            new MiddleState(_character, this),
-            new SeniorState(_character, this)
-        };
-        CurrentState = stateMap[0];
-    }
+      private readonly float _unstopStateDropForce;
+      private readonly Flicker _flicker;
+      private readonly StateSwitcher _stateSwitcher;
 
-    public void Hurt() {
-        CurrentState.Hurt();
-    }
+     private readonly CharacterResizer _characterResizer;
 
-    public void LevelUp() {
-        CurrentState.LevelUp();
-    }
+      public StateHandler(ICharacterComponents components, IReadOnlyList<StateData> stateMap, float unstopStateDropForce,
+         int flickerLength, int unstopLength){
 
-    public void StateSwitch<T>() where T : State {
-        var state = stateMap.FirstOrDefault(source => source is T);
-        CurrentState.Exit();
-        CurrentState = state;
-        CurrentState.Enter();
-    }
+         InstantiateSkins(stateMap, components.SkinsParent);
+         StateMethods = this;
 
-    public bool CompareCurrentStateWith<T>() where T : State {
-        var state = stateMap.FirstOrDefault(source => source is T);
-        if (CurrentState == state)
-            return true;
-        else
-            return false;
-    }
+         _flicker = new Flicker();
+         _characterResizer = new CharacterResizer(components.MainCollider, components.SecondaryCollider, components.MainTransform);
 
+         _stateSwitcher = new StateSwitcher(stateMap, flickerLength, unstopLength);
+         _unstopStateDropForce = unstopStateDropForce;
+
+         _stateSwitcher.FlickStartEvent += OnStartFlick;
+         _stateSwitcher.FlickStopEvent += OnStopFlick;
+         _stateSwitcher.StateEnter += OnStateEnter;
+         _stateSwitcher.StateExit += OnStateExit;
+
+         _stateSwitcher.StateSwitch<JuniorState>();
+      }
+
+      public void BonusTake(){
+         _stateSwitcher.CurrentState.StateUp();
+      }
+
+      public void UnstopBonusTake(){
+         _stateSwitcher.ExtraStateSwitch(ExtraState.UnstopState);
+      }
+
+      public void EnemyTouch(ActiveEnemy sender){
+         switch (ExtraState){
+
+            case (ExtraState.NormalState):
+               _stateSwitcher.CurrentState.StateDown();
+               break;
+
+            case (ExtraState.UnstopState):
+               sender.DownHit(_unstopStateDropForce);
+               break;
+
+            case ExtraState.FlickerState:
+               return;
+
+            default:
+               throw new ArgumentOutOfRangeException();
+         }
+      }
+
+      public void SitInput(bool sitInput){
+         if (!Data.CanSit) return;
+         IsSitting = sitInput;
+
+         _characterResizer.ColliderResize(sitInput ? Data.SitColliderSize : Data.ColliderSize);
+      }
+
+      private void InstantiateSkins(IEnumerable<StateData> stateMap, Transform parent){
+         foreach (var stateData in stateMap)
+            stateData.SkinInstantiate(parent);
+      }
+
+      private void OnStateEnter(){
+         _characterResizer.ColliderResize(Data.ColliderSize);
+         Data.Skin.SetActive(true);
+      }
+
+      private void OnStateExit() => Data.Skin.SetActive(false);
+      private void OnStartFlick() => _flicker.Play(Data.Skin);
+      private void OnStopFlick() => _flicker.Stop();
+
+      public void Dispose(){
+         _stateSwitcher.FlickStartEvent -= OnStartFlick;
+         _stateSwitcher.FlickStopEvent -= OnStopFlick;
+         _stateSwitcher.StateEnter -= OnStateEnter;
+         _stateSwitcher.StateExit -= OnStateExit;
+      }
+   }
 }

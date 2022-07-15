@@ -1,73 +1,75 @@
-using System.Collections;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
-using System;
 
-public sealed class PoolObjects<T> where T : MonoBehaviour
+namespace Game
 {
-    private List<T> pool;
-    private bool canExpand = false;
-    private Transform parentContainer;
-    private T prefab;
-
-    //public PoolObjects(T prefab, int poolAmount, bool canExpand)
-    //{
-    //    this.canExpand = canExpand;
-    //    parentContainer = null;
-
-    //    CreatePool(poolAmount);
-
-    //}
-    public PoolObjects(T prefab, int poolAmount, bool canExpand, Transform parentContainer)
+    public sealed class PoolObjects<T> where T : MonoBehaviour
     {
-        this.canExpand = canExpand;
-        this.parentContainer = parentContainer;
-        this.prefab = prefab;
+        private List<T> pool;
+        private bool canExpand = false;
+        private Transform parentContainer;
+        private T prefab;
 
-        CreatePool(poolAmount);
-    }
+        //public PoolObjects(T prefab, int poolAmount, bool canExpand)
+        //{
+        //    this.canExpand = canExpand;
+        //    parentContainer = null;
 
-    private void CreatePool(int poolAmount)
-    {
-        pool = new List<T>();
+        //    CreatePool(poolAmount);
 
-        for (int i = 0; i < poolAmount; i++)
-            CreateElement();
-    }
-
-    private T CreateElement(bool isActiveAsDefault = false)
-    {
-        var createdObj = UnityEngine.Object.Instantiate(prefab, parentContainer);
-        createdObj.gameObject.SetActive(isActiveAsDefault);
-        pool.Add(createdObj);
-        return createdObj;
-    }
-
-
-    public bool HasFreeElement(out T element)
-    {
-        foreach (var obj in pool)
+        //}
+        public PoolObjects(T prefab, int poolAmount, bool canExpand, Transform parentContainer)
         {
-            if (!obj.gameObject.activeInHierarchy)
-            {
-                element = obj;
-                element.gameObject.SetActive(true);
-                return true;
-            }
+            this.canExpand = canExpand;
+            this.parentContainer = parentContainer;
+            this.prefab = prefab;
+
+            CreatePool(poolAmount);
         }
 
-        element = null;
-        return false;
-    }
+        private void CreatePool(int poolAmount)
+        {
+            pool = new List<T>();
 
-    public T GetFreeElement()
-    {
-        if (HasFreeElement(out var element))
-            return element;
+            for (int i = 0; i < poolAmount; i++)
+                CreateElement();
+        }
 
-        if (canExpand)
-            return CreateElement(true);
+        private T CreateElement(bool isActiveAsDefault = false)
+        {
+            var createdObj = UnityEngine.Object.Instantiate(prefab, parentContainer);
+            createdObj.gameObject.SetActive(isActiveAsDefault);
+            pool.Add(createdObj);
+            return createdObj;
+        }
 
-        throw new Exception($"â ïóëå çàêîí÷èëèñü {typeof(T)}");
+
+        public bool HasFreeElement(out T element)
+        {
+            foreach (var obj in pool)
+            {
+                if (!obj.gameObject.activeInHierarchy)
+                {
+                    element = obj;
+                    element.gameObject.SetActive(true);
+                    return true;
+                }
+            }
+
+            element = null;
+            return false;
+        }
+
+        public T GetFreeElement()
+        {
+            if (HasFreeElement(out var element))
+                return element;
+
+            if (canExpand)
+                return CreateElement(true);
+
+            throw new Exception($"Ð² Ð¿ÑƒÐ»Ðµ Ð·Ð°ÐºÐ¾Ð½Ñ‡Ð¸Ð»Ð¸ÑÑŒ {typeof(T)}");
+        }
     }
 }

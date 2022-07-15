@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e730142ac66ab5744b3ad01ee3ecc809, type: 3}
+  m_Name: JuniorData
+  m_EditorClassIdentifier: 
+  canCrush: 0
+  canSit: 0
+  canShoot: 0
+  colliderSize: {x: 1.2, y: 1.6, z: 1.2}
+  sitColliderSize: {x: 0, y: 0, z: 0}
+  skinPrefab: {fileID: 3562316997226602247, guid: d128a76a64800aa45984d54029cbdc1a,
+    type: 3}

@@ -1,12 +1,21 @@
-﻿namespace MyEnums
+﻿namespace Enums
 {
-
     public enum BonusType
     {
-        none,
-        coin,
-        levelUp,
-        heathUp
+        None = 0,
+        Coin = 1,
+        GrowUp = 2,
+        Flower = 3,
+        LifeUp = 4,
+        JumpStar = 5,
+        Walker = 6
+    }
+
+    public enum ExtraState
+    {
+        NormalState = 0,
+        FlickerState = 1,
+        UnstopState = 2
     }
 
     public enum PusherState
@@ -18,10 +27,14 @@
 
     public enum Direction
     {
-        none,
-        left,
-        rigth,
-        up,
-        down  
+        None,
+        Left,
+        Right,
+    }
+
+    public enum Axis
+    {
+        Horizontal = 0,
+        Vertical = 1
     }
 }

@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 348032060196713593}
   - component: {fileID: 8193560851245718459}
   - component: {fileID: 8635030095689360288}
+  - component: {fileID: 1193813335057317376}
   m_Layer: 0
   m_Name: Model 0
   m_TagString: Untagged
@@ -79,6 +80,25 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4560752465186938254}
   m_Mesh: {fileID: 6028682569850169617}
+--- !u!95 &1193813335057317376
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4560752465186938254}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 14380bba3d5e41a4ca7fa499e840e97d, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &9029018083570166796
 GameObject:
   m_ObjectHideFlags: 0
@@ -88,9 +108,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8867581699988057986}
-  - component: {fileID: 5358422462056656157}
+  - component: {fileID: 2180378965623294743}
   m_Layer: 0
-  m_Name: Coin1
+  m_Name: Coin
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -111,25 +131,19 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!95 &5358422462056656157
-Animator:
-  serializedVersion: 3
+--- !u!114 &2180378965623294743
+MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9029018083570166796}
   m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 14380bba3d5e41a4ca7fa499e840e97d, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4dd3c3d03c98cf143b1fbb0ef34ca03e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _destroyTime: 0.25
 --- !u!21 &-5871657001455008085
 Material:
   serializedVersion: 6
