@@ -91,7 +91,6 @@ namespace Character
 
         public void OnMoveInput(Vector3 movement){
             MoveDirection = movement;
-            Debug.Log(movement);
         }
         
 
